@@ -1,5 +1,6 @@
 package com.mufiid.absensi_app.api
 
+import com.mufiid.absensi_app.utils.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +16,7 @@ object ApiConfig {
             .writeTimeout(120, TimeUnit.SECONDS)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(Constant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
