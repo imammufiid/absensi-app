@@ -31,4 +31,5 @@
     <string name="full_name">Nama Lengkap</string>
     <string name="password">Password</string>
     <string name="password_confirm">Konfirmasi Password</string>
+    <string name="title_nik">NIK</string>
 </resources>
