@@ -1,6 +1,34 @@
 <resources>
     <string name="app_name">Absensi-App</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+    <!--  Menu of Bottom Navigation  -->
+    <string name="title_home">Beranda</string>
+    <string name="title_task">Tugas</string>
+    <string name="title_attendance">Absen</string>
+    <string name="title_profile">Profil</string>
+
+    <!--  Title of Activity  -->
+    <string name="title_login">Masuk</string>
+    <string name="title_registration">Registrasi</string>
+    <string name="title_greeting_name">Halo, %s</string>
+    <string name="title_today_task">Tugas hari ini</string>
+    <string name="title_attendance_detail">Detail Absen Hari Ini</string>
+    <string name="title_list_task">Daftar Tugas</string>
+    <string name="title_logout">Keluar</string>
+
+    <!--  Title of content  -->
+    <string name="nums">0</string>
+    <string name="attendance">Absen</string>
+    <string name="date_today">12-12-12</string>
+    <string name="time">00:00:00</string>
+    <string name="show_all">Lihat semua</string>
+    <string name="nik">000000xxxxxx</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="save">Simpan</string>
+
+    <!--  Title of field  -->
+    <string name="email">Email</string>
+    <string name="full_name">Nama Lengkap</string>
+    <string name="password">Password</string>
+    <string name="password_confirm">Konfirmasi Password</string>
 </resources>
