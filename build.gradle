@@ -41,7 +41,7 @@ ext {
     materialVersion = '1.3.0'
     recyclerViewVersion = '1.1.0'
     cardViewVersion = '1.0.0'
-    $smoothBarVersion = '1.7.6'
+    smoothBarVersion = '1.7.6'
 
     retrofitVersion = '2.9.0'
     converterGsonVersion = '2.9.0'
