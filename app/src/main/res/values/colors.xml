@@ -2,7 +2,9 @@
 <resources>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#312651</color>
+    <color name="colorPrimaryVariant">#2F244E</color>
     <color name="colorSecondary">#FF7755</color>
+    <color name="colorSecondaryVariant">#E46B4C</color>
     <color name="colorTextPrimary">#000000</color>
     <color name="colorTextSecondary">#858496</color>
     <color name="colorGreyLight">#F3F4F8</color>
