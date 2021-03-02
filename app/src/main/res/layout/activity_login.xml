@@ -94,7 +94,7 @@
             android:text="@string/title_login"
             android:textStyle="bold"
             android:textAllCaps="false"
-            android:textColor="@color/colorTextLight" />
+            android:textColor="@color/colorGreyLight" />
 
         <Button
             android:id="@+id/btn_registration"
