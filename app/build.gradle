@@ -48,6 +48,9 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.cardview:cardview:$cardViewVersion"
 
+    // smooth Bottom Nav
+    implementation "com.github.ibrahimsn98:SmoothBottomBar:$smoothBarVersion"
+
     // retrofit2
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$converterGsonVersion"
@@ -68,6 +71,7 @@ dependencies {
 
     // animation
     implementation "com.facebook.shimmer:shimmer:$shimmerVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitVersion"
