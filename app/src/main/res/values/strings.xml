@@ -33,4 +33,7 @@
     <string name="password_confirm">Konfirmasi Password</string>
     <string name="title_nik">NIK</string>
     <string name="desc_task">Deskripsi task pertama</string>
+    <string name="find_task_per_date">Cari tugas per tanggal</string>
+    <string name="find_employe">Cari karyawan</string>
+    <string name="icon_back">icon back</string>
 </resources>
