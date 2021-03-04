@@ -45,12 +45,13 @@
                     android:layout_marginTop="4dp"
                     android:text="@string/full_name"
                     android:textSize="16sp" />
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/in_firstname"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
+                    android:layout_height="wrap_content"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:boxBackgroundColor="@null">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_firstname"
                         android:layout_width="match_parent"
@@ -58,6 +59,7 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:inputType="text"
+                        android:background="@drawable/bg_search_view"
                         android:maxLines="1"
                         android:textStyle="bold" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -79,8 +81,10 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/in_nik"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
+                    android:layout_height="wrap_content"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:boxBackgroundColor="@null">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_nik"
                         android:layout_width="match_parent"
@@ -89,6 +93,7 @@
                         android:focusableInTouchMode="true"
                         android:inputType="text"
                         android:maxLines="1"
+                        android:background="@drawable/bg_search_view"
                         android:textStyle="bold" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -104,8 +109,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/in_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+                android:layout_height="wrap_content"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:boxBackgroundColor="@null">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
@@ -114,6 +121,7 @@
                     android:focusableInTouchMode="true"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:background="@drawable/bg_search_view"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,8 +137,10 @@
                 android:id="@+id/in_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="password_toggle">
-
+                app:endIconMode="password_toggle"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:boxBackgroundColor="@null">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
@@ -139,6 +149,7 @@
                     android:focusableInTouchMode="true"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:background="@drawable/bg_search_view"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,8 +165,10 @@
                 android:id="@+id/in_confirm_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="password_toggle">
-
+                app:endIconMode="password_toggle"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:boxBackgroundColor="@null">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_confirm_password"
                     android:layout_width="match_parent"
@@ -164,9 +177,9 @@
                     android:focusableInTouchMode="true"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:background="@drawable/bg_search_view"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
 
         <!-- Button -->
