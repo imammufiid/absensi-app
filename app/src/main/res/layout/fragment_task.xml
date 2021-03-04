@@ -16,17 +16,6 @@
         android:paddingHorizontal="20dp"
         android:paddingVertical="20dp">
 
-        <!-- Button Back -->
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:src="@drawable/ic_left"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/icon_back" />
-
         <!-- Title Page -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txt_greeting"
