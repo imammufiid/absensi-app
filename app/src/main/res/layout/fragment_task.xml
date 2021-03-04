@@ -39,7 +39,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/icon_back"
-            android:visibility="invisible"/>
+            android:visibility="visible"/>
     </RelativeLayout>
 
     <!-- Content -->
