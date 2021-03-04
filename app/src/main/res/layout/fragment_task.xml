@@ -9,35 +9,52 @@
     tools:context=".ui.task.TaskFragment">
 
     <!-- Header -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="20dp"
         android:paddingVertical="20dp">
 
+        <!-- Button Back -->
         <ImageButton
-            android:id="@+id/profile_user"
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
             android:src="@drawable/ic_left"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:contentDescription="@string/icon_back" />
 
+        <!-- Title Page -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txt_greeting"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             android:textColor="@color/colorGreyLight"
             android:textSize="20sp"
             android:text="@string/title_list_task"
             android:gravity="center_horizontal"
             android:textStyle="bold"/>
-    </LinearLayout>
+
+        <!-- Button add -->
+        <ImageButton
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/ic_plus"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/icon_back"
+            android:visibility="invisible"/>
+    </RelativeLayout>
 
     <!-- Content -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_page_white"
@@ -55,9 +72,10 @@
             android:inputType="text"
             android:hint="@string/find_task_per_date"
             android:paddingHorizontal="12dp"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:layout_alignParentTop="true"/>
 
-        <!-- Filter Date -->
+        <!-- Filter Employee -->
         <EditText
             android:id="@+id/search_employee"
             android:layout_width="match_parent"
@@ -69,13 +87,25 @@
             android:paddingHorizontal="12dp"
             android:layout_marginTop="8dp"
             android:maxLines="1"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_below="@id/search_date"/>
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_employee"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="18dp"/>
 
         <!-- List Task Today -->
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            tools:listitem="@layout/item_task"/>
-    </LinearLayout>
+            tools:listitem="@layout/item_task"
+            android:layout_below="@id/search_employee"/>
+    </RelativeLayout>
 </LinearLayout>
