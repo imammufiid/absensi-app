@@ -1,13 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
     tools:context=".ui.profile.ProfileFragment">
 
-    <TextView
+    <!-- Blank Space -->
+    <View
+        android:id="@+id/view_blank"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
+    <!-- Content -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_below="@id/view_blank"
+        android:background="@drawable/bg_page_white"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp">
 
-</FrameLayout>
+        <!-- Full Name -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:text="@string/app_name"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"/>
+        <!-- NIK Employee -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_nik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorTextSecondary"
+            android:layout_below="@id/txt_full_name"
+            android:textSize="16sp"
+            android:text="@string/nik"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"/>
+        <!-- Button Edit -->
+        <Button
+            android:id="@+id/btn_edit_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_rounded"
+            android:padding="16dp"
+            android:layout_below="@id/txt_nik"
+            android:text="@string/edit_profile"
+            android:layout_marginTop="30dp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/colorGreyLight" />
+        <!-- Button Logout -->
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:layout_below="@id/btn_edit_profile"
+            android:text="@string/title_logout"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary" />
+    </RelativeLayout>
+
+    <!-- Image Profile -->
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ic_circle_blank" />
+</RelativeLayout>
