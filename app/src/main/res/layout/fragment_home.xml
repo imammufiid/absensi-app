@@ -42,7 +42,7 @@
         <!-- Card View Attendance -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:backgroundTint="@color/colorGreyLight"
             android:clipToPadding="true"
             app:cardCornerRadius="10dp"
@@ -71,8 +71,8 @@
                 <!-- Attendance Action -->
                 <ImageButton
                     android:id="@+id/btn_scan"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:background="@drawable/img_btn_scan"
                     android:contentDescription="@string/app_name"
                     android:padding="10dp"
@@ -207,7 +207,8 @@
                 android:textColor="@color/colorTextSecondary"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"
+                android:gravity="bottom"/>
         </LinearLayout>
 
         <!-- List Task Today -->

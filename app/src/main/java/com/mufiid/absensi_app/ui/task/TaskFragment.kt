@@ -21,10 +21,9 @@ class TaskFragment : Fragment() {
     ): View? {
         taskViewModel =
                 ViewModelProvider(this).get(TaskViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
+        val root = inflater.inflate(R.layout.fragment_task, container, false)
         taskViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+
         })
         return root
     }
