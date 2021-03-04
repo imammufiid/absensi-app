@@ -90,7 +90,7 @@
 
         <!-- List Task Today -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="rv_attendance"
+            android:id="@+id/rv_attendance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
