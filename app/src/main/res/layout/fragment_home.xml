@@ -1,22 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/txt_greeting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorGreyLight"
+            android:textSize="20sp"
+            app:fontFamily="@font/poppinssemibold" />
+
+        <ImageView
+            android:id="@+id/profile_user"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_launcher_background" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_page_white"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp">
+
+        <!-- Card View Attendance -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/colorGreyLight"
+            android:clipToPadding="true"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical">
+
+                <!-- Score -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/score"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppinssemibold"
+                    android:text="@string/nums"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"/>
+
+                <!-- Attendance Action -->
+                <ImageButton
+                    android:id="@+id/btn_scan"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/img_btn_scan"
+                    android:contentDescription="@string/app_name"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_scanning" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Title Attendance -->
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/title_attendance_detail"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Card View Attendance Detail -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/colorGreyLight"
+            android:clipToPadding="true"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                android:paddingTop="8dp"
+                android:paddingHorizontal="16dp">
+
+                <!-- Date Today -->
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/date_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_today"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textStyle="bold" />
+
+                <!-- Container Time Attendance -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <!-- Attendance IN -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- ICON IN -->
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_circle_down"
+                            android:layout_gravity="center_horizontal"/>
+                        <!-- TIME IN -->
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/time_in"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/time"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_marginTop="4dp"
+                            android:layout_gravity="center_horizontal"/>
+
+                    </LinearLayout>
+
+                    <!-- Attendance OUT -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- ICON OUT -->
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_circle_up"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <!-- TIME OUT -->
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/time_out"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/time"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_marginTop="4dp"
+                            android:layout_gravity="center_horizontal"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Title Task Today -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Title Task -->
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp"
+                android:text="@string/title_today_task"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <!-- Show All Task -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/show_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/show_all"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
+
+        <!-- List Task Today -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:listitem="@layout/item_task"/>
+
+    </LinearLayout>
+</LinearLayout>

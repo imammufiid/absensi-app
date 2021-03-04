@@ -32,4 +32,5 @@
     <string name="password">Password</string>
     <string name="password_confirm">Konfirmasi Password</string>
     <string name="title_nik">NIK</string>
+    <string name="desc_task">Deskripsi task pertama</string>
 </resources>
