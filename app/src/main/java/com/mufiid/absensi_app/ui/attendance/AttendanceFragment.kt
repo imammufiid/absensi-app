@@ -21,10 +21,9 @@ class AttendanceFragment : Fragment() {
     ): View? {
         attendanceViewModel =
                 ViewModelProvider(this).get(AttendanceViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        attendanceViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        val root = inflater.inflate(R.layout.fragment_attendance, container, false)
+        attendanceViewModel.text.observe(viewLifecycleOwner, {
+
         })
         return root
     }
