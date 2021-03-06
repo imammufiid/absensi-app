@@ -11,36 +11,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repo: BaseRepository) :ViewModel() {
-    private val _message = MutableLiveData<String>()
-    val message: LiveData<String> = _message
+    private val _message = MutableLiveData<String?>()
+    val message: LiveData<String?> = _message
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private val _userData = MutableLiveData<UserEntity>()
-    val userData: LiveData<UserEntity> = _userData
+    private val _userData = MutableLiveData<UserEntity?>()
+    val userData: LiveData<UserEntity?> = _userData
 
     fun loginUser(email: String?, password: String?) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
                 _loading.postValue(true)
                 val data = repo.loginUser(email, password)
                 when (data.value?.status) {
-                    StatusResponse.SUCCESS -> {
-                        data.value?.body.let {
-                            _userData.postValue(it)
-                        }
-                    }
-                    StatusResponse.EMPTY -> {
-                        data.value?.message.let {
-                            _message.postValue(it)
-                        }
-                    }
-                    else -> {
-                        data.value?.message.let {
-                            _message.postValue(it)
-                        }
-                    }
+                    StatusResponse.SUCCESS -> _userData.postValue(data.value?.body)
+                    StatusResponse.EMPTY -> _message.postValue(data.value?.message)
+                    else -> _message.postValue(data.value?.message)
                 }
                 _loading.postValue(false)
             } catch (throwable: Throwable) {
