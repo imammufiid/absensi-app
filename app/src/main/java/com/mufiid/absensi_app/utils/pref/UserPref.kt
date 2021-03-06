@@ -11,6 +11,7 @@ object UserPref {
             email = pref.getString("EMAIL", "")
             name = pref.getString("NAME", "")
             id = pref.getInt("ID_USER", 0)
+            nik = pref.getString("NIK", "0")
             token = pref.getString("TOKEN", "")
         }
     }
@@ -21,6 +22,7 @@ object UserPref {
             putString("EMAIL", user?.email)
             putString("NAME", user?.name)
             putString("TOKEN", user?.token)
+            putString("NIK", user?.nik)
             user?.id?.let { putInt("ID_USER", it) }
         }
     }
