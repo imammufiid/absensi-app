@@ -3,6 +3,7 @@ package com.mufiid.absensi_app.api
 import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
+import com.mufiid.absensi_app.data.source.remote.response.WrappedListResponse
 import com.mufiid.absensi_app.data.source.remote.response.WrappedResponse
 import retrofit2.http.*
 
@@ -46,8 +47,9 @@ interface ApiService {
     // SHOW ALL TASK
     @GET("task")
     suspend fun showAllTask(
+        @Header("Authorization") token: String?,
         @Query("user_id") idUser: Int?,
         @Query("date") date: String?,
         @Query("is_admin") isAdmin: Int?
-    ): WrappedResponse<TaskEntity>
+    ): WrappedListResponse<TaskEntity>
 }
