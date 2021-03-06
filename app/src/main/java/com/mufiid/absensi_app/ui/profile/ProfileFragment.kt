@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.ProfileFragmentBinding
 import com.mufiid.absensi_app.ui.profileedit.EditProfileActivity
+import com.mufiid.absensi_app.utils.pref.UserPref
+import com.mufiid.absensi_app.viewmodel.ViewModelFactory
 
 class ProfileFragment : Fragment(), View.OnClickListener {
 
@@ -25,7 +27,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         _bind = ProfileFragmentBinding.inflate(layoutInflater, container, false)
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        viewModel = ViewModelProvider(this, factory).get(ProfileViewModel::class.java)
         return _bind.root
     }
 
@@ -36,6 +39,18 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         _bind.btnEditProfile.setOnClickListener(this)
+
+        // get Pref User
+        getPrefUser()
+    }
+
+    private fun getPrefUser() {
+        context?.let {
+            UserPref.getUserData(it).let { user ->
+                _bind.txtFullName.text = user?.name
+                _bind.txtNik.text = user?.nik
+            }
+        }
     }
 
     override fun onClick(v: View?) {
