@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mufiid.absensi_app.R
+import com.mufiid.absensi_app.viewmodel.ViewModelFactory
 
 class AttendanceFragment : Fragment() {
 
@@ -19,8 +20,9 @@ class AttendanceFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        val factory = ViewModelFactory.getInstance(requireActivity())
         attendanceViewModel =
-                ViewModelProvider(this).get(AttendanceViewModel::class.java)
+                ViewModelProvider(this, factory).get(AttendanceViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_attendance, container, false)
         attendanceViewModel.text.observe(viewLifecycleOwner, {
 
