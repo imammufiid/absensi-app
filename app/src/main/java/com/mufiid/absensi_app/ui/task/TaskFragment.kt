@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.FragmentTaskBinding
 import com.mufiid.absensi_app.ui.addtask.AddTaskActivity
+import com.mufiid.absensi_app.viewmodel.ViewModelFactory
 
 class TaskFragment : Fragment(), View.OnClickListener {
     private lateinit var _bind : FragmentTaskBinding
@@ -23,8 +24,9 @@ class TaskFragment : Fragment(), View.OnClickListener {
             savedInstanceState: Bundle?
     ): View? {
         _bind = FragmentTaskBinding.inflate(layoutInflater, container, false)
+        val factory = ViewModelFactory.getInstance(requireActivity())
         taskViewModel =
-                ViewModelProvider(this).get(TaskViewModel::class.java)
+                ViewModelProvider(this, factory).get(TaskViewModel::class.java)
 
         return _bind.root
     }
