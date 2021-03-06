@@ -1,5 +1,8 @@
 package com.mufiid.absensi_app.data.source.remote.response
 
-data class WrappedResponse(
-    val id: Int? = null
+import com.google.gson.annotations.SerializedName
+
+data class WrappedResponse<T>(
+    @SerializedName("meta") val meta: MetaResponse? = null,
+    @SerializedName("data") val data: T? = null
 )
