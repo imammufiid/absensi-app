@@ -41,7 +41,8 @@
             android:background="@drawable/bg_page_white"
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
-            android:paddingTop="20dp">
+            android:paddingTop="20dp"
+            android:paddingBottom="55dp">
 
             <!-- Card View Attendance -->
             <androidx.cardview.widget.CardView
@@ -215,12 +216,22 @@
                     tools:ignore="SmallSp" />
             </LinearLayout>
 
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"/>
+
             <!-- List Task Today -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:overScrollMode="never"
                 tools:listitem="@layout/item_task" />
 
         </LinearLayout>
