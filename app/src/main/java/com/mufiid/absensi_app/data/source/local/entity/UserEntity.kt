@@ -14,7 +14,7 @@ data class UserEntity(
 	var name: String? = null,
 
 	@field:SerializedName("nik")
-	val nik: String? = null,
+    var nik: String? = null,
 
 	@field:SerializedName("email")
     var email: String? = null,
@@ -32,5 +32,5 @@ data class UserEntity(
 	val updatedAt: String? = null,
 
 	@field:SerializedName("token")
-	val token: String? = null
+    var token: String? = null
 ) : Parcelable
