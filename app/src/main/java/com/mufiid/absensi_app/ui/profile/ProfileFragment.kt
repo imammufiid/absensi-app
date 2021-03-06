@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.ProfileFragmentBinding
+import com.mufiid.absensi_app.ui.login.LoginActivity
 import com.mufiid.absensi_app.ui.profileedit.EditProfileActivity
+import com.mufiid.absensi_app.utils.pref.BasePref
 import com.mufiid.absensi_app.utils.pref.UserPref
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
 
@@ -39,6 +41,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         _bind.btnEditProfile.setOnClickListener(this)
+        _bind.btnLogout.setOnClickListener(this)
 
         // get Pref User
         getPrefUser()
@@ -56,6 +59,11 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_edit_profile -> startActivity(Intent(context, EditProfileActivity::class.java))
+            R.id.btn_logout -> {
+                context?.let { BasePref.clearPrefAuth(it) }
+                startActivity(Intent(context, LoginActivity::class.java))
+                activity?.finish()
+            }
         }
     }
 
