@@ -20,7 +20,7 @@ data class UserEntity(
     var email: String? = null,
 
 	@field:SerializedName("is_admin")
-	val isAdmin: Int? = null,
+    var isAdmin: Int? = null,
 
 	@field:SerializedName("profile_image")
 	val profileImage: String? = null,
