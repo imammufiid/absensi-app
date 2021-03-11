@@ -52,4 +52,11 @@ interface ApiService {
         @Query("date") date: String?,
         @Query("is_admin") isAdmin: Int?
     ): WrappedListResponse<TaskEntity>
+
+    // EMPLOYEE ---------------------------------------------------
+    // SHOW ALL EMPLOYEE
+    @GET("employee")
+    suspend fun getEmployee(
+        @Header("Authorization") token: String?,
+    ): WrappedListResponse<UserEntity>
 }

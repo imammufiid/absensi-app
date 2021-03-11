@@ -37,4 +37,8 @@ class BaseRepository private constructor(
     ): LiveData<ApiResponse<List<TaskEntity>>> {
         return remoteDataSource.getAllTaskData(userId, date, isAdmin, token)
     }
+
+    override suspend fun getEmployee(token: String): LiveData<ApiResponse<List<UserEntity>>> {
+        return remoteDataSource.getEmployee(token)
+    }
 }

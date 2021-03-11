@@ -13,4 +13,7 @@ interface BaseDataSource {
         date: String? = null,
         isAdmin: Int? = null
     ): LiveData<ApiResponse<List<TaskEntity>>>
+    suspend fun getEmployee(
+        token: String
+    ): LiveData<ApiResponse<List<UserEntity>>>
 }
