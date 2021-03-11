@@ -13,6 +13,7 @@ object UserPref {
             id = pref.getInt("ID_USER", 0)
             nik = pref.getString("NIK", "0")
             token = pref.getString("TOKEN", "")
+            isAdmin = pref.getInt("IS_ADMIN", 0)
         }
     }
 
@@ -23,6 +24,7 @@ object UserPref {
             putString("NAME", user?.name)
             putString("TOKEN", user?.token)
             putString("NIK", user?.nik)
+            user?.isAdmin?.let { putInt("IS_ADMIN", it) }
             user?.id?.let { putInt("ID_USER", it) }
         }
     }
