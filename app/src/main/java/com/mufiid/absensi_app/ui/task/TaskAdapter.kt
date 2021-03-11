@@ -40,10 +40,12 @@ class TaskAdapter() : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
         }
     }
 
-    fun addTask(data: List<TaskEntity>) {
+    fun addTask(data: List<TaskEntity>?) {
         this.data.apply {
             clear()
-            addAll(data)
+            if (data != null) {
+                addAll(data)
+            }
         }
         notifyDataSetChanged()
     }
