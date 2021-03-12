@@ -1,6 +1,7 @@
 package com.mufiid.absensi_app.data.source
 
 import androidx.lifecycle.LiveData
+import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.response.ApiResponse
@@ -14,6 +15,10 @@ interface BaseDataSource {
         date: String? = null,
         isAdmin: Int? = null
     ): LiveData<ApiResponse<List<TaskEntity>>>
+    suspend fun getAllAttendance(
+        token: String,
+        userId: Int?,
+    ): LiveData<ApiResponse<List<AttendanceEntity>>>
     suspend fun getEmployee(
         token: String
     ): LiveData<ApiResponse<List<UserEntity>>>
