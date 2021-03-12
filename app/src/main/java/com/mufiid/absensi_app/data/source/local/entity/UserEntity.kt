@@ -32,5 +32,8 @@ data class UserEntity(
 	val updatedAt: String? = null,
 
 	@field:SerializedName("token")
-    var token: String? = null
+    var token: String? = null,
+
+	@field:SerializedName("is_success")
+	var isSuccess: Boolean? = null
 ) : Parcelable
