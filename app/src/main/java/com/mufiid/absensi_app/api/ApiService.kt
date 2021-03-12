@@ -33,7 +33,8 @@ interface ApiService {
     @FormUrlEncoded
     @POST("auth/logout")
     suspend fun logout(
-        @Header("Authorization") token: String?
+        @Header("Authorization") token: String?,
+        @Field("user_id") userId: Int? = null
     ): WrappedResponse<UserEntity>
 
     // ATTENDANCE ---------------------------------------------------
