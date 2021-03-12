@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.FragmentAttendanceBinding
 import com.mufiid.absensi_app.utils.pref.UserPref
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
@@ -16,6 +18,10 @@ class AttendanceFragment : Fragment() {
     private lateinit var _bind: FragmentAttendanceBinding
     private lateinit var viewModel: AttendanceViewModel
     private lateinit var attendanceAdapter: AttendanceAdapter
+    private var listIdEmployee: MutableList<Int>? = ArrayList()
+    private var listEmployee: MutableList<String>? = ArrayList()
+    private var idEmployee: Int? = null
+    private var adapterEmployee: ArrayAdapter<Any>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +46,26 @@ class AttendanceFragment : Fragment() {
         attendanceAdapter = AttendanceAdapter()
         setViewModelAttendance()
         setRecyclerView()
+        setEmployeeFilter()
+    }
+
+    private fun setEmployeeFilter() {
+        val userPref = context?.let { context -> UserPref.getUserData(context) }
+        if (userPref?.isAdmin == 1) {
+            _bind.searchEmployee.visibility = View.VISIBLE
+            userPref?.token?.let { token -> viewModel.getEmployee(token) }
+        }
+
+
+        /*  on click item employee
+         *  observe data attendance
+         */
+        _bind.etSearchEmployee.setOnItemClickListener { _, _, i, _ ->
+            idEmployee = listIdEmployee?.get(i)
+            _bind.etSearchEmployee.dismissDropDown()
+
+            userPref?.token?.let { token -> viewModel.allAttendance(token, idEmployee) }
+        }
     }
 
     private fun setRecyclerView() {
@@ -75,6 +101,25 @@ class AttendanceFragment : Fragment() {
             }
             attendanceAdapter.apply {
                 addAttendance(it)
+            }
+        })
+
+        viewModel.userData.observe(viewLifecycleOwner, {
+            if (it != null) {
+                for (i in it.indices) {
+                    listEmployee?.add(it[i].name.toString())
+                    it[i].id?.let { idUser -> listIdEmployee?.add(idUser) }
+                }
+
+                adapterEmployee = context?.let { context ->
+                    ArrayAdapter(
+                        context,
+                        R.layout.support_simple_spinner_dropdown_item,
+                        listEmployee as List<*>
+                    )
+                }
+
+                _bind.etSearchEmployee.setAdapter(adapterEmployee)
             }
         })
     }
