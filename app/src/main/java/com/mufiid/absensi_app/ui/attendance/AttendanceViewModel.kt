@@ -24,7 +24,7 @@ class AttendanceViewModel(private val repo: BaseRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 _loading.postValue(true)
-                val res = repo.getAllAttendance(token, userId)
+                val res = repo.getAllAttendance("Bearer $token", userId)
                 when (res.value?.status) {
                     StatusResponse.SUCCESS -> _attendance.postValue(res.value?.body)
                     StatusResponse.EMPTY -> _message.postValue(res.value?.message)

@@ -13,7 +13,8 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val itemAttendanceBinding = ItemAttendanceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemAttendanceBinding =
+            ItemAttendanceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(itemAttendanceBinding)
     }
 
@@ -25,11 +26,12 @@ class AttendanceAdapter : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolder(private val binding: ItemAttendanceBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: ItemAttendanceBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(attendance: AttendanceEntity) {
             with(binding) {
-                timeIn.text = attendance.timeComes
-                timeOut.text = attendance.timeGohome
+                timeIn.text = if (attendance.timeComes == "0") "00:00:00" else attendance.timeComes
+                timeOut.text = if (attendance.timeGohome == "0") "00:00:00" else attendance.timeGohome
                 datetime.text = attendance.date
             }
         }
