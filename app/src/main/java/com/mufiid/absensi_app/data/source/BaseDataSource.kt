@@ -7,6 +7,7 @@ import com.mufiid.absensi_app.data.source.remote.response.ApiResponse
 
 interface BaseDataSource {
     suspend fun loginUser(email: String?, password: String?): LiveData<ApiResponse<UserEntity>>
+    suspend fun logoutUser(token: String): LiveData<ApiResponse<UserEntity>>
     suspend fun getAllTaskData(
         token: String,
         userId: Int?,

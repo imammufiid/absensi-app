@@ -1,12 +1,14 @@
 package com.mufiid.absensi_app.ui.profile
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.ProfileFragmentBinding
 import com.mufiid.absensi_app.ui.login.LoginActivity
@@ -37,6 +39,31 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        observerViewModel()
+    }
+
+    private fun observerViewModel() {
+        viewModel.loading.observe(viewLifecycleOwner, {
+            if (it) {
+                _bind.progressBar.visibility = View.VISIBLE
+                _bind.btnLogout.visibility = View.GONE
+            } else {
+                _bind.progressBar.visibility = View.GONE
+                _bind.btnLogout.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.message.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.response.observe(viewLifecycleOwner, {
+            if (it?.isSuccess == true) {
+                context?.let { context -> BasePref.clearPrefAuth(context) }
+                startActivity(Intent(context, LoginActivity::class.java))
+                activity?.finish()
+            }
+        })
     }
 
     private fun init() {
@@ -60,9 +87,13 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.btn_edit_profile -> startActivity(Intent(context, EditProfileActivity::class.java))
             R.id.btn_logout -> {
-                context?.let { BasePref.clearPrefAuth(it) }
-                startActivity(Intent(context, LoginActivity::class.java))
-                activity?.finish()
+                context?.let { context ->
+                    UserPref.getUserData(context)?.token?.let { token ->
+                        viewModel.logout(
+                            token
+                        )
+                    }
+                }
             }
         }
     }
