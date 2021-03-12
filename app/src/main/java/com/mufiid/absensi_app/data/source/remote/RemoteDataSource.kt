@@ -54,7 +54,7 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<List<AttendanceEntity>>>()
 
         try {
-            val response = ApiConfig.instance().showAttendance(token, userId)
+            val response = ApiConfig.instance().showAllAttendance(token, userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)

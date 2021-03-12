@@ -40,8 +40,16 @@ interface ApiService {
     // SHOW ATTENDANCE
     @GET("attendance/show")
     suspend fun showAttendance(
-        @Query("id_employee") idUser: Int?
-    ): WrappedResponse<AttendanceEntity>
+        @Header("Authorization") token: String?,
+        @Query("id_employe") idUser: Int?
+    ): WrappedListResponse<AttendanceEntity>
+
+    // SHOW ALL ATTENDANCE
+    @GET("attendance/")
+    suspend fun showAllAttendance(
+        @Header("Authorization") token: String?,
+        @Query("user_id") idUser: Int?
+    ): WrappedListResponse<AttendanceEntity>
 
     // TASK ---------------------------------------------------
     // SHOW ALL TASK
