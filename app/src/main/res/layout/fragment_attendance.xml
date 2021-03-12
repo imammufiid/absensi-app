@@ -67,16 +67,6 @@
             android:visibility="gone"
             android:layout_below="@id/search_date"/>
 
-        <!-- Progress Bar -->
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/search_employee"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="18dp"/>
-
         <!-- List Task Today -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_attendance"
@@ -85,5 +75,16 @@
             android:layout_marginTop="18dp"
             tools:listitem="@layout/item_attendance"
             android:layout_below="@id/search_employee"/>
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_employee"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="18dp"
+            android:visibility="gone"/>
     </RelativeLayout>
 </LinearLayout>
