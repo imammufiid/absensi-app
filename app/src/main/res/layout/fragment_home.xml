@@ -32,7 +32,7 @@
                 android:id="@+id/profile_user"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/ic_circle_blank" />
         </LinearLayout>
 
         <LinearLayout
