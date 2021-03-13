@@ -2,7 +2,6 @@ package com.mufiid.absensi_app.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,7 +77,13 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         context?.let {
             UserPref.getUserData(it).let { user ->
                 _bind.txtFullName.text = user?.name
-                _bind.txtNik.text = user?.nik
+
+                val nik = user?.nik
+                val startXNik = nik?.length?.minus(4) // 8
+                val xNik = startXNik?.let { startXNik ->
+                    nik.length.minus(startXNik).let { countRepeat -> "x".repeat(countRepeat) }
+                }
+                _bind.txtNik.text = nik?.substring(0, nik.length - 4) + xNik
             }
         }
     }
