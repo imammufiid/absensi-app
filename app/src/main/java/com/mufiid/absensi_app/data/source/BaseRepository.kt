@@ -1,6 +1,5 @@
 package com.mufiid.absensi_app.data.source
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
@@ -38,6 +37,13 @@ class BaseRepository private constructor(
         password: String?
     ): LiveData<ApiResponse<UserEntity>> {
         return remoteDataSource.registrationUser(name, nik, email, password)
+    }
+
+    override suspend fun getAttendanceToday(
+        token: String,
+        employeeId: Int?
+    ): LiveData<ApiResponse<AttendanceEntity>> {
+        return remoteDataSource.getAttendanceToday(token, employeeId)
     }
 
     override suspend fun logoutUser(token: String): LiveData<ApiResponse<UserEntity>> {
