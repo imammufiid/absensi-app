@@ -46,14 +46,14 @@
                     android:text="@string/full_name"
                     android:textSize="16sp" />
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/in_firstname"
+                    android:id="@+id/in_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:boxStrokeWidth="0dp"
                     app:boxStrokeWidthFocused="0dp"
                     app:boxBackgroundColor="@null">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_firstname"
+                        android:id="@+id/et_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="true"
@@ -204,7 +204,7 @@
                 android:textColor="@color/colorGreyLight" />
 
             <Button
-                android:id="@+id/btn_registration"
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -214,6 +214,7 @@
                 android:textColor="@color/colorTextPrimary" />
         </LinearLayout>
 
+        <!-- Progress Bar -->
         <ProgressBar
             android:id="@+id/progress_bar_register"
             android:layout_width="wrap_content"

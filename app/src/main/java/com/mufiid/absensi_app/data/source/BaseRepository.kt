@@ -31,6 +31,15 @@ class BaseRepository private constructor(
         return remoteDataSource.loginUser(email, password)
     }
 
+    override suspend fun registrationUser(
+        name: String?,
+        nik: String?,
+        email: String?,
+        password: String?
+    ): LiveData<ApiResponse<UserEntity>> {
+        return remoteDataSource.registrationUser(name, nik, email, password)
+    }
+
     override suspend fun logoutUser(token: String): LiveData<ApiResponse<UserEntity>> {
         return remoteDataSource.logout(token)
     }

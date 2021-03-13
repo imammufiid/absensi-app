@@ -47,6 +47,31 @@ class RemoteDataSource {
         return result
     }
 
+    suspend fun registrationUser(name: String?, nik: String?, email: String?, password: String?): LiveData<ApiResponse<UserEntity>> {
+        val result = MutableLiveData<ApiResponse<UserEntity>>()
+
+        try {
+            val data = ApiConfig.instance().registerUser(name, nik, email, password)
+            when (data.meta?.code) {
+                200 -> result.value = ApiResponse.success(data.data)
+                404 -> result.value = ApiResponse.empty(data.meta.message)
+                else -> result.value = ApiResponse.failed(data.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> result.value = ApiResponse.error("Network Error")
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> result.value = ApiResponse.error("Unknown error")
+            }
+        }
+
+        return result
+    }
+
     suspend fun getAllAttendance(
         userId: Int?,
         token: String
