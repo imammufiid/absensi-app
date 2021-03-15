@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.mufiid.absensi_app.R
+import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.databinding.ProfileFragmentBinding
 import com.mufiid.absensi_app.ui.login.LoginActivity
 import com.mufiid.absensi_app.ui.profileedit.EditProfileActivity
@@ -26,6 +27,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private lateinit var _bind: ProfileFragmentBinding
     private lateinit var viewModel: ProfileViewModel
+    private var userEntity: UserEntity? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +71,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
         viewModel.userData.observe(viewLifecycleOwner, { user ->
             if (user != null) {
+                userEntity = user
                 _bind.txtFullName.text = user.name
                 val nik = user.nik
                 val startXNik = nik?.length?.minus(4) // 8
@@ -101,9 +104,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.btn_edit_profile -> {
                 startActivity(Intent(context, EditProfileActivity::class.java).apply {
-                    putExtra(
-                        EditProfileActivity.USER,
-                        context?.let { context -> UserPref.getUserData(context) })
+                    putExtra(EditProfileActivity.USER, userEntity)
                 })
             }
             R.id.btn_logout -> {

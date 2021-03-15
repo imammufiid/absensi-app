@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.databinding.ActivityEditProfileBinding
@@ -44,6 +45,7 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun setParcelable() {
+        Log.d("USER_DATA", userData.toString())
         _bind.etFullName.setText(userData?.name)
 
         val nik = userData?.nik
@@ -52,6 +54,11 @@ class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
         val xNik = countRepeat?.let { countRepeat -> "x".repeat(countRepeat) }
         _bind.etNik.setText(nik?.substring(0, nik.length - 4) + xNik)
         _bind.etEmail.setText(userData?.email)
+
+        Glide.with(this)
+            .load(userData?.profileImage)
+            .centerCrop()
+            .into(_bind.profileUser)
     }
 
     private fun observeViewModel() {
