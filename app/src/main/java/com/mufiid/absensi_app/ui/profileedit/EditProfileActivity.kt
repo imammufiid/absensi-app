@@ -1,14 +1,17 @@
 package com.mufiid.absensi_app.ui.profileedit
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.databinding.ActivityEditProfileBinding
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var _bind: ActivityEditProfileBinding
     private lateinit var viewModel: EditProfileViewModel
@@ -27,6 +30,9 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        _bind.btnBack.setOnClickListener(this)
+        _bind.btnAdd.setOnClickListener(this)
+
         userData = intent.getParcelableExtra(USER)
         Log.d("USER", userData.toString())
         setParcelable()
@@ -36,6 +42,7 @@ class EditProfileActivity : AppCompatActivity() {
         observeViewModel()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setParcelable() {
         _bind.etFullName.setText(userData?.name)
 
@@ -49,6 +56,15 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
 
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_back -> finish()
+            R.id.btn_add -> {
+
+            }
+        }
     }
 
 }
