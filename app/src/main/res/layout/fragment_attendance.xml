@@ -74,6 +74,20 @@
             tools:listitem="@layout/item_attendance"
             android:layout_below="@id/search_employee"/>
 
+        <!-- Message Data Empty -->
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/data_empty"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/colorTextSecondary"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal|center_vertical"
+            android:visibility="gone"/>
+
         <!-- Progress Bar -->
         <ProgressBar
             android:id="@+id/progress_bar"

@@ -116,7 +116,8 @@ class HomeFragment : Fragment() {
                     addTask(it)
                 }
             } else {
-                Toast.makeText(context, "NULL", Toast.LENGTH_SHORT).show()
+                _bind.tvEmpty.visibility = View.VISIBLE
+                _bind.tvEmpty.text = getString(R.string.data_empty, "tugas hari ini")
             }
         })
 

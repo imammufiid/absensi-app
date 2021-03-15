@@ -225,6 +225,19 @@
                 android:layout_marginTop="8dp"
                 android:visibility="gone"/>
 
+            <!-- Message Data Empty -->
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/data_empty"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/colorTextSecondary"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:visibility="gone"/>
+
             <!-- List Task Today -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_task"
