@@ -18,6 +18,10 @@ interface BaseDataSource {
         password: String?
     ): LiveData<ApiResponse<UserEntity>>
     suspend fun logoutUser(token: String): LiveData<ApiResponse<UserEntity>>
+    suspend fun getUser(
+        token: String,
+        userId: Int?
+    ): LiveData<ApiResponse<UserEntity>>
     suspend fun getAllTaskData(
         token: String,
         userId: Int?,

@@ -37,6 +37,13 @@ interface ApiService {
         @Field("user_id") userId: Int? = null
     ): WrappedResponse<UserEntity>
 
+    // GET USER
+    @GET("user")
+    suspend fun getUser(
+        @Header("Authorization") token: String?,
+        @Query("id") userId: Int? = null
+    ): WrappedResponse<UserEntity>
+
     // ATTENDANCE ---------------------------------------------------
     // SHOW ATTENDANCE
     @GET("attendance/show")

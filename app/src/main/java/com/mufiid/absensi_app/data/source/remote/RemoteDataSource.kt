@@ -79,6 +79,57 @@ class RemoteDataSource {
         return result
     }
 
+    suspend fun logout(
+        token: String
+    ): LiveData<ApiResponse<UserEntity>> {
+        val result = MutableLiveData<ApiResponse<UserEntity>>()
+        try {
+            val response = ApiConfig.instance().logout(token)
+            when (response.meta?.code) {
+                200 -> result.value = ApiResponse.success(response.data)
+                404 -> result.value = ApiResponse.empty(response.meta.message)
+                else -> result.value = ApiResponse.failed(response.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> result.value = ApiResponse.error("Network Error")
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> result.value = ApiResponse.error("Unknown error")
+            }
+        }
+        return result
+    }
+
+    suspend fun getUser(
+        token: String,
+        userId: Int?
+    ): LiveData<ApiResponse<UserEntity>> {
+        val result = MutableLiveData<ApiResponse<UserEntity>>()
+        try {
+            val response = ApiConfig.instance().getUser(token, userId)
+            when (response.meta?.code) {
+                200 -> result.value = ApiResponse.success(response.data)
+                404 -> result.value = ApiResponse.empty(response.meta.message)
+                else -> result.value = ApiResponse.failed(response.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> result.value = ApiResponse.error("Network Error")
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> result.value = ApiResponse.error(throwable.message)
+            }
+        }
+        return result
+    }
+
     suspend fun getAllAttendance(
         userId: Int?,
         token: String
@@ -190,28 +241,4 @@ class RemoteDataSource {
         return result
     }
 
-    suspend fun logout(
-        token: String
-    ): LiveData<ApiResponse<UserEntity>> {
-        val result = MutableLiveData<ApiResponse<UserEntity>>()
-        try {
-            val response = ApiConfig.instance().logout(token)
-            when (response.meta?.code) {
-                200 -> result.value = ApiResponse.success(response.data)
-                404 -> result.value = ApiResponse.empty(response.meta.message)
-                else -> result.value = ApiResponse.failed(response.meta?.message)
-            }
-        } catch (throwable: Throwable) {
-            when (throwable) {
-                is IOException -> result.value = ApiResponse.error("Network Error")
-                is HttpException -> {
-                    val code = throwable.statusCode
-                    val errorResponse = throwable.message
-                    result.value = ApiResponse.error("Error $errorResponse")
-                }
-                else -> result.value = ApiResponse.error("Unknown error")
-            }
-        }
-        return result
-    }
 }

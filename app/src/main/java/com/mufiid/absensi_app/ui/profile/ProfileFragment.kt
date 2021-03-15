@@ -1,5 +1,6 @@
 package com.mufiid.absensi_app.ui.profile
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.ProfileFragmentBinding
 import com.mufiid.absensi_app.ui.login.LoginActivity
@@ -41,6 +43,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         observerViewModel()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observerViewModel() {
         viewModel.loading.observe(viewLifecycleOwner, {
             if (it) {
@@ -63,28 +66,34 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 activity?.finish()
             }
         })
+
+        viewModel.userData.observe(viewLifecycleOwner, { user ->
+            if (user != null) {
+                _bind.txtFullName.text = user.name
+                val nik = user.nik
+                val startXNik = nik?.length?.minus(4) // 8
+                val xNik = startXNik?.let { startXNik ->
+                    nik.length.minus(startXNik).let { countRepeat -> "x".repeat(countRepeat) }
+                }
+                _bind.txtNik.text = nik?.substring(0, nik.length - 4) + xNik
+
+                context?.let { context ->
+                    Glide.with(context)
+                        .load(user.profileImage)
+                        .centerCrop()
+                        .into(_bind.profileUser)
+                }
+            }
+        })
     }
 
     private fun init() {
         _bind.btnEditProfile.setOnClickListener(this)
         _bind.btnLogout.setOnClickListener(this)
 
-        // get Pref User
-        getPrefUser()
-    }
-
-    private fun getPrefUser() {
-        context?.let {
-            UserPref.getUserData(it).let { user ->
-                _bind.txtFullName.text = user?.name
-
-                val nik = user?.nik
-                val startXNik = nik?.length?.minus(4) // 8
-                val xNik = startXNik?.let { startXNik ->
-                    nik.length.minus(startXNik).let { countRepeat -> "x".repeat(countRepeat) }
-                }
-                _bind.txtNik.text = nik?.substring(0, nik.length - 4) + xNik
-            }
+        val userPref = context?.let { context -> UserPref.getUserData(context) }
+        userPref?.token?.let { token ->
+            viewModel.getUser(token, userPref.id)
         }
     }
 

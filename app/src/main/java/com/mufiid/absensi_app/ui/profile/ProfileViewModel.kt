@@ -19,6 +19,9 @@ class ProfileViewModel(private val repo: BaseRepository) : ViewModel() {
     private val _response = MutableLiveData<UserEntity?>()
     val response: LiveData<UserEntity?> = _response
 
+    private val _userData = MutableLiveData<UserEntity?>()
+    val userData: LiveData<UserEntity?> = _userData
+
     fun logout(token: String) {
         viewModelScope.launch {
             try {
@@ -26,6 +29,24 @@ class ProfileViewModel(private val repo: BaseRepository) : ViewModel() {
                 val data = repo.logoutUser("Bearer $token")
                 when (data.value?.status) {
                     StatusResponse.SUCCESS -> _response.postValue(data.value?.body)
+                    StatusResponse.EMPTY -> _message.postValue(data.value?.message)
+                    else -> _message.postValue(data.value?.message)
+                }
+                _loading.postValue(false)
+            } catch (throwable: Throwable) {
+                _message.postValue(throwable.message)
+                _loading.postValue(false)
+            }
+        }
+    }
+
+    fun getUser(token: String, userId: Int?) {
+        viewModelScope.launch {
+            try {
+                _loading.postValue(true)
+                val data = repo.getUser("Bearer $token", userId)
+                when (data.value?.status) {
+                    StatusResponse.SUCCESS -> _userData.postValue(data.value?.body)
                     StatusResponse.EMPTY -> _message.postValue(data.value?.message)
                     else -> _message.postValue(data.value?.message)
                 }
