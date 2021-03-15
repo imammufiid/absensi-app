@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mufiid.absensi_app.data.source.BaseRepository
+import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.remote.response.StatusResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
@@ -22,6 +24,9 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
 
     private val _taskData = MutableLiveData<List<TaskEntity>?>()
     val taskData: LiveData<List<TaskEntity>?> = _taskData
+
+    private val _attendanceToday = MutableLiveData<AttendanceEntity?>()
+    val attendanceToday: LiveData<AttendanceEntity?> = _attendanceToday
 
     fun setGreeting(name: String?) {
         this._text.value = name
@@ -46,6 +51,23 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
             } catch (throwable: Throwable) {
                 _message.postValue(throwable.message)
                 _loading.postValue(false)
+            }
+        }
+    }
+
+    fun attendanceToday(
+        token: String?,
+        employeeId: Int?
+    ) {
+        viewModelScope.launch {
+            try {
+                val response = repo.getAttendanceToday("Bearer $token", employeeId)
+                when (response.value?.status) {
+                    StatusResponse.SUCCESS -> _attendanceToday.postValue(response.value?.body)
+                    else -> _message.postValue(response.value?.message)
+                }
+            } catch (throwable: Throwable) {
+                _message.postValue(throwable.message)
             }
         }
     }

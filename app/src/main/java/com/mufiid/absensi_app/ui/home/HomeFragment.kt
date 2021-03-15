@@ -62,7 +62,13 @@ class HomeFragment : Fragment() {
             homeViewModel.getTaskData(
                 token, userPref.id, null, null
             )
+
+            homeViewModel.attendanceToday(
+                token, userPref.id
+            )
         }
+
+
     }
 
     private fun setRecyclerView() {
@@ -111,6 +117,13 @@ class HomeFragment : Fragment() {
                 }
             } else {
                 Toast.makeText(context, "NULL", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        homeViewModel.attendanceToday.observe(viewLifecycleOwner, {
+            if (it != null) {
+                _bind.timeIn.text = if (it.timeComes == "0") getString(R.string.time) else it.timeComes
+                _bind.timeOut.text = if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
             }
         })
     }
