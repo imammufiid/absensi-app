@@ -90,7 +90,13 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btn_edit_profile -> startActivity(Intent(context, EditProfileActivity::class.java))
+            R.id.btn_edit_profile -> {
+                startActivity(Intent(context, EditProfileActivity::class.java).apply {
+                    putExtra(
+                        EditProfileActivity.USER,
+                        context?.let { context -> UserPref.getUserData(context) })
+                })
+            }
             R.id.btn_logout -> {
                 context?.let { context ->
                     UserPref.getUserData(context)?.token?.let { token ->
