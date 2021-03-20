@@ -28,6 +28,12 @@ interface BaseDataSource {
         date: String? = null,
         isAdmin: Int? = null
     ): LiveData<ApiResponse<List<TaskEntity>>>
+    suspend fun insertTask(
+        token: String,
+        userId: Int?,
+        descTask: String? = null,
+        isAdmin: Int? = 0
+    ): LiveData<ApiResponse<TaskEntity>>
     suspend fun getAllAttendance(
         token: String,
         userId: Int?,

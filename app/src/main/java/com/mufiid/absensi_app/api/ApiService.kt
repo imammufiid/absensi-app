@@ -69,6 +69,16 @@ interface ApiService {
         @Query("is_admin") isAdmin: Int?
     ): WrappedListResponse<TaskEntity>
 
+    // INSERT ALL TASK
+    @FormUrlEncoded
+    @POST("task/store")
+    suspend fun insertTask(
+        @Header("Authorization") token: String?,
+        @Field("user_id") idUser: Int?,
+        @Field("task") descTask: String?,
+        @Field("is_admin") isAdmin: Int?
+    ): WrappedResponse<TaskEntity>
+
     // EMPLOYEE ---------------------------------------------------
     // SHOW ALL EMPLOYEE
     @GET("employee")

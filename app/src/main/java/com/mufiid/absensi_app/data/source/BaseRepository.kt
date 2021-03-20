@@ -70,6 +70,15 @@ class BaseRepository private constructor(
         return remoteDataSource.getAllTaskData(userId, date, isAdmin, token)
     }
 
+    override suspend fun insertTask(
+        token: String,
+        userId: Int?,
+        descTask: String?,
+        isAdmin: Int?
+    ): LiveData<ApiResponse<TaskEntity>> {
+        return remoteDataSource.insertTask(token, userId, descTask, isAdmin)
+    }
+
     override suspend fun getEmployee(token: String): LiveData<ApiResponse<List<UserEntity>>> {
         return remoteDataSource.getEmployee(token)
     }
