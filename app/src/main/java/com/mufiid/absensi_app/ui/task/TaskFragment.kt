@@ -95,6 +95,8 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         // get employee
         taskViewModel.userData.observe(viewLifecycleOwner, {
             if (it != null) {
+                listEmployee?.clear()
+                listIdEmployee?.clear()
                 for (i in it.indices) {
                     listEmployee?.add(it[i].name.toString())
                     it[i].id?.let { id -> listIdEmployee?.add(id) }
