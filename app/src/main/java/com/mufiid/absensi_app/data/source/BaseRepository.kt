@@ -6,6 +6,8 @@ import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.RemoteDataSource
 import com.mufiid.absensi_app.data.source.remote.response.ApiResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class BaseRepository private constructor(
     private val remoteDataSource: RemoteDataSource
@@ -52,6 +54,16 @@ class BaseRepository private constructor(
 
     override suspend fun getUser(token: String, userId: Int?): LiveData<ApiResponse<UserEntity>> {
         return remoteDataSource.getUser(token, userId)
+    }
+
+    override suspend fun editProfile(
+        header: HashMap<String, String>,
+        imageProfile: MultipartBody.Part?,
+        userId: RequestBody?,
+        name: RequestBody?,
+        password: RequestBody?
+    ): LiveData<ApiResponse<UserEntity>> {
+        return remoteDataSource.editProfile(header, imageProfile, userId, name, password)
     }
 
     override suspend fun getAllAttendance(

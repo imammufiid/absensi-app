@@ -5,12 +5,13 @@ import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.response.WrappedListResponse
 import com.mufiid.absensi_app.data.source.remote.response.WrappedResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
 
     // AUTH ---------------------------------------------------
-
     // LOGIN
     @FormUrlEncoded
     @POST("auth/login")
@@ -42,6 +43,17 @@ interface ApiService {
     suspend fun getUser(
         @Header("Authorization") token: String?,
         @Query("id") userId: Int? = null
+    ): WrappedResponse<UserEntity>
+
+    // EDIT USER
+    @Multipart
+    @POST("user/save")
+    suspend fun editProfile(
+        @HeaderMap token: Map<String, String>?,
+        @Part imageProfile: MultipartBody.Part?,
+        @Part("id") userId: RequestBody?,
+        @Part("name") name: RequestBody?,
+        @Part("password") password: RequestBody?
     ): WrappedResponse<UserEntity>
 
     // ATTENDANCE ---------------------------------------------------

@@ -1,5 +1,6 @@
 package com.mufiid.absensi_app.data.source.remote
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.load.HttpException
@@ -8,6 +9,8 @@ import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.response.ApiResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.IOException
 
 class RemoteDataSource {
@@ -265,6 +268,39 @@ class RemoteDataSource {
                     result.value = ApiResponse.error("Error $errorResponse")
                 }
                 else -> result.value = ApiResponse.error("Unknown error")
+            }
+        }
+        return result
+    }
+
+    suspend fun editProfile(
+        header: HashMap<String, String>,
+        imageProfile: MultipartBody.Part?,
+        userId: RequestBody?,
+        name: RequestBody?,
+        password: RequestBody?
+    ): LiveData<ApiResponse<UserEntity>> {
+        val result = MutableLiveData<ApiResponse<UserEntity>>()
+        try {
+            val response = ApiConfig.instance().editProfile(header, imageProfile, userId, name, password)
+            when (response.meta?.code) {
+                200 -> result.value = ApiResponse.success(response.data)
+                404 -> result.value = ApiResponse.empty(response.meta.message)
+                else -> result.value = ApiResponse.failed(response.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> {
+                    result.value = ApiResponse.error("Network Error")
+                }
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> {
+                    result.value = ApiResponse.error("Unknown Error")
+                }
             }
         }
         return result

@@ -5,6 +5,8 @@ import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.response.ApiResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 interface BaseDataSource {
     suspend fun loginUser(
@@ -21,6 +23,13 @@ interface BaseDataSource {
     suspend fun getUser(
         token: String,
         userId: Int?
+    ): LiveData<ApiResponse<UserEntity>>
+    suspend fun editProfile(
+        header: HashMap<String, String>,
+        imageProfile: MultipartBody.Part?,
+        userId: RequestBody?,
+        name: RequestBody?,
+        password: RequestBody?
     ): LiveData<ApiResponse<UserEntity>>
     suspend fun getAllTaskData(
         token: String,
