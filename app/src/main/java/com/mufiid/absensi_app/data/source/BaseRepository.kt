@@ -66,6 +66,13 @@ class BaseRepository private constructor(
         return remoteDataSource.editProfile(header, imageProfile, userId, name, password)
     }
 
+    override suspend fun markCompleteTask(
+        token: String,
+        idTask: Int?
+    ): LiveData<ApiResponse<TaskEntity>> {
+        return remoteDataSource.markCompleteTask(token, idTask)
+    }
+
     override suspend fun getAllAttendance(
         token: String,
         userId: Int?

@@ -273,6 +273,36 @@ class RemoteDataSource {
         return result
     }
 
+    suspend fun markCompleteTask(
+        token: String,
+        idTask: Int?
+    ): LiveData<ApiResponse<TaskEntity>> {
+        val result = MutableLiveData<ApiResponse<TaskEntity>>()
+
+        try {
+            val response = ApiConfig.instance().markComplete(token, idTask)
+            when (response.meta?.code) {
+                200 -> result.value = ApiResponse.success(response.data)
+                404 -> result.value = ApiResponse.empty(response.meta.message)
+                else -> result.value = ApiResponse.failed(response.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> result.value = ApiResponse.error("Network Error")
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> {
+                    result.value = ApiResponse.error("Unknown error")
+                    throwable.message?.let { Log.d("ERROR_NETWORK", it) }
+                }
+            }
+        }
+        return result
+    }
+
     suspend fun editProfile(
         header: HashMap<String, String>,
         imageProfile: MultipartBody.Part?,

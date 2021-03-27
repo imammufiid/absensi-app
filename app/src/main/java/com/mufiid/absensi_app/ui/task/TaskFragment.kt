@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mufiid.absensi_app.R
+import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.databinding.FragmentTaskBinding
 import com.mufiid.absensi_app.ui.addtask.AddTaskActivity
 import com.mufiid.absensi_app.utils.pref.UserPref
@@ -54,7 +55,15 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     }
 
     private fun init() {
-        taskAdapter = TaskAdapter()
+        taskAdapter = TaskAdapter(object : TaskAdapter.CheckListTask {
+            override fun check(item: TaskEntity?) {
+                context?.let { context ->  UserPref.getUserData(context)?.token }?.let { token ->
+                    taskViewModel.markCompleteTask(
+                        token, item?.id
+                    )
+                }
+            }
+        })
         setViewModelTask()
         setRecyclerView()
         onEmployeeClickListener()

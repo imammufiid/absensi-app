@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mufiid.absensi_app.R
+import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.databinding.FragmentHomeBinding
+import com.mufiid.absensi_app.ui.task.TaskAdapter
 import com.mufiid.absensi_app.utils.pref.UserPref
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
 import java.time.LocalDateTime
@@ -46,7 +46,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun init() {
-        taskAdapter = TaskAdapter()
+        taskAdapter = TaskAdapter(object : TaskAdapter.CheckListTask {
+            override fun check(item: TaskEntity?) {
+                context?.let { context ->  UserPref.getUserData(context)?.token }?.let { token ->
+                    homeViewModel.markCompleteTask(
+                        token, item?.id
+                    )
+                }
+            }
+        })
         setRecyclerView()
         setViewModel()
     }

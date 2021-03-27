@@ -47,6 +47,27 @@ class TaskViewModel(private val repo: BaseRepository) : ViewModel() {
         }
     }
 
+    fun markCompleteTask(
+        token: String,
+        idTask: Int?
+    ) {
+        viewModelScope.launch {
+            try {
+                _loading.postValue(true)
+                val data = repo.markCompleteTask("Bearer $token", idTask)
+                when(data.value?.status) {
+                    StatusResponse.SUCCESS -> _message.postValue(data.value?.message)
+                    StatusResponse.EMPTY -> _message.postValue(data.value?.message)
+                    else -> _message.postValue(data.value?.message)
+                }
+                _loading.postValue(false)
+            } catch (throwable: Throwable) {
+                _message.postValue(throwable.message)
+                _loading.postValue(false)
+            }
+        }
+    }
+
     fun getEmployee(token: String) {
         viewModelScope.launch {
             try {

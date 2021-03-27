@@ -43,6 +43,10 @@ interface BaseDataSource {
         descTask: String? = null,
         isAdmin: Int? = 0
     ): LiveData<ApiResponse<TaskEntity>>
+    suspend fun markCompleteTask(
+        token: String,
+        idTask: Int?
+    ): LiveData<ApiResponse<TaskEntity>>
     suspend fun getAllAttendance(
         token: String,
         userId: Int?,
