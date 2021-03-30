@@ -19,7 +19,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var _bind: FragmentHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var taskAdapter: TaskAdapter
@@ -57,6 +57,9 @@ class HomeFragment : Fragment() {
         })
         setRecyclerView()
         setViewModel()
+
+        // set click listener
+        _bind.btnScan.setOnClickListener(this)
     }
 
     private fun setViewModel() {
@@ -135,5 +138,13 @@ class HomeFragment : Fragment() {
                 _bind.timeOut.text = if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
             }
         })
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_scan -> {
+
+            }
+        }
     }
 }
