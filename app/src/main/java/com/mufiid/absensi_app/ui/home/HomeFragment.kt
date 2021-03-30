@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
         _bind = FragmentHomeBinding.inflate(layoutInflater, container, false)
         val factory = ViewModelFactory.getInstance(requireActivity())
         homeViewModel =
-            ViewModelProvider(this, factory).get(HomeViewModel::class.java)
+            ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
         return _bind.root
     }
 

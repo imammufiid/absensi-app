@@ -31,7 +31,7 @@ class AttendanceFragment : Fragment() {
         _bind = FragmentAttendanceBinding.inflate(layoutInflater, container, false)
         val factory = ViewModelFactory.getInstance(requireActivity())
         viewModel =
-            ViewModelProvider(this, factory).get(AttendanceViewModel::class.java)
+            ViewModelProvider(requireActivity(), factory).get(AttendanceViewModel::class.java)
         return _bind.root
     }
 

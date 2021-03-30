@@ -41,7 +41,7 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         _bind = FragmentTaskBinding.inflate(layoutInflater, container, false)
         val factory = ViewModelFactory.getInstance(requireActivity())
         taskViewModel =
-            ViewModelProvider(this, factory).get(TaskViewModel::class.java)
+            ViewModelProvider(requireActivity(), factory).get(TaskViewModel::class.java)
 
         return _bind.root
     }

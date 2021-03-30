@@ -35,7 +35,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     ): View? {
         _bind = ProfileFragmentBinding.inflate(layoutInflater, container, false)
         val factory = ViewModelFactory.getInstance(requireActivity())
-        viewModel = ViewModelProvider(this, factory).get(ProfileViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), factory).get(ProfileViewModel::class.java)
         return _bind.root
     }
 
