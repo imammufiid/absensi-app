@@ -1,5 +1,6 @@
 package com.mufiid.absensi_app.ui.home
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.databinding.FragmentHomeBinding
+import com.mufiid.absensi_app.ui.scanner.ScannerActivity
 import com.mufiid.absensi_app.ui.task.TaskAdapter
 import com.mufiid.absensi_app.utils.pref.UserPref
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
@@ -144,7 +146,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_scan -> {
-
+                startActivity(Intent(context, ScannerActivity::class.java))
             }
         }
     }
