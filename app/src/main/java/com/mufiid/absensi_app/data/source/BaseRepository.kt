@@ -32,6 +32,14 @@ class BaseRepository private constructor(
         return remoteDataSource.loginUser(email, password)
     }
 
+    override suspend fun attendanceScan(
+        token: String,
+        userId: Int?,
+        qrCode: String?
+    ): LiveData<ApiResponse<AttendanceEntity>> {
+        return remoteDataSource.attendanceCome(token, userId, qrCode)
+    }
+
     override suspend fun registrationUser(
         name: String?,
         nik: String?,

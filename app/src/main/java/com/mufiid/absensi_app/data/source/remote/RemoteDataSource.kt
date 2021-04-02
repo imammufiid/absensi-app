@@ -188,6 +188,37 @@ class RemoteDataSource {
         return result
     }
 
+    suspend fun attendanceCome(
+        token: String,
+        employeeId: Int?,
+        qrCode: String?
+    ): LiveData<ApiResponse<AttendanceEntity>> {
+        val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
+        try {
+            val response = ApiConfig.instance().attendanceScan(token, employeeId, qrCode)
+            when (response.meta?.code) {
+                200 -> result.value = ApiResponse.success(response.data)
+                404 -> result.value = ApiResponse.empty(response.meta.message)
+                else -> result.value = ApiResponse.failed(response.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> result.value = ApiResponse.error("Network Error")
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> {
+                    result.value = ApiResponse.error("Unknown error")
+                    throwable.message?.let { Log.d("UNKNOWN_ERROR", it) }
+                }
+            }
+        }
+
+        return result
+    }
+
     suspend fun getAllTaskData(
         userId: Int?,
         date: String? = null,
@@ -282,7 +313,7 @@ class RemoteDataSource {
         try {
             val response = ApiConfig.instance().markComplete(token, idTask)
             when (response.meta?.code) {
-                200 -> result.value = ApiResponse.success(response.data)
+                200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
                 else -> result.value = ApiResponse.failed(response.meta?.message)
             }
@@ -314,7 +345,7 @@ class RemoteDataSource {
         try {
             val response = ApiConfig.instance().editProfile(header, imageProfile, userId, name, password)
             when (response.meta?.code) {
-                200 -> result.value = ApiResponse.success(response.data)
+                200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
                 else -> result.value = ApiResponse.failed(response.meta?.message)
             }

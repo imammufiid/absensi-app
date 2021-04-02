@@ -55,6 +55,11 @@ interface BaseDataSource {
         token: String,
         userId: Int?,
     ): LiveData<ApiResponse<AttendanceEntity>>
+    suspend fun attendanceScan(
+        token: String,
+        userId: Int?,
+        qrCode: String?
+    ): LiveData<ApiResponse<AttendanceEntity>>
     suspend fun getEmployee(
         token: String
     ): LiveData<ApiResponse<List<UserEntity>>>
