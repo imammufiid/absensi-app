@@ -63,7 +63,10 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
             try {
                 val response = repo.getAttendanceToday("Bearer $token", employeeId)
                 when (response.value?.status) {
-                    StatusResponse.SUCCESS -> _attendanceToday.postValue(response.value?.body)
+                    StatusResponse.SUCCESS -> {
+                        _attendanceToday.postValue(response.value?.body)
+                        _message.postValue(response.value?.message)
+                    }
                     else -> _message.postValue(response.value?.message)
                 }
             } catch (throwable: Throwable) {
