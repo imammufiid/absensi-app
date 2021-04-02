@@ -12,6 +12,7 @@ import com.mufiid.absensi_app.ui.login.LoginViewModel
 import com.mufiid.absensi_app.ui.profile.ProfileViewModel
 import com.mufiid.absensi_app.ui.profileedit.EditProfileViewModel
 import com.mufiid.absensi_app.ui.registration.RegistrationViewModel
+import com.mufiid.absensi_app.ui.scanner.ScannerViewModel
 import com.mufiid.absensi_app.ui.task.TaskViewModel
 
 class ViewModelFactory private constructor(private val repo: BaseRepository) :
@@ -36,6 +37,7 @@ class ViewModelFactory private constructor(private val repo: BaseRepository) :
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> EditProfileViewModel(repo) as T
             modelClass.isAssignableFrom(RegistrationViewModel::class.java) -> RegistrationViewModel(repo) as T
             modelClass.isAssignableFrom(TaskViewModel::class.java) -> TaskViewModel(repo) as T
+            modelClass.isAssignableFrom(ScannerViewModel::class.java) -> ScannerViewModel(repo) as T
             else -> throw Throwable("Unknown ViewModel Class: ${modelClass.name}")
         }
     }
