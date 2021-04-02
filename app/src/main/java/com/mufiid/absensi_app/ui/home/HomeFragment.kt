@@ -25,19 +25,20 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var taskAdapter: TaskAdapter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _bind = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        homeViewModel =
-            ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
         return _bind.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        homeViewModel =
+            ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
 
         init()
         // observe view model
@@ -48,7 +49,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private fun init() {
         taskAdapter = TaskAdapter(object : TaskAdapter.CheckListTask {
             override fun check(item: TaskEntity?) {
-                context?.let { context ->  UserPref.getUserData(context)?.token }?.let { token ->
+                context?.let { context -> UserPref.getUserData(context)?.token }?.let { token ->
                     homeViewModel.markCompleteTask(
                         token, item?.id
                     )
