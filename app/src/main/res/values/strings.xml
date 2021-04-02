@@ -39,4 +39,5 @@
     <string name="find_attendance_per_date">Cari absen per tanggal</string>
     <string name="input_desc_task">Masukkan deskripsi tugas</string>
     <string name="data_empty">Tidak ada data %s</string>
+    <string name="loading">Loading...</string>
 </resources>
