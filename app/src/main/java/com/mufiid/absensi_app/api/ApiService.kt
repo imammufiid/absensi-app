@@ -64,6 +64,16 @@ interface ApiService {
         @Query("id_employee") idUser: Int?
     ): WrappedResponse<AttendanceEntity>
 
+    // ATTENDANCE COME
+    // SHOW ATTENDANCE
+    @FormUrlEncoded
+    @POST("attendance/scan")
+    suspend fun attendanceScan(
+        @Header("Authorization") token: String?,
+        @Field("id_employee") idUser: Int?,
+        @Field("qr_code") qrCode: String?,
+    ): WrappedResponse<AttendanceEntity>
+
     // SHOW ALL ATTENDANCE
     @GET("attendance/")
     suspend fun showAllAttendance(
