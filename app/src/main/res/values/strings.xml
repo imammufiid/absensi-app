@@ -40,4 +40,8 @@
     <string name="input_desc_task">Masukkan deskripsi tugas</string>
     <string name="data_empty">Tidak ada data %s</string>
     <string name="loading">Loading...</string>
+    <string name="latitude">Latitude : %s</string>
+    <string name="longitude">Longitude : %s</string>
+    <string name="latitude_placeholder">0.000000</string>
+    <string name="longitude_placeholder">000.000000</string>
 </resources>
