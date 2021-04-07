@@ -1,22 +1,34 @@
 package com.mufiid.absensi_app.ui.home
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.databinding.FragmentHomeBinding
+import com.mufiid.absensi_app.ui.bsuploadfile.BottomSheetUploadFileTask
 import com.mufiid.absensi_app.ui.scanner.ScannerActivity
 import com.mufiid.absensi_app.ui.task.TaskAdapter
+import com.mufiid.absensi_app.ui.task.TaskFragment
 import com.mufiid.absensi_app.utils.pref.UserPref
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -25,6 +37,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var _bind: FragmentHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var taskAdapter: TaskAdapter
+    private var fileName: String? = null
+    private var taskEntity: TaskEntity? = null
+    private var part: MultipartBody.Part? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,12 +65,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private fun init() {
         taskAdapter = TaskAdapter(object : TaskAdapter.CheckListTask {
-            override fun check(item: TaskEntity?) {
-                context?.let { context -> UserPref.getUserData(context)?.token }?.let { token ->
-                    homeViewModel.markCompleteTask(
-                        token, item?.id
-                    )
-                }
+            override fun showUploadFile(item: TaskEntity?) {
+                taskEntity = item
+
+                BottomSheetUploadFileTask().show(
+                    childFragmentManager,
+                    BottomSheetUploadFileTask.TAG
+                )
             }
         })
         setRecyclerView()
@@ -81,8 +97,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 token, userPref.id
             )
         }
-
-
     }
 
     private fun setRecyclerView() {
@@ -90,6 +104,78 @@ class HomeFragment : Fragment(), View.OnClickListener {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = taskAdapter
+        }
+    }
+
+    internal var buttonListener: BottomSheetUploadFileTask.ButtonListener =
+        object : BottomSheetUploadFileTask.ButtonListener {
+            override fun pickFile() {
+               openFile()
+            }
+
+            override fun send() {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] =
+                    "Bearer ${context?.let { context -> UserPref.getUserData(context)?.token }}"
+                val taskId =
+                    taskEntity?.id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                val userId =
+                    context?.let { context ->
+                        UserPref.getUserData(context)?.id.toString()
+                            .toRequestBody("text/plain".toMediaTypeOrNull())
+                    }
+
+                val file = File(fileName)
+                val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
+                part = MultipartBody.Part.createFormData("file", file.name, reqFile)
+
+                homeViewModel.markCompleteTask(
+                    headers, taskId, userId, part
+                )
+            }
+        }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == TaskFragment.FILE_PICK_CODE) {
+            val uri = data?.data
+            val filePath = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor =
+                uri?.let { uri -> context?.contentResolver?.query(uri, filePath, null, null, null) }
+            cursor?.moveToFirst()
+            val columnIndex = cursor?.getColumnIndex(filePath[0])
+            val picturePath = columnIndex?.let { columnIndex -> cursor.getString(columnIndex) }
+            cursor?.close()
+            fileName = picturePath.toString()
+        }
+    }
+
+    private fun pickFile() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "*/*"
+        startActivityForResult(intent, TaskFragment.FILE_PICK_CODE)
+    }
+
+    private fun openFile() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (context?.let { context ->
+                    ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                } != PackageManager.PERMISSION_GRANTED) {
+                activity?.let { activity ->
+                    ActivityCompat.requestPermissions(
+                        activity,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        1
+                    )
+                }
+            } else {
+                pickFile()
+            }
+        } else {
+            pickFile()
         }
     }
 
