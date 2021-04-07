@@ -169,7 +169,7 @@ class RemoteDataSource {
         try {
             val response = ApiConfig.instance().showAttendance(token, employeeId)
             when (response.meta?.code) {
-                200 -> result.value = ApiResponse.success(response.data)
+                200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
                 else -> result.value = ApiResponse.failed(response.meta?.message)
             }
