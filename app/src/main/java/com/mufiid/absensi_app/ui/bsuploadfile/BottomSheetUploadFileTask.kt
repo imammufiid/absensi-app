@@ -1,29 +1,16 @@
 package com.mufiid.absensi_app.ui.bsuploadfile
 
-import android.Manifest
-import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.FragmentBottomSheetUploadFileTaskBinding
 import com.mufiid.absensi_app.ui.home.HomeFragment
-import com.mufiid.absensi_app.ui.profileedit.EditProfileActivity
 import com.mufiid.absensi_app.ui.task.TaskFragment
 import com.mufiid.absensi_app.ui.task.TaskViewModel
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
@@ -37,6 +24,7 @@ class BottomSheetUploadFileTask : BottomSheetDialogFragment(), View.OnClickListe
 
     companion object {
         const val TAG = "bottom_sheet_upload_file"
+        const val FILENAME = "filename"
     }
 
     override fun onCreateView(
@@ -55,10 +43,27 @@ class BottomSheetUploadFileTask : BottomSheetDialogFragment(), View.OnClickListe
         _bind.btnSave.setOnClickListener(this)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        var fileName: String? = ""
+        // get param
+        if (savedInstanceState != null) {
+            fileName = savedInstanceState.getString(FILENAME)
+        }
+
+        if (arguments != null) {
+            fileName = arguments?.getString(FILENAME)
+
+            _bind.fileName.visibility = View.VISIBLE
+            _bind.fileName.text = fileName
+        }
+    }
+
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.btn_upload_file -> {
                 if (buttonListener != null) buttonListener?.pickFile()
+                dialog?.dismiss()
             }
             R.id.btn_save -> {
                 if (buttonListener != null) buttonListener?.send()

@@ -37,7 +37,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var _bind: FragmentHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var taskAdapter: TaskAdapter
-    private var fileName: String? = null
+    private var filePath: String? = null
     private var taskEntity: TaskEntity? = null
     private var part: MultipartBody.Part? = null
 
@@ -110,7 +110,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     internal var buttonListener: BottomSheetUploadFileTask.ButtonListener =
         object : BottomSheetUploadFileTask.ButtonListener {
             override fun pickFile() {
-               openFile()
+                openFile()
             }
 
             override fun send() {
@@ -125,7 +125,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                             .toRequestBody("text/plain".toMediaTypeOrNull())
                     }
 
-                val file = File(fileName)
+                val file = File(filePath)
                 val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
                 part = MultipartBody.Part.createFormData("file", file.name, reqFile)
 
@@ -146,7 +146,17 @@ class HomeFragment : Fragment(), View.OnClickListener {
             val columnIndex = cursor?.getColumnIndex(filePath[0])
             val picturePath = columnIndex?.let { columnIndex -> cursor.getString(columnIndex) }
             cursor?.close()
-            fileName = picturePath.toString()
+            this.filePath = picturePath.toString()
+            val splitFileName = this.filePath?.split("/")
+            val bundle = Bundle().apply {
+                putString(BottomSheetUploadFileTask.FILENAME, splitFileName?.last())
+            }
+            BottomSheetUploadFileTask().apply {
+                arguments = bundle
+            }.show(
+                childFragmentManager,
+                BottomSheetUploadFileTask.TAG
+            )
         }
     }
 
@@ -223,8 +233,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         homeViewModel.attendanceToday.observe(viewLifecycleOwner, {
             if (it != null) {
-                _bind.timeIn.text = if (it.timeComes == "0") getString(R.string.time) else it.timeComes
-                _bind.timeOut.text = if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
+                _bind.timeIn.text =
+                    if (it.timeComes == "0") getString(R.string.time) else it.timeComes
+                _bind.timeOut.text =
+                    if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
             }
         })
     }

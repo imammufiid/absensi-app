@@ -45,7 +45,7 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     private var listIdEmployee: MutableList<Int>? = ArrayList()
     private var idEmployee: Int? = null
     private var adapterEmployee: ArrayAdapter<Any>? = null
-    private var fileName: String? = null
+    private var fileNamePath: String? = null
     private var taskEntity: TaskEntity? = null
     private var part: MultipartBody.Part? = null
 
@@ -186,7 +186,7 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
                             .toRequestBody("text/plain".toMediaTypeOrNull())
                     }
 
-                val file = File(fileName)
+                val file = File(fileNamePath)
                 val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
                 part = MultipartBody.Part.createFormData("file", file.name, reqFile)
 
@@ -208,7 +208,17 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             val columnIndex = cursor?.getColumnIndex(filePath[0])
             val picturePath = columnIndex?.let { columnIndex -> cursor.getString(columnIndex) }
             cursor?.close()
-            fileName = picturePath.toString()
+            fileNamePath = picturePath.toString()
+            val splitFileName = this.fileNamePath?.split("/")
+            val bundle = Bundle().apply {
+                putString(BottomSheetUploadFileTask.FILENAME, splitFileName?.last())
+            }
+            BottomSheetUploadFileTask().apply {
+                arguments = bundle
+            }.show(
+                childFragmentManager,
+                BottomSheetUploadFileTask.TAG
+            )
         }
     }
 
