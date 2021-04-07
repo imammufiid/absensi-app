@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.databinding.ItemTaskBinding
 
-class TaskAdapter(private val check: CheckListTask) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+class TaskAdapter(private val check: CheckListTask) :
+    RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
     val data = ArrayList<TaskEntity>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,7 +24,8 @@ class TaskAdapter(private val check: CheckListTask) : RecyclerView.Adapter<TaskA
 
     override fun getItemCount(): Int = data.size
 
-    inner class ViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemTaskBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(task: TaskEntity) {
             with(binding) {
                 descTask.text = task.task
@@ -31,11 +33,8 @@ class TaskAdapter(private val check: CheckListTask) : RecyclerView.Adapter<TaskA
                     checkTask.isChecked = true
                     checkTask.isEnabled = false
                 }
-                checkTask.setOnClickListener {
-                    if (checkTask.isChecked) {
-                        check.showUploadFile(task)
-                        checkTask.isEnabled = false
-                    }
+                itemView.setOnClickListener {
+                    check.showUploadFile(task)
                 }
             }
         }
