@@ -28,6 +28,8 @@ class ScannerActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewModel: ScannerViewModel
     private var codeScanner: CodeScanner? = null
     private var loading: ProgressDialog? = null
+    private var latitude: String? = null
+    private var longitude: String? = null
 
     // location
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
@@ -94,9 +96,7 @@ class ScannerActivity : AppCompatActivity(), View.OnClickListener {
                 val userPref = UserPref.getUserData(this)
                 userPref?.token?.let { token ->
                     viewModel.attendanceCome(
-                        token,
-                        userPref.id,
-                        result.text
+                        token, userPref.id, result.text, latitude, longitude
                     )
                 }
             }
@@ -136,6 +136,8 @@ class ScannerActivity : AppCompatActivity(), View.OnClickListener {
             if (location != null) {
                 _bind.latitude.text = getString(R.string.latitude, location.latitude.toString())
                 _bind.longitude.text = getString(R.string.longitude, location.longitude.toString())
+                latitude = location.latitude.toString()
+                longitude = location.longitude.toString()
             }
         }
     }

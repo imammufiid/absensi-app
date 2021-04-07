@@ -19,12 +19,14 @@ class ScannerViewModel(private val repo: BaseRepository): ViewModel() {
     fun attendanceCome(
         token: String,
         idUser: Int?,
-        qrCode: String?
+        qrCode: String?,
+        latitude: String?,
+        longitude: String?,
     ) {
         viewModelScope.launch {
             try {
                 _loading.postValue(true)
-                val data = repo.attendanceScan("Bearer $token", idUser, qrCode)
+                val data = repo.attendanceScan("Bearer $token", idUser, qrCode, latitude, longitude)
                 when(data.value?.status) {
                     StatusResponse.SUCCESS -> _message.postValue(data.value?.message)
                     StatusResponse.EMPTY -> _message.postValue(data.value?.message)

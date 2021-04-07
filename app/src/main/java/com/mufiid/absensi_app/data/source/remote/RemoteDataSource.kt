@@ -191,11 +191,13 @@ class RemoteDataSource {
     suspend fun attendanceCome(
         token: String,
         employeeId: Int?,
-        qrCode: String?
+        qrCode: String?,
+        latitude: String?,
+        longitude: String?
     ): LiveData<ApiResponse<AttendanceEntity>> {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
         try {
-            val response = ApiConfig.instance().attendanceScan(token, employeeId, qrCode)
+            val response = ApiConfig.instance().attendanceScan(token, employeeId, qrCode, latitude, longitude)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)

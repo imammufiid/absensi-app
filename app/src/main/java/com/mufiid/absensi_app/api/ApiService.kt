@@ -72,6 +72,8 @@ interface ApiService {
         @Header("Authorization") token: String?,
         @Field("id_employee") idUser: Int?,
         @Field("qr_code") qrCode: String?,
+        @Field("latitude") latitude: String?,
+        @Field("longitude") longitude: String?,
     ): WrappedResponse<AttendanceEntity>
 
     // SHOW ALL ATTENDANCE
