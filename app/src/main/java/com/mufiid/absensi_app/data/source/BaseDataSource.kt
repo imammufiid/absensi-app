@@ -44,8 +44,10 @@ interface BaseDataSource {
         isAdmin: Int? = 0
     ): LiveData<ApiResponse<TaskEntity>>
     suspend fun markCompleteTask(
-        token: String,
-        idTask: Int?
+        header: HashMap<String, String>,
+        idTask: RequestBody?,
+        userId: RequestBody?,
+        file: MultipartBody.Part?
     ): LiveData<ApiResponse<TaskEntity>>
     suspend fun getAllAttendance(
         token: String,
@@ -58,7 +60,9 @@ interface BaseDataSource {
     suspend fun attendanceScan(
         token: String,
         userId: Int?,
-        qrCode: String?
+        qrCode: String?,
+        latitude: String?,
+        longitude: String?,
     ): LiveData<ApiResponse<AttendanceEntity>>
     suspend fun getEmployee(
         token: String

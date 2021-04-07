@@ -305,13 +305,15 @@ class RemoteDataSource {
     }
 
     suspend fun markCompleteTask(
-        token: String,
-        idTask: Int?
+        header: HashMap<String, String>,
+        idTask: RequestBody?,
+        userId: RequestBody?,
+        file: MultipartBody.Part?
     ): LiveData<ApiResponse<TaskEntity>> {
         val result = MutableLiveData<ApiResponse<TaskEntity>>()
 
         try {
-            val response = ApiConfig.instance().markComplete(token, idTask)
+            val response = ApiConfig.instance().markComplete(header, idTask, userId, file)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -319,7 +321,10 @@ class RemoteDataSource {
             }
         } catch (throwable: Throwable) {
             when (throwable) {
-                is IOException -> result.value = ApiResponse.error("Network Error")
+                is IOException -> {
+                    result.value = ApiResponse.error("Network Error")
+                    throwable.message?.let { Log.d("NETWORK_ERROR", it) }
+                }
                 is HttpException -> {
                     val code = throwable.statusCode
                     val errorResponse = throwable.message

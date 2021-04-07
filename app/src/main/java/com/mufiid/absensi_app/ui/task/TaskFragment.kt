@@ -1,9 +1,14 @@
 package com.mufiid.absensi_app.ui.task
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,11 +24,18 @@ import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.databinding.FragmentTaskBinding
 import com.mufiid.absensi_app.ui.addtask.AddTaskActivity
+import com.mufiid.absensi_app.ui.bsuploadfile.BottomSheetUploadFileTask
 import com.mufiid.absensi_app.utils.pref.UserPref
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
     private lateinit var _bind: FragmentTaskBinding
@@ -30,8 +43,15 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     private lateinit var taskAdapter: TaskAdapter
     private var listEmployee: MutableList<String>? = ArrayList()
     private var listIdEmployee: MutableList<Int>? = ArrayList()
-    private var idEmployee : Int? = null
+    private var idEmployee: Int? = null
     private var adapterEmployee: ArrayAdapter<Any>? = null
+    private var fileName: String? = null
+    private var taskEntity: TaskEntity? = null
+    private var part: MultipartBody.Part? = null
+
+    companion object {
+        const val FILE_PICK_CODE = 1000
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,16 +72,18 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         init()
         // observe view model
         observerViewModel()
+
     }
 
     private fun init() {
         taskAdapter = TaskAdapter(object : TaskAdapter.CheckListTask {
-            override fun check(item: TaskEntity?) {
-                context?.let { context ->  UserPref.getUserData(context)?.token }?.let { token ->
-                    taskViewModel.markCompleteTask(
-                        token, item?.id
-                    )
-                }
+            override fun showUploadFile(item: TaskEntity?) {
+                taskEntity = item
+
+                BottomSheetUploadFileTask().show(
+                    childFragmentManager,
+                    BottomSheetUploadFileTask.TAG
+                )
             }
         })
         setViewModelTask()
@@ -143,6 +165,79 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = taskAdapter
+        }
+    }
+
+    internal var buttonListener: BottomSheetUploadFileTask.ButtonListener =
+        object : BottomSheetUploadFileTask.ButtonListener {
+            override fun pickFile() {
+                openFile()
+            }
+
+            override fun send() {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] =
+                    "Bearer ${context?.let { context -> UserPref.getUserData(context)?.token }}"
+                val taskId =
+                    taskEntity?.id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                val userId =
+                    context?.let { context ->
+                        UserPref.getUserData(context)?.id.toString()
+                            .toRequestBody("text/plain".toMediaTypeOrNull())
+                    }
+
+                val file = File(fileName)
+                val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
+                part = MultipartBody.Part.createFormData("file", file.name, reqFile)
+
+                taskViewModel.markCompleteTask(
+                    headers, taskId, userId, part
+                )
+
+            }
+        }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == FILE_PICK_CODE) {
+            val uri = data?.data
+            val filePath = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor =
+                uri?.let { uri -> context?.contentResolver?.query(uri, filePath, null, null, null) }
+            cursor?.moveToFirst()
+            val columnIndex = cursor?.getColumnIndex(filePath[0])
+            val picturePath = columnIndex?.let { columnIndex -> cursor.getString(columnIndex) }
+            cursor?.close()
+            fileName = picturePath.toString()
+        }
+    }
+
+    private fun pickFile() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "*/*"
+        startActivityForResult(intent, FILE_PICK_CODE)
+    }
+
+    private fun openFile() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (context?.let { context ->
+                    ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                } != PackageManager.PERMISSION_GRANTED) {
+                activity?.let { activity ->
+                    ActivityCompat.requestPermissions(
+                        activity,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        1
+                    )
+                }
+            } else {
+                pickFile()
+            }
+        } else {
+            pickFile()
         }
     }
 

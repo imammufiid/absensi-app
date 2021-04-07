@@ -35,9 +35,11 @@ class BaseRepository private constructor(
     override suspend fun attendanceScan(
         token: String,
         userId: Int?,
-        qrCode: String?
+        qrCode: String?,
+        latitude: String?,
+        longitude: String?,
     ): LiveData<ApiResponse<AttendanceEntity>> {
-        return remoteDataSource.attendanceCome(token, userId, qrCode)
+        return remoteDataSource.attendanceCome(token, userId, qrCode, latitude, longitude)
     }
 
     override suspend fun registrationUser(
@@ -75,10 +77,12 @@ class BaseRepository private constructor(
     }
 
     override suspend fun markCompleteTask(
-        token: String,
-        idTask: Int?
+        header: HashMap<String, String>,
+        idTask: RequestBody?,
+        userId: RequestBody?,
+        file: MultipartBody.Part?
     ): LiveData<ApiResponse<TaskEntity>> {
-        return remoteDataSource.markCompleteTask(token, idTask)
+        return remoteDataSource.markCompleteTask(header, idTask, userId, file)
     }
 
     override suspend fun getAllAttendance(

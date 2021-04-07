@@ -44,4 +44,7 @@
     <string name="longitude">Longitude : %s</string>
     <string name="latitude_placeholder">0.000000</string>
     <string name="longitude_placeholder">000.000000</string>
+    <string name="upload_file">Unggah File</string>
+    <string name="send">Kirim</string>
+    <string name="file_name">filename</string>
 </resources>

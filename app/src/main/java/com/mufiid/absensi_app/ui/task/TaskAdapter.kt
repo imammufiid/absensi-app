@@ -1,6 +1,5 @@
 package com.mufiid.absensi_app.ui.task
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +33,7 @@ class TaskAdapter(private val check: CheckListTask) : RecyclerView.Adapter<TaskA
                 }
                 checkTask.setOnClickListener {
                     if (checkTask.isChecked) {
-                        check.check(task)
+                        check.showUploadFile(task)
                         checkTask.isEnabled = false
                     }
                 }
@@ -53,7 +52,7 @@ class TaskAdapter(private val check: CheckListTask) : RecyclerView.Adapter<TaskA
     }
 
     interface CheckListTask {
-        fun check(item: TaskEntity?)
+        fun showUploadFile(item: TaskEntity?)
     }
 
 }

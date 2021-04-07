@@ -101,12 +101,14 @@ interface ApiService {
         @Field("is_admin") isAdmin: Int?
     ): WrappedResponse<TaskEntity>
 
-    // INSERT ALL TASK
-    @FormUrlEncoded
-    @PUT("task/mark")
+    // MARK COMPLETE TASK
+    @Multipart
+    @POST("task/mark")
     suspend fun markComplete(
-        @Header("Authorization") token: String?,
-        @Field("id_task") idTask: Int?
+        @HeaderMap token: Map<String, String>?,
+        @Part("id_task") idTask: RequestBody?,
+        @Part("user_id") userId: RequestBody?,
+        @Part file: MultipartBody.Part?
     ): WrappedResponse<TaskEntity>
 
     // EMPLOYEE ---------------------------------------------------

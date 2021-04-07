@@ -9,6 +9,8 @@ import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.response.StatusResponse
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class TaskViewModel(private val repo: BaseRepository) : ViewModel() {
 
@@ -48,13 +50,15 @@ class TaskViewModel(private val repo: BaseRepository) : ViewModel() {
     }
 
     fun markCompleteTask(
-        token: String,
-        idTask: Int?
+        header: HashMap<String, String>,
+        idTask: RequestBody?,
+        userId: RequestBody?,
+        file: MultipartBody.Part?
     ) {
         viewModelScope.launch {
             try {
                 _loading.postValue(true)
-                val data = repo.markCompleteTask("Bearer $token", idTask)
+                val data = repo.markCompleteTask(header, idTask, userId, file)
                 when(data.value?.status) {
                     StatusResponse.SUCCESS -> _message.postValue(data.value?.message)
                     StatusResponse.EMPTY -> _message.postValue(data.value?.message)
