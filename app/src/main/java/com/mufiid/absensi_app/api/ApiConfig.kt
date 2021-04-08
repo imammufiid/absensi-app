@@ -1,6 +1,6 @@
 package com.mufiid.absensi_app.api
 
-import com.mufiid.absensi_app.utils.Constant
+import com.mufiid.absensi_app.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,17 +11,21 @@ object ApiConfig {
     fun instance() : ApiService {
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()
+            .retryOnConnectionFailure(true)
             .addInterceptor(interceptor)
-            .readTimeout(120, TimeUnit.SECONDS)
-            .writeTimeout(120, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
             .build()
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL)
+
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-
-        return retrofit.create(ApiService::class.java)
+            .run {
+                create(ApiService::class.java)
+            }
     }
 
 }
