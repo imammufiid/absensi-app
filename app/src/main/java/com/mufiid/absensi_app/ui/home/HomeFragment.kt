@@ -78,7 +78,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         setViewModel()
 
         // set click listener
-        _bind.btnScan.setOnClickListener(this)
+        _bind.btnScan.setOnClickListener(
+            Navigation.createNavigateOnClickListener(
+                R.id.action_homeFragment_to_scannerFragment,
+                null
+            )
+        )
     }
 
     private fun setViewModel() {

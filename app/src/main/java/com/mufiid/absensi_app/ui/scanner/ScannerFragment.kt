@@ -11,18 +11,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.zxing.BarcodeFormat
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.FragmentScannerBinding
+import com.mufiid.absensi_app.utils.pref.UserPref
+import com.mufiid.absensi_app.viewmodel.ViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class ScannerFragment : Fragment() {
 
     private lateinit var _bind : FragmentScannerBinding
     private lateinit var codeScanner: CodeScanner
+    private lateinit var viewModel: ScannerViewModel
     // location
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
     private var latitude: String? = null
@@ -40,6 +50,11 @@ class ScannerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val activity = requireActivity()
+
+        val factory = ViewModelFactory.getInstance(activity)
+        viewModel = ViewModelProvider(this, factory)[ScannerViewModel::class.java]
+        observeViewModel()
+
         codeScanner = CodeScanner(activity, _bind.scannerView).apply {
             camera = CodeScanner.CAMERA_BACK
             formats = listOf(BarcodeFormat.QR_CODE)
@@ -48,9 +63,14 @@ class ScannerFragment : Fragment() {
             isAutoFocusEnabled = true
             isFlashEnabled = false
         }
-        codeScanner.decodeCallback = DecodeCallback {
+        codeScanner.decodeCallback = DecodeCallback { result ->
             activity.runOnUiThread {
-                Toast.makeText(activity, it.text, Toast.LENGTH_LONG).show()
+                val userPref = context?.let { context -> UserPref.getUserData(context) }
+                userPref?.token?.let { token ->
+                    viewModel.attendanceCome(
+                        token, userPref.id, result.text, latitude, longitude
+                    )
+                }
             }
         }
         _bind.scannerView.setOnClickListener {
@@ -60,6 +80,22 @@ class ScannerFragment : Fragment() {
         // fused location
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
         getCurrentLocation()
+    }
+
+    private fun observeViewModel() {
+        viewModel.loading.observe(viewLifecycleOwner, {
+            if (it) {
+                showToast("loading")
+            }
+        })
+
+        viewModel.message.observe(viewLifecycleOwner, {
+            it?.let { message -> showToast(message) }
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1000)
+                findNavController().navigateUp()
+            }
+        })
     }
 
     private fun getCurrentLocation() {
@@ -98,6 +134,10 @@ class ScannerFragment : Fragment() {
                 longitude = location.longitude.toString()
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onResume() {
