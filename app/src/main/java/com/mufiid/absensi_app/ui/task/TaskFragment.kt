@@ -99,7 +99,6 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     private fun observerViewModel() {
         // loading
         taskViewModel.loading.observe(viewLifecycleOwner, {
-            Log.d("LOADING", it.toString())
             if (it) {
                 _bind.progressBar.visibility = View.VISIBLE
             } else {
