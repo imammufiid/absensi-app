@@ -34,6 +34,9 @@ data class UserEntity(
 	@field:SerializedName("token")
     var token: String? = null,
 
+	@field:SerializedName("point")
+	var point: String? = null,
+
 	@field:SerializedName("is_success")
 	var isSuccess: Boolean? = null
 ) : Parcelable
