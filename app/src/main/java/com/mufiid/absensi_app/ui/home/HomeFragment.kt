@@ -55,8 +55,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val factory = ViewModelFactory.getInstance(requireActivity())
-        homeViewModel =
-            ViewModelProvider(requireActivity(), factory).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this, factory)
+            .get(HomeViewModel::class.java)
 
         init()
         // observe view model
@@ -100,6 +100,10 @@ class HomeFragment : Fragment() {
             )
 
             homeViewModel.attendanceToday(
+                token, userPref.id
+            )
+
+            homeViewModel.getMyPoint(
                 token, userPref.id
             )
         }
@@ -222,7 +226,17 @@ class HomeFragment : Fragment() {
             }
         })
 
-        homeViewModel.message.observe(viewLifecycleOwner, {
+        homeViewModel.msgGetTaskData.observe(viewLifecycleOwner, {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        })
+
+        homeViewModel.msgAttendanceToday.observe(viewLifecycleOwner, {
+            if (it != null) {
+                Snackbar.make(_bind.root, it, Snackbar.LENGTH_SHORT).show()
+            }
+        })
+
+        homeViewModel.msgPoint.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
 
@@ -245,13 +259,11 @@ class HomeFragment : Fragment() {
                     if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
             }
         })
-    }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_scan -> {
-                startActivity(Intent(context, ScannerActivity::class.java))
+        homeViewModel.pointData.observe(viewLifecycleOwner, {
+            if (it != null) {
+                _bind.score.text = it.point
             }
-        }
+        })
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.mufiid.absensi_app.data.source.BaseRepository
 import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
+updaimport com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.response.StatusResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
@@ -17,8 +18,14 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
     private val _text = MutableLiveData<String>()
     val greeting: LiveData<String> = _text
 
-    private val _message = MutableLiveData<String?>()
-    val message: LiveData<String?> = _message
+    private val _msgGetTaskData = MutableLiveData<String?>()
+    val msgGetTaskData: LiveData<String?> = _msgGetTaskData
+
+    private val _msgAttendanceToday = MutableLiveData<String?>()
+    val msgAttendanceToday: LiveData<String?> = _msgAttendanceToday
+
+    private val _msgPoint = MutableLiveData<String?>()
+    val msgPoint: LiveData<String?> = _msgPoint
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
@@ -28,6 +35,9 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
 
     private val _attendanceToday = MutableLiveData<AttendanceEntity?>()
     val attendanceToday: LiveData<AttendanceEntity?> = _attendanceToday
+
+    private val _pointData = MutableLiveData<UserEntity?>()
+    val pointData : LiveData<UserEntity?> = _pointData
 
     fun setGreeting(name: String?) {
         this._text.value = name
@@ -45,12 +55,12 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
                 val data = repo.getAllTaskData("Bearer $token", userId, date, isAdmin)
                 when(data.value?.status) {
                     StatusResponse.SUCCESS -> _taskData.postValue(data.value?.body)
-                    StatusResponse.EMPTY -> _message.postValue(data.value?.message)
-                    else -> _message.postValue(data.value?.message)
+                    StatusResponse.EMPTY -> _msgGetTaskData.postValue(data.value?.message)
+                    else -> _msgGetTaskData.postValue(data.value?.message)
                 }
                 _loading.postValue(false)
             } catch (throwable: Throwable) {
-                _message.postValue(throwable.message)
+                _msgGetTaskData.postValue(throwable.message)
                 _loading.postValue(false)
             }
         }
@@ -66,12 +76,12 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
                 when (response.value?.status) {
                     StatusResponse.SUCCESS -> {
                         _attendanceToday.postValue(response.value?.body)
-                        _message.postValue(response.value?.message)
+                        // _msgAttendanceToday.postValue(response.value?.message)
                     }
-//                    else -> _message.postValue(response.value?.message)
+                    else -> _msgAttendanceToday.postValue(response.value?.message)
                 }
             } catch (throwable: Throwable) {
-                _message.postValue(throwable.message)
+                _msgAttendanceToday.postValue(throwable.message)
             }
         }
     }
@@ -87,14 +97,32 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
                 _loading.postValue(true)
                 val data = repo.markCompleteTask(header, idTask, userId, file)
                 when(data.value?.status) {
-                    StatusResponse.SUCCESS -> _message.postValue(data.value?.message)
-                    StatusResponse.EMPTY -> _message.postValue(data.value?.message)
-                    else -> _message.postValue(data.value?.message)
+                    StatusResponse.SUCCESS -> _msgGetTaskData.postValue(data.value?.message)
+                    StatusResponse.EMPTY -> _msgGetTaskData.postValue(data.value?.message)
+                    else -> _msgGetTaskData.postValue(data.value?.message)
                 }
                 _loading.postValue(false)
             } catch (throwable: Throwable) {
-                _message.postValue(throwable.message)
+                _msgGetTaskData.postValue(throwable.message)
                 _loading.postValue(false)
+            }
+        }
+    }
+
+    fun getMyPoint(
+        token: String,
+        userId: Int?
+    ) {
+        viewModelScope.launch {
+            try {
+                val data = repo.getMyPoint("Bearer $token", userId)
+                when(data.value?.status) {
+                    StatusResponse.SUCCESS -> _pointData.postValue(data.value?.body)
+                    StatusResponse.EMPTY -> _msgPoint.postValue(data.value?.message)
+                    else -> _msgPoint.postValue(data.value?.message)
+                }
+            } catch (throwable: Throwable) {
+                _msgPoint.postValue(throwable.message)
             }
         }
     }
