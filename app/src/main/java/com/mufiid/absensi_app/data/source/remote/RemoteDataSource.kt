@@ -374,4 +374,34 @@ class RemoteDataSource {
         return result
     }
 
+    suspend fun getMyPoint(
+        token: String,
+        userId: Int?
+    ): LiveData<ApiResponse<UserEntity>> {
+        val result = MutableLiveData<ApiResponse<UserEntity>>()
+        try {
+            val response = ApiConfig.instance().getMyPoint(token, userId)
+            when (response.meta?.code) {
+                200 -> result.value = ApiResponse.success(response.data, response.meta.message)
+                404 -> result.value = ApiResponse.empty(response.meta.message)
+                else -> result.value = ApiResponse.failed(response.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> {
+                    result.value = ApiResponse.error("Network Error")
+                }
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> {
+                    result.value = ApiResponse.error("Unknown Error")
+                }
+            }
+        }
+        return result
+    }
+
 }

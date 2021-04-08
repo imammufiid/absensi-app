@@ -55,7 +55,7 @@ interface BaseDataSource {
     ): LiveData<ApiResponse<List<AttendanceEntity>>>
     suspend fun getAttendanceToday(
         token: String,
-        userId: Int?,
+        employeeId: Int?,
     ): LiveData<ApiResponse<AttendanceEntity>>
     suspend fun attendanceScan(
         token: String,
@@ -67,4 +67,8 @@ interface BaseDataSource {
     suspend fun getEmployee(
         token: String
     ): LiveData<ApiResponse<List<UserEntity>>>
+    suspend fun getMyPoint(
+        token: String,
+        userId: Int?,
+    ): LiveData<ApiResponse<UserEntity>>
 }

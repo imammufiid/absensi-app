@@ -113,4 +113,11 @@ class BaseRepository private constructor(
     override suspend fun getEmployee(token: String): LiveData<ApiResponse<List<UserEntity>>> {
         return remoteDataSource.getEmployee(token)
     }
+
+    override suspend fun getMyPoint(
+        token: String,
+        userId: Int?
+    ): LiveData<ApiResponse<UserEntity>> {
+        return remoteDataSource.getMyPoint(token, userId)
+    }
 }

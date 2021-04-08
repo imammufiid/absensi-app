@@ -119,4 +119,12 @@ interface ApiService {
     suspend fun getEmployee(
         @Header("Authorization") token: String?,
     ): WrappedListResponse<UserEntity>
+
+    // EMPLOYEE ---------------------------------------------------
+    // GET USER
+    @GET("score")
+    suspend fun getMyPoint(
+        @Header("Authorization") token: String?,
+        @Query("user_id") userId: Int? = null
+    ): WrappedResponse<UserEntity>
 }
