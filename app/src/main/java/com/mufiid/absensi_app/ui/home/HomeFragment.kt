@@ -14,12 +14,13 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
 import com.mufiid.absensi_app.databinding.FragmentHomeBinding
 import com.mufiid.absensi_app.ui.bsuploadfile.BottomSheetUploadFileTask
-import com.mufiid.absensi_app.ui.scanner.ScannerActivity
 import com.mufiid.absensi_app.ui.task.TaskAdapter
 import com.mufiid.absensi_app.ui.task.TaskFragment
 import com.mufiid.absensi_app.utils.pref.UserPref
@@ -33,7 +34,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment() {
     private lateinit var _bind: FragmentHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var taskAdapter: TaskAdapter
