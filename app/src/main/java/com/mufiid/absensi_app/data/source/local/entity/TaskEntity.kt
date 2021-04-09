@@ -19,6 +19,9 @@ data class TaskEntity(
 	@field:SerializedName("is_complete")
 	val isComplete: Int? = null,
 
+	@field:SerializedName("file")
+	val file: String? = null,
+
 	@field:SerializedName("datetime")
 	val datetime: String? = null,
 
