@@ -73,12 +73,16 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             if (user != null) {
                 userEntity = user
                 _bind.txtFullName.text = user.name
-                val nik = user.nik
-                val startXNik = nik?.length?.minus(4) // 8
-                val xNik = startXNik?.let { startXNik ->
-                    nik.length.minus(startXNik).let { countRepeat -> "x".repeat(countRepeat) }
-                }
-                _bind.txtNik.text = nik?.substring(0, nik.length - 4) + xNik
+
+                // cara 1
+                // lambda expression
+//                setNik(user.nik) { newNik ->
+//                    // newNik is return setNik function
+//                    _bind.txtNik.text = newNik
+//                }
+
+                // cara 2
+                _bind.txtNik.text = nik(user.nik, encryptNik)
 
                 context?.let { context ->
                     Glide.with(context)
@@ -88,6 +92,38 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 }
             }
         })
+    }
+
+    // cara 1
+    // high order function
+    private fun setNik(nik: String?, result: (String) -> Unit) {
+        val startNik = nik?.length?.minus(4)
+        val xNik = startNik?.let {
+            nik.length.minus(startNik).let { countRepeat -> "x".repeat(countRepeat) }
+        }
+        val concat = nik?.substring(0, nik.length - 4) + xNik
+
+        // return result
+        result(concat)
+    }
+
+    // cara 2
+    // lambda operation
+    // nik is input
+    // concat is output
+    private val encryptNik = { nik: String? ->
+        val startNik = nik?.length?.minus(4)
+        val xNik = startNik?.let {
+            nik.length.minus(startNik).let { countRepeat -> "x".repeat(countRepeat) }
+        }
+        val concat = nik?.substring(0, nik.length - 4) + xNik
+        concat
+    }
+
+    // high order function
+    private fun nik(nik: String?, result: (String) -> String): String {
+        val newNik = nik?.let { result(it) }
+        return "$newNik"
     }
 
     private fun init() {
