@@ -31,8 +31,9 @@
             android:textColor="@color/colorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/arrow_down"
             app:layout_constraintStart_toEndOf="@id/arrow_down"
+            app:layout_constraintBottom_toBottomOf="@id/arrow_down"
             android:layout_marginStart="12dp"/>
 
         <ImageView
@@ -54,6 +55,7 @@
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="@id/arrow_up"
             app:layout_constraintStart_toEndOf="@id/arrow_up"
+            app:layout_constraintBottom_toBottomOf="@id/arrow_up"
             android:layout_marginStart="12dp"/>
 
         <androidx.appcompat.widget.AppCompatTextView
