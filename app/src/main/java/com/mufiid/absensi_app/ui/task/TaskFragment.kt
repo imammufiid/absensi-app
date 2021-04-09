@@ -88,6 +88,7 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         setViewModelTask()
         setRecyclerView()
         onEmployeeClickListener()
+        setVisibilityButtonAddTask()
 
         _bind.btnFilter.setOnClickListener(this)
         _bind.btnCheck.setOnClickListener(this)
@@ -117,6 +118,7 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
                 _bind.tvEmpty.text = getString(R.string.data_empty, "tugas")
             }
             taskAdapter.apply {
+                _bind.tvEmpty.visibility = View.GONE
                 addTask(it)
             }
         })
@@ -163,6 +165,12 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = taskAdapter
+        }
+    }
+
+    private fun setVisibilityButtonAddTask() {
+        if (context?.let { context -> UserPref.getUserData(context)?.isAdmin } == 1) {
+            _bind.btnAdd.visibility = View.VISIBLE
         }
     }
 
