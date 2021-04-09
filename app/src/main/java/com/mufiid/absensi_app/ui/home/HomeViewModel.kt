@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.mufiid.absensi_app.data.source.BaseRepository
 import com.mufiid.absensi_app.data.source.local.entity.AttendanceEntity
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
-updaimport com.mufiid.absensi_app.data.source.local.entity.UserEntity
+import com.mufiid.absensi_app.data.source.local.entity.UserEntity
 import com.mufiid.absensi_app.data.source.remote.response.StatusResponse
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
