@@ -25,6 +25,9 @@ data class TaskEntity(
 	@field:SerializedName("datetime")
 	val datetime: String? = null,
 
+	@field:SerializedName("file_point")
+	val filePoint: String? = null,
+
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,
 
