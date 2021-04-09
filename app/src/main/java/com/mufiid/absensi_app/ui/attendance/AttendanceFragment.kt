@@ -99,6 +99,8 @@ class AttendanceFragment : Fragment() {
             if (it.isNullOrEmpty()) {
                 _bind.tvEmpty.visibility = View.VISIBLE
                 _bind.tvEmpty.text = getString(R.string.data_empty, "absensi")
+            } else {
+                _bind.tvEmpty.visibility = View.GONE
             }
             attendanceAdapter.apply {
                 addAttendance(it)
