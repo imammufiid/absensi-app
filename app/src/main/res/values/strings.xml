@@ -47,4 +47,5 @@
     <string name="upload_file">Unggah File</string>
     <string name="send">Kirim</string>
     <string name="file_name">filename</string>
+    <string name="title_scanner">Scanner</string>
 </resources>
