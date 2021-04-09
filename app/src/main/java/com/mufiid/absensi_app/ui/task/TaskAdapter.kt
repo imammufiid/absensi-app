@@ -1,6 +1,7 @@
 package com.mufiid.absensi_app.ui.task
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mufiid.absensi_app.data.source.local.entity.TaskEntity
@@ -29,9 +30,11 @@ class TaskAdapter(private val check: CheckListTask) :
         fun bind(task: TaskEntity) {
             with(binding) {
                 descTask.text = task.task
-                if (task.isComplete == 1) {
+                if (task.isComplete == 1 && !task.file.isNullOrEmpty()) {
                     checkTask.isChecked = true
                     checkTask.isEnabled = false
+
+                    btnFile.visibility = View.VISIBLE
                 }
                 itemView.setOnClickListener {
                     check.showUploadFile(task)
