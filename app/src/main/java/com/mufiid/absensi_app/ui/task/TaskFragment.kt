@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -12,6 +13,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
@@ -291,6 +293,11 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         datePick?.show()
     }
 
+    private fun hideKeyBoard(v: View) {
+        val inputMethodManager = context?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(v.applicationWindowToken, 0)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_filter -> {
@@ -312,6 +319,7 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             R.id.btn_check -> {
                 val date = _bind.searchDate.text.toString()
                 setViewModelTask(date = date, idEmployee)
+                hideKeyBoard(v)
             }
             R.id.btn_clear -> {
                 _bind.btnFilter.visibility = View.VISIBLE
@@ -322,6 +330,8 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
                 if (context?.let { UserPref.getUserData(it) }?.isAdmin == 1) {
                     _bind.searchEmployee.visibility = View.GONE
                 }
+                setViewModelTask()
+                hideKeyBoard(v)
             }
             R.id.btn_add -> startActivity(Intent(context, AddTaskActivity::class.java))
             R.id.search_date -> showCalendar()
