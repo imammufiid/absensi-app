@@ -8,9 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.mufiid.absensi_app.R
 import com.mufiid.absensi_app.databinding.ActivityRegistrationBinding
 import com.mufiid.absensi_app.viewmodel.ViewModelFactory
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class RegistrationActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var _bind: ActivityRegistrationBinding
@@ -50,7 +48,7 @@ class RegistrationActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModel.userData.observe(this, {
             if (it != null) {
-                GlobalScope.launch {
+                CoroutineScope(Dispatchers.Main).launch {
                     delay(1000)
                     finish()
                 }

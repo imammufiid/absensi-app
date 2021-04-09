@@ -63,7 +63,7 @@ class RemoteDataSource {
         try {
             val data = ApiConfig.instance().registerUser(name, nik, email, password)
             when (data.meta?.code) {
-                200 -> result.value = ApiResponse.success(data.data)
+                201 -> result.value = ApiResponse.success(data.data, data.meta.message)
                 404 -> result.value = ApiResponse.empty(data.meta.message)
                 else -> result.value = ApiResponse.failed(data.meta?.message)
             }

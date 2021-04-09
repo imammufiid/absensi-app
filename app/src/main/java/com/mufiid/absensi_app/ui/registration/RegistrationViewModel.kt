@@ -28,7 +28,7 @@ class RegistrationViewModel(private val repo: BaseRepository) : ViewModel() {
         email: String?,
         password: String?
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
                 _loading.postValue(true)
                 val response = repo.registrationUser(name, nik, email, password)
