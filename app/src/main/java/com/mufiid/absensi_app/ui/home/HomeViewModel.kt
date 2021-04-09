@@ -36,8 +36,8 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
     private val _attendanceToday = MutableLiveData<AttendanceEntity?>()
     val attendanceToday: LiveData<AttendanceEntity?> = _attendanceToday
 
-    private val _pointData = MutableLiveData<UserEntity?>()
-    val pointData : LiveData<UserEntity?> = _pointData
+    private val _pointData = MutableLiveData<String?>()
+    val pointData : LiveData<String?> = _pointData
 
     fun setGreeting(name: String?) {
         this._text.value = name
@@ -97,7 +97,12 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
                 _loading.postValue(true)
                 val data = repo.markCompleteTask(header, idTask, userId, file)
                 when(data.value?.status) {
-                    StatusResponse.SUCCESS -> _msgGetTaskData.postValue(data.value?.message)
+                    StatusResponse.SUCCESS -> {
+                        _msgGetTaskData.postValue(data.value?.message)
+                        var point = _pointData.value?.toInt()
+                        point = data.value?.body?.filePoint?.toInt()?.let { filePoint -> point?.plus(filePoint) }
+                        _pointData.postValue(point.toString())
+                    }
                     StatusResponse.EMPTY -> _msgGetTaskData.postValue(data.value?.message)
                     else -> _msgGetTaskData.postValue(data.value?.message)
                 }
@@ -117,7 +122,9 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
             try {
                 val data = repo.getMyPoint("Bearer $token", userId)
                 when(data.value?.status) {
-                    StatusResponse.SUCCESS -> _pointData.postValue(data.value?.body)
+                    StatusResponse.SUCCESS -> {
+                        _pointData.postValue(data.value?.body?.point)
+                    }
                     StatusResponse.EMPTY -> _msgPoint.postValue(data.value?.message)
                     else -> _msgPoint.postValue(data.value?.message)
                 }

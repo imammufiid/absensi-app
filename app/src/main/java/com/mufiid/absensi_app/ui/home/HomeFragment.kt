@@ -262,7 +262,7 @@ class HomeFragment : Fragment() {
 
         homeViewModel.pointData.observe(viewLifecycleOwner, {
             if (it != null) {
-                _bind.score.text = it.point
+                _bind.score.text = it
             }
         })
     }
