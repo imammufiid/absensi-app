@@ -21,10 +21,6 @@ import com.mufiid.absensi_app.viewmodel.ViewModelFactory
 
 class ProfileFragment : Fragment(), View.OnClickListener {
 
-    companion object {
-        fun newInstance() = ProfileFragment()
-    }
-
     private lateinit var _bind: ProfileFragmentBinding
     private lateinit var viewModel: ProfileViewModel
     private var userEntity: UserEntity? = null
@@ -32,7 +28,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _bind = ProfileFragmentBinding.inflate(layoutInflater, container, false)
         val factory = ViewModelFactory.getInstance(requireActivity())
         viewModel = ViewModelProvider(this, factory).get(ProfileViewModel::class.java)
