@@ -48,4 +48,5 @@
     <string name="send">Kirim</string>
     <string name="file_name">filename</string>
     <string name="title_scanner">Scanner</string>
+    <string name="download_file"> <u>Lihat file tugas</u></string>
 </resources>
