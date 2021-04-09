@@ -120,9 +120,9 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
                 _bind.tvEmpty.text = getString(R.string.data_empty, "tugas")
             } else {
                 _bind.tvEmpty.visibility = View.GONE
-                taskAdapter.apply {
-                    addTask(it)
-                }
+            }
+            taskAdapter.apply {
+                addTask(it)
             }
         })
 
