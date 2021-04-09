@@ -40,6 +40,21 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="20dp"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_download_14"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/download_file"
+                android:textSize="10sp"
+                style="?android:attr/borderlessButtonStyle"
+                android:paddingEnd="10dp"
+                android:drawablePadding="4dp"
+                android:textAllCaps="false"/>
+
         </LinearLayout>
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/check_task"
