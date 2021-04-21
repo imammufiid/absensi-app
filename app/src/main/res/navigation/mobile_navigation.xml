@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.mufiid.absensi_app.ui.home.HomeFragment"
+        android:name="com.skripsi.absensi_app.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -19,25 +19,25 @@
 
     <fragment
         android:id="@+id/navigation_task"
-        android:name="com.mufiid.absensi_app.ui.task.TaskFragment"
+        android:name="com.skripsi.absensi_app.ui.task.TaskFragment"
         android:label="@string/title_task"
         tools:layout="@layout/fragment_task" />
 
     <fragment
         android:id="@+id/navigation_attendance"
-        android:name="com.mufiid.absensi_app.ui.attendance.AttendanceFragment"
+        android:name="com.skripsi.absensi_app.ui.attendance.AttendanceFragment"
         android:label="@string/title_attendance"
         tools:layout="@layout/fragment_attendance" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.mufiid.absensi_app.ui.profile.ProfileFragment"
+        android:name="com.skripsi.absensi_app.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_fragment" />
 
     <fragment
         android:id="@+id/navigation_scanner"
-        android:name="com.mufiid.absensi_app.ui.scanner.ScannerFragment"
+        android:name="com.skripsi.absensi_app.ui.scanner.ScannerFragment"
         android:label="@string/title_scanner"
         tools:layout="@layout/fragment_scanner" />
 </navigation>
