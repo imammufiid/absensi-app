@@ -2,11 +2,16 @@ package com.mufiid.absensi_app.ui.home
 
 import android.Manifest
 import android.app.Activity
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +35,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.net.URI
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -65,6 +71,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun init() {
+//        taskAdapter = TaskAdapter { item ->
+//            taskEntity = item
+//
+//            BottomSheetUploadFileTask().show(
+//                childFragmentManager,
+//                BottomSheetUploadFileTask.TAG
+//            )
+//        }
         taskAdapter = TaskAdapter(object : TaskAdapter.CheckListTask {
             override fun showUploadFile(item: TaskEntity?) {
                 taskEntity = item
@@ -74,7 +88,26 @@ class HomeFragment : Fragment() {
                     BottomSheetUploadFileTask.TAG
                 )
             }
+
+            override fun downloadFile(filePath: String?) {
+                val path = URI(filePath).path
+                val nameFile = path.substring(path.lastIndexOf("/") + 1)
+                val request = DownloadManager.Request(Uri.parse(filePath)).apply {
+                    setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                    setTitle("Donwload file tugas")
+                    setDescription("Deskripsi file tugas")
+                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS, "${System.currentTimeMillis()}_${nameFile}"
+                    )
+                }
+
+                val manager = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                manager.enqueue(request)
+            }
         })
+        // taskAdapter.notifyItemChanged(1)
+
         setRecyclerView()
         setViewModel()
 
@@ -219,6 +252,7 @@ class HomeFragment : Fragment() {
         })
 
         homeViewModel.loading.observe(viewLifecycleOwner, {
+            Log.d("LD_LOAD", it.toString())
             if (it) {
                 _bind.progressBar.visibility = View.VISIBLE
             } else {
@@ -227,20 +261,24 @@ class HomeFragment : Fragment() {
         })
 
         homeViewModel.msgGetTaskData.observe(viewLifecycleOwner, {
+            Log.d("LD_MSG_TASK", it.toString())
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
 
         homeViewModel.msgAttendanceToday.observe(viewLifecycleOwner, {
+            Log.d("LD_MSG_ATD", it.toString())
             if (it != null) {
                 Snackbar.make(_bind.root, it, Snackbar.LENGTH_SHORT).show()
             }
         })
 
         homeViewModel.msgPoint.observe(viewLifecycleOwner, {
+            Log.d("LD_MSG_POINT", it.toString())
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
 
         homeViewModel.taskData.observe(viewLifecycleOwner, {
+            Log.d("LD_TASK", it.toString())
             if (!it.isNullOrEmpty()) {
                 taskAdapter.apply {
                     addTask(it)
@@ -252,6 +290,7 @@ class HomeFragment : Fragment() {
         })
 
         homeViewModel.attendanceToday.observe(viewLifecycleOwner, {
+            Log.d("LD_ATD", it.toString())
             if (it != null) {
                 _bind.timeIn.text =
                     if (it.timeComes == "0") getString(R.string.time) else it.timeComes
@@ -261,6 +300,7 @@ class HomeFragment : Fragment() {
         })
 
         homeViewModel.pointData.observe(viewLifecycleOwner, {
+            Log.d("LD_POINT", it.toString())
             if (it != null) {
                 _bind.score.text = it
             }

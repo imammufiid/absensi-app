@@ -4,11 +4,15 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +23,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mufiid.absensi_app.R
@@ -33,6 +38,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,7 +46,10 @@ import kotlin.collections.ArrayList
 
 class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
     private lateinit var _bind: FragmentTaskBinding
-    private lateinit var taskViewModel: TaskViewModel
+//    private lateinit var taskViewModel: TaskViewModel
+    private val taskViewModel: TaskViewModel by viewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
     private lateinit var taskAdapter: TaskAdapter
     private var listEmployee: MutableList<String>? = ArrayList()
     private var listIdEmployee: MutableList<Int>? = ArrayList()
@@ -60,9 +69,9 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         savedInstanceState: Bundle?
     ): View {
         _bind = FragmentTaskBinding.inflate(layoutInflater, container, false)
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        taskViewModel =
-            ViewModelProvider(this, factory).get(TaskViewModel::class.java)
+//        val factory = ViewModelFactory.getInstance(requireActivity())
+//        taskViewModel =
+//            ViewModelProvider(this, factory).get(TaskViewModel::class.java)
 
         return _bind.root
     }
@@ -77,6 +86,14 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     }
 
     private fun init() {
+//        taskAdapter = TaskAdapter { item ->
+//            taskEntity = item
+//
+//            BottomSheetUploadFileTask().show(
+//                childFragmentManager,
+//                BottomSheetUploadFileTask.TAG
+//            )
+//        }
         taskAdapter = TaskAdapter(object : TaskAdapter.CheckListTask {
             override fun showUploadFile(item: TaskEntity?) {
                 taskEntity = item
@@ -85,6 +102,23 @@ class TaskFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
                     childFragmentManager,
                     BottomSheetUploadFileTask.TAG
                 )
+            }
+
+            override fun downloadFile(filePath: String?) {
+                val path = URI(filePath).path
+                val nameFile = path.substring(path.lastIndexOf("/") + 1)
+                val request = DownloadManager.Request(Uri.parse(filePath)).apply {
+                    setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                    setTitle("Donwload file tugas")
+                    setDescription("Deskripsi file tugas")
+                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    setDestinationInExternalPublicDir(
+                        Environment.DIRECTORY_DOWNLOADS, "${System.currentTimeMillis()}_${nameFile}"
+                    )
+                }
+
+                val manager = activity?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                manager.enqueue(request)
             }
         })
         setViewModelTask()

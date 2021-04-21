@@ -39,6 +39,10 @@ class TaskAdapter(private val check: CheckListTask) :
                 itemView.setOnClickListener {
                     check.showUploadFile(task)
                 }
+
+                btnFile.setOnClickListener {
+                    check.downloadFile(task.file)
+                }
             }
         }
     }
@@ -55,6 +59,7 @@ class TaskAdapter(private val check: CheckListTask) :
 
     interface CheckListTask {
         fun showUploadFile(item: TaskEntity?)
+        fun downloadFile(filePath: String?)
     }
 
 }
