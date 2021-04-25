@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.load.HttpException
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.skripsi.absensi_app.api.ApiConfig
+import com.skripsi.absensi_app.api.ApiConfiguration
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
 import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
 import com.skripsi.absensi_app.data.source.local.entity.UserEntity
@@ -13,14 +15,14 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.IOException
 
-class RemoteDataSource {
+class RemoteDataSource(private val api: ApiConfiguration) {
 
     companion object {
         @Volatile
         private var instance: RemoteDataSource? = null
-        fun getInstance(): RemoteDataSource =
+        fun getInstance(apiConfiguration: ApiConfiguration): RemoteDataSource =
             instance ?: synchronized(this) {
-                instance ?: RemoteDataSource()
+                instance ?: RemoteDataSource(apiConfiguration)
             }
     }
 
@@ -31,7 +33,7 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
 
         try {
-            val data = ApiConfig.instance().login(email, password)
+            val data = api.create().login(email, password)
             when (data.meta?.code) {
                 200 -> result.value = ApiResponse.success(data.data)
                 404 -> result.value = ApiResponse.empty(data.meta.message)
@@ -61,7 +63,7 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
 
         try {
-            val data = ApiConfig.instance().registerUser(name, nik, email, password)
+            val data = api.create().registerUser(name, nik, email, password)
             when (data.meta?.code) {
                 201 -> result.value = ApiResponse.success(data.data, data.meta.message)
                 404 -> result.value = ApiResponse.empty(data.meta.message)
@@ -87,7 +89,7 @@ class RemoteDataSource {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = ApiConfig.instance().logout(token)
+            val response = api.create().logout(token)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -113,7 +115,7 @@ class RemoteDataSource {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = ApiConfig.instance().getUser(token, userId)
+            val response = api.create().getUser(token, userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -140,7 +142,7 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<List<AttendanceEntity>>>()
 
         try {
-            val response = ApiConfig.instance().showAllAttendance(token, userId)
+            val response = api.create().showAllAttendance(token, userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -167,13 +169,17 @@ class RemoteDataSource {
     ): LiveData<ApiResponse<AttendanceEntity>> {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
         try {
-            val response = ApiConfig.instance().showAttendance(token, employeeId)
+            val response = api.create().showAttendance(token, employeeId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
                 else -> result.value = ApiResponse.failed(response.meta?.message)
             }
         } catch (throwable: Throwable) {
+            val crash = FirebaseCrashlytics.getInstance()
+            crash.log(throwable.localizedMessage)
+            throwable.message?.let { crash.log("Message:  $it") }
+            crash.recordException(throwable)
             when (throwable) {
                 is IOException -> result.value = ApiResponse.error("Network Error")
                 is HttpException -> {
@@ -197,7 +203,8 @@ class RemoteDataSource {
     ): LiveData<ApiResponse<AttendanceEntity>> {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
         try {
-            val response = ApiConfig.instance().attendanceScan(token, employeeId, qrCode, latitude, longitude)
+            val response =
+                api.create().attendanceScan(token, employeeId, qrCode, latitude, longitude)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -230,13 +237,14 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<List<TaskEntity>>>()
 
         try {
-            val response = ApiConfig.instance().showAllTask(token, userId, date, isAdmin)
+            val response = api.create().showAllTask(token, userId, date, isAdmin)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
                 else -> result.value = ApiResponse.failed(response.meta?.message)
             }
         } catch (throwable: Throwable) {
+            FirebaseCrashlytics.getInstance().recordException(throwable)
             when (throwable) {
                 is IOException -> result.value = ApiResponse.error("Network Error")
                 is HttpException -> {
@@ -257,7 +265,7 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<List<UserEntity>>>()
 
         try {
-            val response = ApiConfig.instance().getEmployee(token)
+            val response = api.create().getEmployee(token)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -286,7 +294,7 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<TaskEntity>>()
 
         try {
-            val response = ApiConfig.instance().insertTask(token, userId, descTask, isAdmin)
+            val response = api.create().insertTask(token, userId, descTask, isAdmin)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -315,7 +323,7 @@ class RemoteDataSource {
         val result = MutableLiveData<ApiResponse<TaskEntity>>()
 
         try {
-            val response = ApiConfig.instance().markComplete(header, idTask, userId, file)
+            val response = api.create().markComplete(header, idTask, userId, file)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -350,7 +358,8 @@ class RemoteDataSource {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = ApiConfig.instance().editProfile(header, imageProfile, userId, name, password)
+            val response =
+                api.create().editProfile(header, imageProfile, userId, name, password)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -380,7 +389,7 @@ class RemoteDataSource {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = ApiConfig.instance().getMyPoint(token, userId)
+            val response = api.create().getMyPoint(token, userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
