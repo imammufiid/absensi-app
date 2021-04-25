@@ -10,6 +10,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.UserEntity
 import com.skripsi.absensi_app.databinding.ProfileFragmentBinding
@@ -24,6 +28,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private lateinit var _bind: ProfileFragmentBinding
     private lateinit var viewModel: ProfileViewModel
     private var userEntity: UserEntity? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "779845214354",
+    "project_id": "absensiapp-cdb46",
+    "storage_bucket": "absensiapp-cdb46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779845214354:android:e7428f5cbd07826f92864b",
+        "android_client_info": {
+          "package_name": "com.skripsi.absensi_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779845214354-ag57405cih48c1i2r4hcurn78dukm2rm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh2qae8f0XEDiaBu0MlHzPP7bnl4GwAdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779845214354-ag57405cih48c1i2r4hcurn78dukm2rm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

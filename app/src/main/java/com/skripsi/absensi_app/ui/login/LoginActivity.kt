@@ -6,6 +6,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.databinding.ActivityLoginBinding
 import com.skripsi.absensi_app.ui.main.MainActivity
@@ -17,7 +21,6 @@ import com.skripsi.absensi_app.viewmodel.ViewModelFactory
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var _binding : ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityLoginBinding.inflate(layoutInflater)
