@@ -15,6 +15,11 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <!-- Card View Attendance Detail -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
