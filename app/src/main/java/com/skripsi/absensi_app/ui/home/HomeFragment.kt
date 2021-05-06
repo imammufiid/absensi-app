@@ -39,7 +39,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.net.URI
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -193,13 +192,10 @@ class HomeFragment : Fragment() {
         })
 
         homeViewModel.loading.observe(viewLifecycleOwner, {
-            Log.d("LD_LOAD", it.toString())
             if (it) {
-                // TODO : progressBar Visible
-                // _bind.progressBar.visibility = View.VISIBLE
+                 _bind.detailAttendance.progressBar.visibility = View.VISIBLE
             } else {
-                // TODO : progressBar Gone
-                // _bind.progressBar.visibility = View.GONE
+                 _bind.detailAttendance.progressBar.visibility = View.GONE
             }
         })
 
