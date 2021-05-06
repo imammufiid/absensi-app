@@ -70,16 +70,18 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
         employeeId: Int?
     ) {
         viewModelScope.launch {
+            _loading.postValue(true)
             try {
                 val response = repo.getAttendanceToday("Bearer $token", employeeId)
                 when (response.value?.status) {
                     StatusResponse.SUCCESS -> {
                         _attendanceToday.postValue(response.value?.body)
-                        // _msgAttendanceToday.postValue(response.value?.message)
                     }
                     else -> _msgAttendanceToday.postValue(response.value?.message)
                 }
+                _loading.postValue(false)
             } catch (throwable: Throwable) {
+                _loading.postValue(false)
                 _msgAttendanceToday.postValue(throwable.message)
             }
         }
