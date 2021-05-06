@@ -49,4 +49,13 @@
     <string name="file_name">filename</string>
     <string name="title_scanner">Scanner</string>
     <string name="download_file"> <u>Lihat file tugas</u></string>
+    <string name="main_menu">Menu Utama</string>
+    <string name="ijin">Ijin</string>
+    <string name="sick">Sakit</string>
+    <string name="list_attendance">Daftar Absen</string>
+    <string name="employee">Karyawan</string>
+    <string name="icon_image_employee">icon image employee</string>
+    <string name="icon_image_list_attendance">icon image list attendance</string>
+    <string name="icon_image_sick">icon image sick</string>
+    <string name="icon_image_ijin">icon image ijin</string>
 </resources>
