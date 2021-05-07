@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.skripsi.absensi_app.data.source.BaseRepository
 import com.skripsi.absensi_app.data.source.remote.response.StatusResponse
 import kotlinx.coroutines.launch
+import okhttp3.RequestBody
 
 class ScannerViewModel(private val repo: BaseRepository): ViewModel() {
 
@@ -17,16 +18,17 @@ class ScannerViewModel(private val repo: BaseRepository): ViewModel() {
     val message: LiveData<String?> = _message
 
     fun attendanceCome(
-        token: String,
-        idUser: Int?,
-        qrCode: String?,
-        latitude: String?,
-        longitude: String?,
+        token: HashMap<String, String>,
+        userId: RequestBody?,
+        qrCode: RequestBody?,
+        latitude: RequestBody?,
+        longitude: RequestBody?,
+        attendanceType: RequestBody?,
     ) {
         viewModelScope.launch {
             try {
                 _loading.postValue(true)
-                val data = repo.attendanceScan("Bearer $token", idUser, qrCode, latitude, longitude)
+                val data = repo.attendanceScan(token, userId, qrCode, latitude, longitude, attendanceType, null, null)
                 when(data.value?.status) {
                     StatusResponse.SUCCESS -> _message.postValue(data.value?.message)
                     StatusResponse.EMPTY -> _message.postValue(data.value?.message)

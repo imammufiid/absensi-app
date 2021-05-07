@@ -25,13 +25,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 
 class ScannerFragment : Fragment() {
 
-    private lateinit var _bind : FragmentScannerBinding
+    private lateinit var _bind: FragmentScannerBinding
     private lateinit var codeScanner: CodeScanner
     private lateinit var viewModel: ScannerViewModel
+
     // location
     private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
     private var latitude: String? = null
@@ -64,12 +67,7 @@ class ScannerFragment : Fragment() {
         }
         codeScanner.decodeCallback = DecodeCallback { result ->
             activity.runOnUiThread {
-                val userPref = context?.let { context -> UserPref.getUserData(context) }
-                userPref?.token?.let { token ->
-                    viewModel.attendanceCome(
-                        token, userPref.id, result.text, latitude, longitude
-                    )
-                }
+                attendance(result.text)
             }
         }
         _bind.scannerView.setOnClickListener {
@@ -139,6 +137,31 @@ class ScannerFragment : Fragment() {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun attendance(qrCode: String) {
+        val userPref = context?.let { context -> UserPref.getUserData(context) }
+        val headers = HashMap<String, String>()
+        headers["Authorization"] =
+            "Bearer ${context?.let { UserPref.getUserData(it)?.token }}"
+        val requestUserId =
+            userPref?.id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        val requestQrCode =
+            qrCode.toRequestBody("text/plain".toMediaTypeOrNull())
+        val requestLatitude =
+            latitude.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        val requestLongitude =
+            longitude.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        val requestAttendanceType =
+            ATTENDANCE_PRESENT.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        viewModel.attendanceCome(
+            headers,
+            requestUserId,
+            requestQrCode,
+            requestLatitude,
+            requestLongitude,
+            requestAttendanceType
+        )
+    }
+
     override fun onResume() {
         super.onResume()
         codeScanner.startPreview()
@@ -150,8 +173,11 @@ class ScannerFragment : Fragment() {
     }
 
     companion object {
+        const val ATTENDANCE_PRESENT = 1
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) {}
+        fun newInstance(param1: String, param2: String) {
+        }
 //            ScannerFragment().apply {
 //                arguments = Bundle().apply {
 //
