@@ -1,4 +1,4 @@
-package com.skripsi.absensi_app.ui.sickAttendance
+package com.skripsi.absensi_app.ui.ijinattendance
 
 import android.content.Context
 import android.os.Bundle
@@ -7,29 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.skripsi.absensi_app.R
+import com.skripsi.absensi_app.databinding.FragmentBottomSheetIjinAttendanceBinding
 import com.skripsi.absensi_app.databinding.FragmentBottomSheetSickAttendanceBinding
 import com.skripsi.absensi_app.ui.home.HomeFragment
 
-class BottomSheetSickAttendance : BottomSheetDialogFragment(), View.OnClickListener {
-    private lateinit var _bind : FragmentBottomSheetSickAttendanceBinding
+class BottomSheetIjinAttendance : BottomSheetDialogFragment(), View.OnClickListener {
+    private lateinit var _bind : FragmentBottomSheetIjinAttendanceBinding
     private var buttonListener: ButtonListener? = null
 
     companion object {
-        const val TAG = "bottom_sheet_sick_menu"
+        const val TAG = "bottom_sheet_ijin_menu"
         const val FILENAME = "filename"
-        const val PICK_FILE = 1000
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _bind = FragmentBottomSheetSickAttendanceBinding.inflate(layoutInflater, container, false)
+        _bind = FragmentBottomSheetIjinAttendanceBinding.inflate(layoutInflater, container, false)
         return _bind.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _bind.btnUploadFile.setOnClickListener(this)
         _bind.btnSave.setOnClickListener(this)
     }
 
@@ -51,10 +50,6 @@ class BottomSheetSickAttendance : BottomSheetDialogFragment(), View.OnClickListe
 
     override fun onClick(v: View?) {
         when(v?.id) {
-            R.id.btn_upload_file -> {
-                if (buttonListener != null) buttonListener?.pickFile()
-                dialog?.dismiss()
-            }
             R.id.btn_save -> {
                 val information = _bind.descInformation.text.toString()
                 if (buttonListener != null) buttonListener?.send(information)
@@ -67,7 +62,7 @@ class BottomSheetSickAttendance : BottomSheetDialogFragment(), View.OnClickListe
         super.onAttach(context)
         val fragment = parentFragment
         if (fragment is HomeFragment) {
-            this.buttonListener = fragment.buttonListener
+            this.buttonListener = fragment.buttonListenerIjinAttendance
         }
     }
 
@@ -77,7 +72,6 @@ class BottomSheetSickAttendance : BottomSheetDialogFragment(), View.OnClickListe
     }
 
     interface ButtonListener {
-        fun pickFile()
         fun send(information: String?)
     }
 }
