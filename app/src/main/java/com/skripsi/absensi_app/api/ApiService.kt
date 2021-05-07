@@ -66,14 +66,17 @@ interface ApiService {
 
     // ATTENDANCE COME
     // SHOW ATTENDANCE
-    @FormUrlEncoded
+    @Multipart
     @POST("attendance/scan")
     suspend fun attendanceScan(
-        @Header("Authorization") token: String?,
-        @Field("id_employee") idUser: Int?,
-        @Field("qr_code") qrCode: String?,
-        @Field("latitude") latitude: String?,
-        @Field("longitude") longitude: String?,
+        @HeaderMap token: Map<String, String>?,
+        @Part("id_employee") idUser: RequestBody?,
+        @Part("qr_code") qrCode: RequestBody?,
+        @Part("latitude") latitude: RequestBody?,
+        @Part("longitude") longitude: RequestBody?,
+        @Part("attendance_type") attendanceType: RequestBody?,
+        @Part("information") information: RequestBody? = null,
+        @Part fileInformation: MultipartBody.Part? = null,
     ): WrappedResponse<AttendanceEntity>
 
     // SHOW ALL ATTENDANCE
@@ -83,48 +86,10 @@ interface ApiService {
         @Query("user_id") idUser: Int?
     ): WrappedListResponse<AttendanceEntity>
 
-    // TASK ---------------------------------------------------
-    // SHOW ALL TASK
-    @GET("task")
-    suspend fun showAllTask(
-        @Header("Authorization") token: String?,
-        @Query("user_id") idUser: Int?,
-        @Query("date") date: String?,
-        @Query("is_admin") isAdmin: Int?
-    ): WrappedListResponse<TaskEntity>
-
-    // INSERT ALL TASK
-    @FormUrlEncoded
-    @POST("task/store")
-    suspend fun insertTask(
-        @Header("Authorization") token: String?,
-        @Field("user_id") idUser: Int?,
-        @Field("task") descTask: String?,
-        @Field("is_admin") isAdmin: Int?
-    ): WrappedResponse<TaskEntity>
-
-    // MARK COMPLETE TASK
-    @Multipart
-    @POST("task/mark")
-    suspend fun markComplete(
-        @HeaderMap token: Map<String, String>?,
-        @Part("id_task") idTask: RequestBody?,
-        @Part("user_id") userId: RequestBody?,
-        @Part file: MultipartBody.Part?
-    ): WrappedResponse<TaskEntity>
-
     // EMPLOYEE ---------------------------------------------------
     // SHOW ALL EMPLOYEE
     @GET("employee")
     suspend fun getEmployee(
         @Header("Authorization") token: String?,
     ): WrappedListResponse<UserEntity>
-
-    // EMPLOYEE ---------------------------------------------------
-    // GET USER
-    @GET("score")
-    suspend fun getMyPoint(
-        @Header("Authorization") token: String?,
-        @Query("user_id") userId: Int? = null
-    ): WrappedResponse<UserEntity>
 }
