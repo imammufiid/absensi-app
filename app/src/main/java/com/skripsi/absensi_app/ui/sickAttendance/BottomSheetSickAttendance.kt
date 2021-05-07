@@ -18,6 +18,7 @@ class BottomSheetSickAttendance : BottomSheetDialogFragment(), View.OnClickListe
         const val TAG = "bottom_sheet_sick_menu"
         const val FILENAME = "filename"
         const val PICK_FILE = 1000
+        const val ATTENDANCE_TYPE = 3
     }
 
     override fun onCreateView(

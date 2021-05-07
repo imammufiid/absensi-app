@@ -18,6 +18,7 @@ class BottomSheetIjinAttendance : BottomSheetDialogFragment(), View.OnClickListe
     companion object {
         const val TAG = "bottom_sheet_ijin_menu"
         const val FILENAME = "filename"
+        const val ATTENDANCE_TYPE = 2
     }
 
     override fun onCreateView(
