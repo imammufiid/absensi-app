@@ -1,4 +1,4 @@
-package com.skripsi.absensi_app.ui.bsuploadfile
+package com.skripsi.absensi_app.ui.sickAttendance
 
 import android.content.Context
 import android.os.Bundle
@@ -6,39 +6,29 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.lifecycle.ViewModelProvider
 import com.skripsi.absensi_app.R
-import com.skripsi.absensi_app.databinding.FragmentBottomSheetUploadFileTaskBinding
+import com.skripsi.absensi_app.databinding.FragmentBottomSheetSickAttendanceBinding
 import com.skripsi.absensi_app.ui.home.HomeFragment
-import com.skripsi.absensi_app.ui.task.TaskFragment
-import com.skripsi.absensi_app.ui.task.TaskViewModel
-import com.skripsi.absensi_app.viewmodel.ViewModelFactory
 
-class BottomSheetUploadFileTask : BottomSheetDialogFragment(), View.OnClickListener {
-    private lateinit var _bind : FragmentBottomSheetUploadFileTaskBinding
-    private lateinit var viewModel: TaskViewModel
-    private var buttonPickFile : Button? = null
-    private var buttonSend : Button? = null
+class BottomSheetSickAttendance : BottomSheetDialogFragment(), View.OnClickListener {
+    private lateinit var _bind : FragmentBottomSheetSickAttendanceBinding
     private var buttonListener: ButtonListener? = null
 
     companion object {
         const val TAG = "bottom_sheet_upload_file"
         const val FILENAME = "filename"
+        const val PICK_FILE = 1000
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _bind = FragmentBottomSheetUploadFileTaskBinding.inflate(layoutInflater, container, false)
+        _bind = FragmentBottomSheetSickAttendanceBinding.inflate(layoutInflater, container, false)
         return _bind.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        viewModel = ViewModelProvider(requireActivity(), factory)[TaskViewModel::class.java]
-
         _bind.btnUploadFile.setOnClickListener(this)
         _bind.btnSave.setOnClickListener(this)
     }
@@ -75,9 +65,7 @@ class BottomSheetUploadFileTask : BottomSheetDialogFragment(), View.OnClickListe
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val fragment = parentFragment
-        if (fragment is TaskFragment) {
-            this.buttonListener = fragment.buttonListener
-        } else if (fragment is HomeFragment) {
+        if (fragment is HomeFragment) {
             this.buttonListener = fragment.buttonListener
         }
     }
