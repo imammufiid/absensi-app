@@ -1,6 +1,7 @@
 package com.skripsi.absensi_app.ui.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,12 +16,15 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
 import com.skripsi.absensi_app.databinding.FragmentHomeBinding
 import com.skripsi.absensi_app.ui.ijinattendance.BottomSheetIjinAttendance
 import com.skripsi.absensi_app.ui.sickAttendance.BottomSheetSickAttendance
+import com.skripsi.absensi_app.utils.helper.FusedLocation
 import com.skripsi.absensi_app.utils.pref.UserPref
 import com.skripsi.absensi_app.viewmodel.ViewModelFactory
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -37,6 +41,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private var filePath: String? = null
     private var taskEntity: TaskEntity? = null
     private var part: MultipartBody.Part? = null
+
+    // location
+    private var mFusedLocationProviderClient: FusedLocationProviderClient? = null
+    private var latitude: String? = null
+    private var longitude: String? = null
 
     private val homeViewModel: HomeViewModel by viewModels {
         ViewModelFactory.getInstance(requireActivity())
@@ -66,6 +75,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
         _bind.mainMenu.menuSick.setOnClickListener(this)
         _bind.mainMenu.menuIjin.setOnClickListener(this)
         _bind.mainMenu.menuListAttendance.setOnClickListener(this)
+
+        // fused location
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+        getCurrentLocation()
     }
 
     private fun setViewModel() {
@@ -93,9 +106,21 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         UserPref.getUserData(context)?.id.toString()
                             .toRequestBody("text/plain".toMediaTypeOrNull())
                     }
+                val requestLatitude = latitude?.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestLongitude = longitude?.toRequestBody("text/plain".toMediaTypeOrNull())
                 val requestInfo = information?.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestAttendanceType = BottomSheetIjinAttendance.ATTENDANCE_TYPE.toString()
+                    .toRequestBody("text/plain".toMediaTypeOrNull())
 
-                Toast.makeText(context, information, Toast.LENGTH_SHORT).show()
+                homeViewModel.attendanceCome(
+                    headers,
+                    requestUserId,
+                    null,
+                    requestLatitude,
+                    requestLongitude,
+                    requestAttendanceType,
+                    requestInfo
+                )
             }
         }
 
@@ -109,19 +134,36 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 val headers = HashMap<String, String>()
                 headers["Authorization"] =
                     "Bearer ${context?.let { context -> UserPref.getUserData(context)?.token }}"
-                val userId =
+                val requestUserId =
                     context?.let { context ->
                         UserPref.getUserData(context)?.id.toString()
                             .toRequestBody("text/plain".toMediaTypeOrNull())
                     }
-                val information = information?.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestLatitude = latitude?.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestLongitude = longitude?.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestInfo = information?.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestAttendanceType = BottomSheetSickAttendance.ATTENDANCE_TYPE.toString()
+                    .toRequestBody("text/plain".toMediaTypeOrNull())
 
                 if (filePath != null) {
                     val file = File(filePath)
                     val reqFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                     part = MultipartBody.Part.createFormData("file_information", file.name, reqFile)
+                } else {
+                    Toast.makeText(context, "Please upload your file/photo", Toast.LENGTH_SHORT).show()
+                    return
                 }
-                Toast.makeText(context, "Send", Toast.LENGTH_SHORT).show()
+
+                homeViewModel.attendanceCome(
+                    headers,
+                    requestUserId,
+                    null,
+                    requestLatitude,
+                    requestLongitude,
+                    requestAttendanceType,
+                    requestInfo,
+                    part
+                )
             }
         }
 
@@ -180,6 +222,42 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    private fun getCurrentLocation() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (context?.let { context ->
+                    ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                } != PackageManager.PERMISSION_GRANTED
+            ) {
+                activity?.let { activity ->
+                    ActivityCompat.requestPermissions(
+                        activity,
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ),
+                        1
+                    )
+                }
+            } else {
+                requestLocationUpdate()
+            }
+        } else {
+            requestLocationUpdate()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestLocationUpdate() {
+        mFusedLocationProviderClient?.lastLocation?.addOnSuccessListener { location ->
+            if (location != null) {
+                latitude = location.latitude.toString()
+                longitude = location.longitude.toString()
+            }
+        }
+    }
+
     private fun getDateTimeToday() {
         var date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val current = LocalDateTime.now()
@@ -200,13 +278,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         homeViewModel.loading.observe(viewLifecycleOwner, {
             if (it) {
-                 _bind.detailAttendance.progressBar.visibility = View.VISIBLE
+                _bind.detailAttendance.progressBar.visibility = View.VISIBLE
             } else {
-                 _bind.detailAttendance.progressBar.visibility = View.GONE
+                _bind.detailAttendance.progressBar.visibility = View.GONE
             }
         })
 
-        homeViewModel.msgGetTaskData.observe(viewLifecycleOwner, {
+        homeViewModel.msgAttendance.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
 
@@ -214,10 +292,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
             if (it != null) {
                 Snackbar.make(_bind.root, it, Snackbar.LENGTH_SHORT).show()
             }
-        })
-
-        homeViewModel.msgPoint.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
 
         homeViewModel.attendanceToday.observe(viewLifecycleOwner, {
@@ -228,6 +302,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
             }
         })
+
+    }
+
+    private fun getLatLong() {
+        val fusedLocation = FusedLocation(context, activity).build()
 
     }
 
