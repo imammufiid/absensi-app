@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
@@ -30,7 +31,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var _bind: FragmentHomeBinding
     private var filePath: String? = null
     private var taskEntity: TaskEntity? = null
@@ -60,6 +61,10 @@ class HomeFragment : Fragment() {
 
     private fun init() {
         setViewModel()
+
+        _bind.mainMenu.menuSick.setOnClickListener(this)
+        _bind.mainMenu.menuIjin.setOnClickListener(this)
+        _bind.mainMenu.menuListAttendance.setOnClickListener(this)
     }
 
     private fun setViewModel() {
@@ -206,5 +211,25 @@ class HomeFragment : Fragment() {
             }
         })
 
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.menu_ijin -> {
+                BottomSheetIjinAttendance().show(
+                    childFragmentManager,
+                    BottomSheetIjinAttendance.TAG
+                )
+            }
+            R.id.menu_sick -> {
+                BottomSheetSickAttendance().show(
+                    childFragmentManager,
+                    BottomSheetSickAttendance.TAG
+                )
+            }
+            R.id.menu_list_attendance -> {
+                findNavController().navigate(R.id.navigation_attendance)
+            }
+        }
     }
 }
