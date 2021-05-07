@@ -2,16 +2,11 @@ package com.skripsi.absensi_app.ui.home
 
 import android.Manifest
 import android.app.Activity
-import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,19 +14,11 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
 import com.skripsi.absensi_app.databinding.FragmentHomeBinding
 import com.skripsi.absensi_app.ui.bsuploadfile.BottomSheetUploadFileTask
-import com.skripsi.absensi_app.ui.task.TaskAdapter
-import com.skripsi.absensi_app.ui.task.TaskFragment
 import com.skripsi.absensi_app.utils.pref.UserPref
 import com.skripsi.absensi_app.viewmodel.ViewModelFactory
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -113,15 +100,12 @@ class HomeFragment : Fragment() {
                     part = MultipartBody.Part.createFormData("file", file.name, reqFile)
                 }
 
-                homeViewModel.markCompleteTask(
-                    headers, taskId, userId, part
-                )
             }
         }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == TaskFragment.FILE_PICK_CODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == 1000) {
             val uri = data?.data
             val filePath = arrayOf(MediaStore.Images.Media.DATA)
             val cursor =
@@ -147,7 +131,7 @@ class HomeFragment : Fragment() {
     private fun pickFile() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "*/*"
-        startActivityForResult(intent, TaskFragment.FILE_PICK_CODE)
+        startActivityForResult(intent, 1000)
     }
 
     private fun openFile() {

@@ -42,29 +42,6 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
         this._text.value = name
     }
 
-    fun getTaskData(
-        token: String,
-        userId: Int?,
-        date: String?,
-        isAdmin: Int?
-    ) {
-        viewModelScope.launch {
-            try {
-                _loading.postValue(true)
-                val data = repo.getAllTaskData("Bearer $token", userId, date, isAdmin)
-                when(data.value?.status) {
-                    StatusResponse.SUCCESS -> _taskData.postValue(data.value?.body)
-                    StatusResponse.EMPTY -> _msgGetTaskData.postValue(data.value?.message)
-                    else -> _msgGetTaskData.postValue(data.value?.message)
-                }
-                _loading.postValue(false)
-            } catch (throwable: Throwable) {
-                _msgGetTaskData.postValue(throwable.message)
-                _loading.postValue(false)
-            }
-        }
-    }
-
     fun attendanceToday(
         token: String?,
         employeeId: Int?
@@ -87,51 +64,4 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
         }
     }
 
-    fun markCompleteTask(
-        header: HashMap<String, String>,
-        idTask: RequestBody?,
-        userId: RequestBody?,
-        file: MultipartBody.Part?
-    ) {
-        viewModelScope.launch {
-            try {
-                _loading.postValue(true)
-                val data = repo.markCompleteTask(header, idTask, userId, file)
-                when(data.value?.status) {
-                    StatusResponse.SUCCESS -> {
-                        _msgGetTaskData.postValue(data.value?.message)
-                        var point = _pointData.value?.toInt()
-                        point = data.value?.body?.filePoint?.toInt()?.let { filePoint -> point?.plus(filePoint) }
-                        _pointData.postValue(point.toString())
-                    }
-                    StatusResponse.EMPTY -> _msgGetTaskData.postValue(data.value?.message)
-                    else -> _msgGetTaskData.postValue(data.value?.message)
-                }
-                _loading.postValue(false)
-            } catch (throwable: Throwable) {
-                _msgGetTaskData.postValue(throwable.message)
-                _loading.postValue(false)
-            }
-        }
-    }
-
-    fun getMyPoint(
-        token: String,
-        userId: Int?
-    ) {
-        viewModelScope.launch {
-            try {
-                val data = repo.getMyPoint("Bearer $token", userId)
-                when(data.value?.status) {
-                    StatusResponse.SUCCESS -> {
-                        _pointData.postValue(data.value?.body?.point)
-                    }
-                    StatusResponse.EMPTY -> _msgPoint.postValue(data.value?.message)
-                    else -> _msgPoint.postValue(data.value?.message)
-                }
-            } catch (throwable: Throwable) {
-                _msgPoint.postValue(throwable.message)
-            }
-        }
-    }
 }

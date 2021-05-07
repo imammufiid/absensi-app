@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.skripsi.absensi_app.data.source.BaseRepository
 import com.skripsi.absensi_app.di.Injection
-import com.skripsi.absensi_app.ui.addtask.AddTaskViewModel
 import com.skripsi.absensi_app.ui.attendance.AttendanceViewModel
 import com.skripsi.absensi_app.ui.home.HomeViewModel
 import com.skripsi.absensi_app.ui.login.LoginViewModel
@@ -13,7 +12,6 @@ import com.skripsi.absensi_app.ui.profile.ProfileViewModel
 import com.skripsi.absensi_app.ui.profileedit.EditProfileViewModel
 import com.skripsi.absensi_app.ui.registration.RegistrationViewModel
 import com.skripsi.absensi_app.ui.scanner.ScannerViewModel
-import com.skripsi.absensi_app.ui.task.TaskViewModel
 
 class ViewModelFactory private constructor(private val repo: BaseRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -30,13 +28,11 @@ class ViewModelFactory private constructor(private val repo: BaseRepository) :
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> HomeViewModel(repo) as T
-            modelClass.isAssignableFrom(AddTaskViewModel::class.java) -> AddTaskViewModel(repo) as T
             modelClass.isAssignableFrom(AttendanceViewModel::class.java) -> AttendanceViewModel(repo) as T
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> LoginViewModel(repo) as T
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(repo) as T
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> EditProfileViewModel(repo) as T
             modelClass.isAssignableFrom(RegistrationViewModel::class.java) -> RegistrationViewModel(repo) as T
-            modelClass.isAssignableFrom(TaskViewModel::class.java) -> TaskViewModel(repo) as T
             modelClass.isAssignableFrom(ScannerViewModel::class.java) -> ScannerViewModel(repo) as T
             else -> throw Throwable("Unknown ViewModel Class: ${modelClass.name}")
         }
