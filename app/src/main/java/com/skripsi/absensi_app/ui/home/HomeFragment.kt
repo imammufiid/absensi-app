@@ -19,7 +19,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
 import com.skripsi.absensi_app.databinding.FragmentHomeBinding
-import com.skripsi.absensi_app.ui.bsuploadfile.BottomSheetUploadFileTask
+import com.skripsi.absensi_app.ui.ijinattendance.BottomSheetIjinAttendance
+import com.skripsi.absensi_app.ui.sickAttendance.BottomSheetSickAttendance
 import com.skripsi.absensi_app.utils.pref.UserPref
 import com.skripsi.absensi_app.viewmodel.ViewModelFactory
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -81,36 +82,52 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    internal var buttonListener: BottomSheetUploadFileTask.ButtonListener =
-        object : BottomSheetUploadFileTask.ButtonListener {
+    internal var buttonListenerIjinAttendance: BottomSheetIjinAttendance.ButtonListener =
+        object : BottomSheetIjinAttendance.ButtonListener {
+            override fun send(information: String?) {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] =
+                    "Bearer ${context?.let { context -> UserPref.getUserData(context)?.token }}"
+                val requestUserId =
+                    context?.let { context ->
+                        UserPref.getUserData(context)?.id.toString()
+                            .toRequestBody("text/plain".toMediaTypeOrNull())
+                    }
+                val requestInfo = information?.toRequestBody("text/plain".toMediaTypeOrNull())
+
+                Toast.makeText(context, information, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    internal var buttonListener: BottomSheetSickAttendance.ButtonListener =
+        object : BottomSheetSickAttendance.ButtonListener {
             override fun pickFile() {
                 openFile()
             }
 
-            override fun send() {
+            override fun send(information: String?) {
                 val headers = HashMap<String, String>()
                 headers["Authorization"] =
                     "Bearer ${context?.let { context -> UserPref.getUserData(context)?.token }}"
-                val taskId =
-                    taskEntity?.id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
                 val userId =
                     context?.let { context ->
                         UserPref.getUserData(context)?.id.toString()
                             .toRequestBody("text/plain".toMediaTypeOrNull())
                     }
+                val information = information?.toRequestBody("text/plain".toMediaTypeOrNull())
 
                 if (filePath != null) {
                     val file = File(filePath)
-                    val reqFile = file.asRequestBody("*/*".toMediaTypeOrNull())
-                    part = MultipartBody.Part.createFormData("file", file.name, reqFile)
+                    val reqFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+                    part = MultipartBody.Part.createFormData("file_information", file.name, reqFile)
                 }
-
+                Toast.makeText(context, "Send", Toast.LENGTH_SHORT).show()
             }
         }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == 1000) {
+        if (resultCode == Activity.RESULT_OK && requestCode == BottomSheetSickAttendance.PICK_FILE) {
             val uri = data?.data
             val filePath = arrayOf(MediaStore.Images.Media.DATA)
             val cursor =
@@ -119,24 +136,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
             val columnIndex = cursor?.getColumnIndex(filePath[0])
             val picturePath = columnIndex?.let { columnIndex -> cursor.getString(columnIndex) }
             cursor?.close()
-            this.filePath = picturePath.toString()
+
+            this.filePath = picturePath
             val splitFileName = this.filePath?.split("/")
             val bundle = Bundle().apply {
-                putString(BottomSheetUploadFileTask.FILENAME, splitFileName?.last())
+                putString(BottomSheetSickAttendance.FILENAME, splitFileName?.last())
             }
-            BottomSheetUploadFileTask().apply {
+            BottomSheetSickAttendance().apply {
                 arguments = bundle
             }.show(
                 childFragmentManager,
-                BottomSheetUploadFileTask.TAG
+                BottomSheetSickAttendance.TAG
             )
         }
     }
 
     private fun pickFile() {
         val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "*/*"
-        startActivityForResult(intent, 1000)
+        intent.type = "image/*"
+        startActivityForResult(intent, BottomSheetSickAttendance.PICK_FILE)
     }
 
     private fun openFile() {
