@@ -22,6 +22,12 @@ data class AttendanceEntity(
 	@field:SerializedName("time_gohome")
 	val timeGohome: String? = null,
 
+	@field:SerializedName("attendance_type")
+	val attendanceType: String? = null,
+
+	@field:SerializedName("is_validate")
+	val isValidate: String? = null,
+
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,
 
