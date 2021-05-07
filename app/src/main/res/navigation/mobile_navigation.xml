@@ -23,4 +23,10 @@
         android:name="com.skripsi.absensi_app.ui.scanner.ScannerFragment"
         android:label="@string/title_scanner"
         tools:layout="@layout/fragment_scanner" />
+
+    <fragment
+        android:id="@+id/navigation_attendance"
+        android:name="com.skripsi.absensi_app.ui.attendance.AttendanceFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_attendance" />
 </navigation>
