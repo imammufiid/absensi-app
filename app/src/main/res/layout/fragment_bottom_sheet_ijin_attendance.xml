@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipToPadding="false"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="16dp">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="100dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorSecondary"/>
+
+    <TextView
+        android:id="@+id/title_upload_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="@string/ijin_menu"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/colorTextPrimary"/>
+
+    <!-- Filter Date -->
+    <EditText
+        android:id="@+id/desc_information"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/bg_search_view"
+        android:gravity="top"
+        android:ems="10"
+        android:hint="@string/input_desc_information"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="12dp"/>
+
+    <TextView
+        android:id="@+id/file_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/file_name"
+        android:visibility="invisible"
+        android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/send"
+        android:textAllCaps="false"
+        android:textColor="@color/colorGreyLight"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_btn_rounded"/>
+</LinearLayout>
