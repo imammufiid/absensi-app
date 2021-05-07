@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.databinding.FragmentAttendanceBinding
@@ -47,6 +48,8 @@ class AttendanceFragment : Fragment() {
         setViewModelAttendance()
         setRecyclerView()
         setEmployeeFilter()
+
+        _bind.btnBack.setOnClickListener { findNavController().navigateUp() }
     }
 
     private fun setEmployeeFilter() {
