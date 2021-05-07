@@ -20,7 +20,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.skripsi.absensi_app.R
-import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
 import com.skripsi.absensi_app.databinding.FragmentHomeBinding
 import com.skripsi.absensi_app.ui.ijinattendance.BottomSheetIjinAttendance
 import com.skripsi.absensi_app.ui.sickAttendance.BottomSheetSickAttendance
@@ -39,7 +38,6 @@ import java.util.*
 class HomeFragment : Fragment(), View.OnClickListener {
     private lateinit var _bind: FragmentHomeBinding
     private var filePath: String? = null
-    private var taskEntity: TaskEntity? = null
     private var part: MultipartBody.Part? = null
 
     // location
@@ -75,6 +73,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         _bind.mainMenu.menuSick.setOnClickListener(this)
         _bind.mainMenu.menuIjin.setOnClickListener(this)
         _bind.mainMenu.menuListAttendance.setOnClickListener(this)
+        _bind.detailAttendance.information.text = getString(R.string.information, "-")
 
         // fused location
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
@@ -284,29 +283,36 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
         })
 
-        homeViewModel.msgAttendance.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
-
         homeViewModel.msgAttendanceToday.observe(viewLifecycleOwner, {
             if (it != null) {
-                Snackbar.make(_bind.root, it, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             }
         })
 
         homeViewModel.attendanceToday.observe(viewLifecycleOwner, {
             if (it != null) {
+                _bind.detailAttendance.information.text = when (it.attendanceType?.toInt()) {
+                    BottomSheetIjinAttendance.ATTENDANCE_TYPE -> getString(R.string.information, "Ijin")
+                    BottomSheetSickAttendance.ATTENDANCE_TYPE -> getString(R.string.information, "Sakit")
+                    else -> getString(R.string.information, "Masuk")
+                }
+                when (it.isValidate?.toInt()) {
+                    1 -> {
+                        _bind.detailAttendance.isValidation.text = getString(R.string.validation)
+                        _bind.detailAttendance.isValidation.setBackgroundResource(R.drawable.bg_text_validation)
+                    }
+                    0 -> {
+                        _bind.detailAttendance.isValidation.text = getString(R.string.not_validation)
+                        _bind.detailAttendance.isValidation.setBackgroundResource(R.drawable.bg_text_not_validation)
+                    }
+                }
+
                 _bind.detailAttendance.timeIn.text =
                     if (it.timeComes == "0") getString(R.string.time) else it.timeComes
                 _bind.detailAttendance.timeOut.text =
                     if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
             }
         })
-
-    }
-
-    private fun getLatLong() {
-        val fusedLocation = FusedLocation(context, activity).build()
 
     }
 

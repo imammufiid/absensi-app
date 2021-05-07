@@ -16,9 +16,6 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
     private val _text = MutableLiveData<String>()
     val greeting: LiveData<String> = _text
 
-    private val _msgAttendance = MutableLiveData<String?>()
-    val msgAttendance: LiveData<String?> = _msgAttendance
-
     private val _msgAttendanceToday = MutableLiveData<String?>()
     val msgAttendanceToday: LiveData<String?> = _msgAttendanceToday
 
@@ -71,15 +68,15 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
                 val data = repo.attendanceScan(token, userId, qrCode, latitude, longitude, attendanceType, information, fileInformation)
                 when(data.value?.status) {
                     StatusResponse.SUCCESS -> {
-                        _msgAttendance.postValue(data.value?.message)
                         _attendanceToday.postValue(data.value?.body)
+                        _msgAttendanceToday.postValue(data.value?.message)
                     }
-                    StatusResponse.EMPTY -> _msgAttendance.postValue(data.value?.message)
-                    else -> _msgAttendance.postValue(data.value?.message)
+                    StatusResponse.EMPTY -> _msgAttendanceToday.postValue(data.value?.message)
+                    else -> _msgAttendanceToday.postValue(data.value?.message)
                 }
                 _loading.postValue(false)
             } catch (throwable: Throwable) {
-                _msgAttendance.postValue(throwable.message)
+                _msgAttendanceToday.postValue(throwable.message)
                 _loading.postValue(false)
             }
         }
