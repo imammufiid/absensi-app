@@ -62,4 +62,8 @@
     <string name="icon_image_attendance_out">icon image attendance out</string>
     <string name="upload_file">Unggah Berkas</string>
     <string name="ijin_menu">Menu Ijin</string>
+    <string name="information">Keterangan : %s</string>
+    <string name="is_validation">validasi</string>
+    <string name="validation">Sudah Divalidasi</string>
+    <string name="not_validation">Belum Divalidasi</string>
 </resources>
