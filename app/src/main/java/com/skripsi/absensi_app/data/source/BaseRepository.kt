@@ -33,13 +33,16 @@ class BaseRepository private constructor(
     }
 
     override suspend fun attendanceScan(
-        token: String,
-        userId: Int?,
-        qrCode: String?,
-        latitude: String?,
-        longitude: String?,
+        token: HashMap<String, String>,
+        userId: RequestBody?,
+        qrCode: RequestBody?,
+        latitude: RequestBody?,
+        longitude: RequestBody?,
+        attendanceType: RequestBody?,
+        information: RequestBody?,
+        fileInformation: MultipartBody.Part?,
     ): LiveData<ApiResponse<AttendanceEntity>> {
-        return remoteDataSource.attendanceCome(token, userId, qrCode, latitude, longitude)
+        return remoteDataSource.attendanceScan(token, userId, qrCode, latitude, longitude, attendanceType, information, fileInformation)
     }
 
     override suspend fun registrationUser(
@@ -76,15 +79,6 @@ class BaseRepository private constructor(
         return remoteDataSource.editProfile(header, imageProfile, userId, name, password)
     }
 
-    override suspend fun markCompleteTask(
-        header: HashMap<String, String>,
-        idTask: RequestBody?,
-        userId: RequestBody?,
-        file: MultipartBody.Part?
-    ): LiveData<ApiResponse<TaskEntity>> {
-        return remoteDataSource.markCompleteTask(header, idTask, userId, file)
-    }
-
     override suspend fun getAllAttendance(
         token: String,
         userId: Int?
@@ -92,32 +86,7 @@ class BaseRepository private constructor(
         return remoteDataSource.getAllAttendance(userId, token)
     }
 
-    override suspend fun getAllTaskData(
-        token: String,
-        userId: Int?,
-        date: String?,
-        isAdmin: Int?
-    ): LiveData<ApiResponse<List<TaskEntity>>> {
-        return remoteDataSource.getAllTaskData(userId, date, isAdmin, token)
-    }
-
-    override suspend fun insertTask(
-        token: String,
-        userId: Int?,
-        descTask: String?,
-        isAdmin: Int?
-    ): LiveData<ApiResponse<TaskEntity>> {
-        return remoteDataSource.insertTask(token, userId, descTask, isAdmin)
-    }
-
     override suspend fun getEmployee(token: String): LiveData<ApiResponse<List<UserEntity>>> {
         return remoteDataSource.getEmployee(token)
-    }
-
-    override suspend fun getMyPoint(
-        token: String,
-        userId: Int?
-    ): LiveData<ApiResponse<UserEntity>> {
-        return remoteDataSource.getMyPoint(token, userId)
     }
 }

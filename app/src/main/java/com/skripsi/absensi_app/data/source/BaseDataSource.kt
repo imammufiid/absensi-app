@@ -31,24 +31,6 @@ interface BaseDataSource {
         name: RequestBody?,
         password: RequestBody?
     ): LiveData<ApiResponse<UserEntity>>
-    suspend fun getAllTaskData(
-        token: String,
-        userId: Int?,
-        date: String? = null,
-        isAdmin: Int? = null
-    ): LiveData<ApiResponse<List<TaskEntity>>>
-    suspend fun insertTask(
-        token: String,
-        userId: Int?,
-        descTask: String? = null,
-        isAdmin: Int? = 0
-    ): LiveData<ApiResponse<TaskEntity>>
-    suspend fun markCompleteTask(
-        header: HashMap<String, String>,
-        idTask: RequestBody?,
-        userId: RequestBody?,
-        file: MultipartBody.Part?
-    ): LiveData<ApiResponse<TaskEntity>>
     suspend fun getAllAttendance(
         token: String,
         userId: Int?,
@@ -58,17 +40,16 @@ interface BaseDataSource {
         employeeId: Int?,
     ): LiveData<ApiResponse<AttendanceEntity>>
     suspend fun attendanceScan(
-        token: String,
-        userId: Int?,
-        qrCode: String?,
-        latitude: String?,
-        longitude: String?,
+        token: HashMap<String, String>,
+        userId: RequestBody?,
+        qrCode: RequestBody?,
+        latitude: RequestBody?,
+        longitude: RequestBody?,
+        attendanceType: RequestBody?,
+        information: RequestBody?,
+        fileInformation: MultipartBody.Part?,
     ): LiveData<ApiResponse<AttendanceEntity>>
     suspend fun getEmployee(
         token: String
     ): LiveData<ApiResponse<List<UserEntity>>>
-    suspend fun getMyPoint(
-        token: String,
-        userId: Int?,
-    ): LiveData<ApiResponse<UserEntity>>
 }
