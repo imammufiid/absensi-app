@@ -4,11 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.load.HttpException
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.skripsi.absensi_app.api.ApiConfig
 import com.skripsi.absensi_app.api.ApiConfiguration
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
-import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
 import com.skripsi.absensi_app.data.source.local.entity.UserEntity
 import com.skripsi.absensi_app.data.source.remote.response.ApiResponse
 import okhttp3.MultipartBody
@@ -205,7 +202,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
             val response =
                 api.create().attendanceScan(token, employeeId, qrCode, latitude, longitude, attendanceType, information, fileInformation)
             when (response.meta?.code) {
-                200 -> result.value = ApiResponse.success(response.data)
+                201 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
                 else -> result.value = ApiResponse.failed(response.meta?.message)
             }
