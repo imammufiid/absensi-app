@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AbsensiApp"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.skripsi.absensi_app.ui.scanner.ScannerActivity"/>
         <activity android:name="com.skripsi.absensi_app.ui.splashscreen.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +26,6 @@
         <activity android:name="com.skripsi.absensi_app.ui.registration.RegistrationActivity" />
         <activity android:name="com.skripsi.absensi_app.ui.profileedit.EditProfileActivity" />
         <activity android:name="com.skripsi.absensi_app.ui.login.LoginActivity" />
-        <activity android:name="com.skripsi.absensi_app.ui.addtask.AddTaskActivity" />
         <activity
             android:name="com.skripsi.absensi_app.ui.main.MainActivity"
             android:label="@string/app_name"/>
