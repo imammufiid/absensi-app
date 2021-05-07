@@ -37,14 +37,14 @@
     <string name="find_employe">Cari karyawan</string>
     <string name="icon_back">icon back</string>
     <string name="find_attendance_per_date">Cari absen per tanggal</string>
-    <string name="input_desc_task">Masukkan deskripsi tugas</string>
+    <string name="input_desc_information">Masukkan Informasi</string>
     <string name="data_empty">Tidak ada data %s</string>
     <string name="loading">Loading&amp;#8230</string>
     <string name="latitude">Latitude : %s</string>
     <string name="longitude">Longitude : %s</string>
     <string name="latitude_placeholder">0.000000</string>
     <string name="longitude_placeholder">000.000000</string>
-    <string name="upload_file">Unggah File</string>
+    <string name="sick_menu">Menu Sakit</string>
     <string name="send">Kirim</string>
     <string name="file_name">filename</string>
     <string name="title_scanner">Scanner</string>
@@ -60,4 +60,5 @@
     <string name="icon_image_ijin">icon image ijin</string>
     <string name="icon_image_attendance_in">icon image attendance in</string>
     <string name="icon_image_attendance_out">icon image attendance out</string>
+    <string name="upload_file">Unggah Berkas</string>
 </resources>
