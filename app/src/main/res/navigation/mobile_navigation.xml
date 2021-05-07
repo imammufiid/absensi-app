@@ -10,24 +10,7 @@
         android:name="com.skripsi.absensi_app.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_scannerFragment"
-            app:destination="@id/navigation_scanner"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out" />
     </fragment>
-
-    <fragment
-        android:id="@+id/navigation_task"
-        android:name="com.skripsi.absensi_app.ui.task.TaskFragment"
-        android:label="@string/title_task"
-        tools:layout="@layout/fragment_task" />
-
-    <fragment
-        android:id="@+id/navigation_attendance"
-        android:name="com.skripsi.absensi_app.ui.attendance.AttendanceFragment"
-        android:label="@string/title_attendance"
-        tools:layout="@layout/fragment_attendance" />
 
     <fragment
         android:id="@+id/navigation_profile"

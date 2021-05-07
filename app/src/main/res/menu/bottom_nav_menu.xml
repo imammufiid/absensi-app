@@ -7,13 +7,8 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_task"
-        android:icon="@drawable/ic_task"
-        android:title="@string/title_task" />
-
-    <item
-        android:id="@+id/navigation_attendance"
-        android:icon="@drawable/ic_attendance"
+        android:id="@+id/navigation_scanner"
+        android:icon="@drawable/ic_scanning"
         android:title="@string/title_attendance" />
 
     <item
