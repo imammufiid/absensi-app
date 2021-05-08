@@ -1,5 +1,6 @@
 package com.skripsi.absensi_app.ui.attendance
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.skripsi.absensi_app.R
+import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
 import com.skripsi.absensi_app.databinding.FragmentAttendanceBinding
+import com.skripsi.absensi_app.ui.detailattendance.DetailAttendanceActivity
 import com.skripsi.absensi_app.utils.pref.UserPref
 import com.skripsi.absensi_app.viewmodel.ViewModelFactory
 
@@ -44,12 +47,20 @@ class AttendanceFragment : Fragment() {
     }
 
     private fun init() {
-        attendanceAdapter = AttendanceAdapter()
+        attendanceAdapter = AttendanceAdapter {
+            selectedAttendance(it)
+        }
         setViewModelAttendance()
         setRecyclerView()
         setEmployeeFilter()
 
         _bind.btnBack.setOnClickListener { findNavController().navigateUp() }
+    }
+
+    private fun selectedAttendance(attendance: AttendanceEntity) {
+        startActivity(Intent(context, DetailAttendanceActivity::class.java).apply {
+            putExtra(DetailAttendanceActivity.ATTENDANCE_EXTRAS, attendance)
+        })
     }
 
     private fun setEmployeeFilter() {
