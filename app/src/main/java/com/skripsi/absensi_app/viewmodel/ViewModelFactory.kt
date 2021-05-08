@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.skripsi.absensi_app.data.source.BaseRepository
 import com.skripsi.absensi_app.di.Injection
 import com.skripsi.absensi_app.ui.attendance.AttendanceViewModel
+import com.skripsi.absensi_app.ui.detailattendance.DetailAttendanceViewModel
 import com.skripsi.absensi_app.ui.home.HomeViewModel
 import com.skripsi.absensi_app.ui.login.LoginViewModel
 import com.skripsi.absensi_app.ui.profile.ProfileViewModel
@@ -34,6 +35,7 @@ class ViewModelFactory private constructor(private val repo: BaseRepository) :
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> EditProfileViewModel(repo) as T
             modelClass.isAssignableFrom(RegistrationViewModel::class.java) -> RegistrationViewModel(repo) as T
             modelClass.isAssignableFrom(ScannerViewModel::class.java) -> ScannerViewModel(repo) as T
+            modelClass.isAssignableFrom(DetailAttendanceViewModel::class.java) -> DetailAttendanceViewModel(repo) as T
             else -> throw Throwable("Unknown ViewModel Class: ${modelClass.name}")
         }
     }
