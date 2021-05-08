@@ -9,4 +9,6 @@
     <color name="colorTextSecondary">#858496</color>
     <color name="colorGreyLight">#F3F4F8</color>
     <color name="colorTextLight">#B5B5B5</color>
+    <color name="colorBlue">#3d80c5</color>
+    <color name="colorRed">#c56c3d</color>
 </resources>
