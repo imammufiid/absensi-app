@@ -111,6 +111,36 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/colorTextLight"/>
+
+            <!-- Information -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold" />
+
+            <!-- is validation -->
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/is_validation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_validation"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_text_not_validation"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="2dp"
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
