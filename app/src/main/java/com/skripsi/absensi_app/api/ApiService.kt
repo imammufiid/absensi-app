@@ -1,7 +1,7 @@
 package com.skripsi.absensi_app.api
 
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
-import com.skripsi.absensi_app.data.source.local.entity.TaskEntity
+import com.skripsi.absensi_app.data.source.local.entity.LocationDetailEntity
 import com.skripsi.absensi_app.data.source.local.entity.UserEntity
 import com.skripsi.absensi_app.data.source.remote.response.WrappedListResponse
 import com.skripsi.absensi_app.data.source.remote.response.WrappedResponse
@@ -85,6 +85,12 @@ interface ApiService {
         @Header("Authorization") token: String?,
         @Query("user_id") idUser: Int?
     ): WrappedListResponse<AttendanceEntity>
+
+    @GET("attendance/location")
+    suspend fun getLocationAttendance(
+        @Header("Authorization") token: String?,
+        @Query("attendance_id") attendanceId: String?
+    ): WrappedResponse<LocationDetailEntity>
 
     // EMPLOYEE ---------------------------------------------------
     // SHOW ALL EMPLOYEE

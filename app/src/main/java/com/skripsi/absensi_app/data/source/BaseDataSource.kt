@@ -2,6 +2,7 @@ package com.skripsi.absensi_app.data.source
 
 import androidx.lifecycle.LiveData
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
+import com.skripsi.absensi_app.data.source.local.entity.LocationDetailEntity
 import com.skripsi.absensi_app.data.source.local.entity.UserEntity
 import com.skripsi.absensi_app.data.source.remote.response.ApiResponse
 import okhttp3.MultipartBody
@@ -48,6 +49,10 @@ interface BaseDataSource {
         information: RequestBody?,
         fileInformation: MultipartBody.Part?,
     ): LiveData<ApiResponse<AttendanceEntity>>
+    suspend fun getLocationAttendance(
+        token: String?,
+        attendanceId: String?
+    ): LiveData<ApiResponse<LocationDetailEntity>>
     suspend fun getEmployee(
         token: String
     ): LiveData<ApiResponse<List<UserEntity>>>

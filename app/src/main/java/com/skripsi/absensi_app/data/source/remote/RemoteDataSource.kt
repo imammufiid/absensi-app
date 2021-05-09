@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.load.HttpException
 import com.skripsi.absensi_app.api.ApiConfiguration
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
+import com.skripsi.absensi_app.data.source.local.entity.LocationDetailEntity
 import com.skripsi.absensi_app.data.source.local.entity.UserEntity
 import com.skripsi.absensi_app.data.source.remote.response.ApiResponse
 import okhttp3.MultipartBody
@@ -281,6 +282,34 @@ class RemoteDataSource(private val api: ApiConfiguration) {
                 }
             }
         }
+        return result
+    }
+
+    suspend fun getLocationAttendance(
+        token: String?,
+        attendanceId: String?
+    ): LiveData<ApiResponse<LocationDetailEntity>> {
+        val result = MutableLiveData<ApiResponse<LocationDetailEntity>>()
+
+        try {
+            val data = api.create().getLocationAttendance(token, attendanceId)
+            when (data.meta?.code) {
+                200 -> result.value = ApiResponse.success(data.data)
+                404 -> result.value = ApiResponse.empty(data.meta.message)
+                else -> result.value = ApiResponse.failed(data.meta?.message)
+            }
+        } catch (throwable: Throwable) {
+            when (throwable) {
+                is IOException -> result.value = ApiResponse.error("Network Error")
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> result.value = ApiResponse.error("Unknown error")
+            }
+        }
+
         return result
     }
 }

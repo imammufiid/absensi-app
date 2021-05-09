@@ -2,6 +2,7 @@ package com.skripsi.absensi_app.data.source
 
 import androidx.lifecycle.LiveData
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
+import com.skripsi.absensi_app.data.source.local.entity.LocationDetailEntity
 import com.skripsi.absensi_app.data.source.local.entity.UserEntity
 import com.skripsi.absensi_app.data.source.remote.RemoteDataSource
 import com.skripsi.absensi_app.data.source.remote.response.ApiResponse
@@ -83,6 +84,13 @@ class BaseRepository private constructor(
         userId: Int?
     ): LiveData<ApiResponse<List<AttendanceEntity>>> {
         return remoteDataSource.getAllAttendance(userId, token)
+    }
+
+    override suspend fun getLocationAttendance(
+        token: String?,
+        attendanceId: String?
+    ): LiveData<ApiResponse<LocationDetailEntity>> {
+        return remoteDataSource.getLocationAttendance(token, attendanceId)
     }
 
     override suspend fun getEmployee(token: String): LiveData<ApiResponse<List<UserEntity>>> {
