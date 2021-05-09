@@ -25,6 +25,12 @@ data class AttendanceEntity(
 	@field:SerializedName("attendance_type")
 	val attendanceType: String? = null,
 
+	@field:SerializedName("information")
+	val information: String? = null,
+
+	@field:SerializedName("file_information")
+	val fileInformation: String? = null,
+
 	@field:SerializedName("is_validate")
 	val isValidate: String? = null,
 
