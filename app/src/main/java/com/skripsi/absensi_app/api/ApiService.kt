@@ -64,6 +64,14 @@ interface ApiService {
         @Query("id_employee") idUser: Int?
     ): WrappedResponse<AttendanceEntity>
 
+    @FormUrlEncoded
+    @POST("attendance/validate")
+    suspend fun validate(
+        @Header("Authorization") token: String?,
+        @Field("attendance_id") attendance_id: Int?,
+        @Field("is_admin") isAdmin: Int?
+    ): WrappedResponse<AttendanceEntity>
+
     // ATTENDANCE COME
     // SHOW ATTENDANCE
     @Multipart

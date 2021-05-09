@@ -49,6 +49,11 @@ interface BaseDataSource {
         information: RequestBody?,
         fileInformation: MultipartBody.Part?,
     ): LiveData<ApiResponse<AttendanceEntity>>
+    suspend fun validate(
+        token: String?,
+        attendanceId: Int?,
+        isAdmin: Int?,
+    ): LiveData<ApiResponse<AttendanceEntity>>
     suspend fun getLocationAttendance(
         token: String?,
         attendanceId: String?

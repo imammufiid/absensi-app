@@ -65,6 +65,14 @@ class BaseRepository private constructor(
         return remoteDataSource.logout(token, userId)
     }
 
+    override suspend fun validate(
+        token: String?,
+        attendanceId: Int?,
+        isAdmin: Int?
+    ): LiveData<ApiResponse<AttendanceEntity>> {
+        return remoteDataSource.validate(token, attendanceId, isAdmin)
+    }
+
     override suspend fun getUser(token: String, userId: Int?): LiveData<ApiResponse<UserEntity>> {
         return remoteDataSource.getUser(token, userId)
     }

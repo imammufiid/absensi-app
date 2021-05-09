@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
 import com.skripsi.absensi_app.databinding.ActivityDetailAttendanceBinding
@@ -97,6 +98,12 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
                 _bind.detailAttendance.distance.text = location.lbs
             }
         })
+
+        viewModel.validate.observe(this, {
+            if (it != null) {
+                Snackbar.make(_bind.root, it, Snackbar.LENGTH_SHORT).show()
+            }
+        })
     }
 
     // high order function
@@ -141,7 +148,8 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(mapIntent)
             }
             R.id.btn_validation -> {
-
+                val userPref = UserPref.getUserData(this)
+                viewModel.validate(userPref?.token, dataAttendance?.id, userPref?.isAdmin)
             }
         }
     }

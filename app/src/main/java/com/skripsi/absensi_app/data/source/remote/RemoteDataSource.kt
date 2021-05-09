@@ -202,7 +202,16 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
         try {
             val response =
-                api.create().attendanceScan(token, employeeId, qrCode, latitude, longitude, attendanceType, information, fileInformation)
+                api.create().attendanceScan(
+                    token,
+                    employeeId,
+                    qrCode,
+                    latitude,
+                    longitude,
+                    attendanceType,
+                    information,
+                    fileInformation
+                )
             when (response.meta?.code) {
                 201 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -220,6 +229,32 @@ class RemoteDataSource(private val api: ApiConfiguration) {
                     result.value = ApiResponse.error("Unknown error")
                     throwable.message?.let { Log.d("UNKNOWN_ERROR", it) }
                 }
+            }
+        }
+
+        return result
+    }
+
+    suspend fun validate(
+        token: String?,
+        attendanceId: Int?,
+        isAdmin: Int?,
+    ): LiveData<ApiResponse<AttendanceEntity>> {
+        val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
+
+        try {
+            val response = api.create().validate(token, attendanceId, isAdmin)
+            result.value = ApiResponse.success(response.data, response.meta?.message)
+        } catch (throwable: Throwable) {
+            Log.d("VALIDATE", throwable.toString())
+            when (throwable) {
+                is IOException -> result.value = ApiResponse.error("Network Error")
+                is HttpException -> {
+                    val code = throwable.statusCode
+                    val errorResponse = throwable.message
+                    result.value = ApiResponse.error("Error $errorResponse")
+                }
+                else -> result.value = ApiResponse.error("Unknown error")
             }
         }
 

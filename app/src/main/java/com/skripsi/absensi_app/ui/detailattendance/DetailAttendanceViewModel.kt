@@ -15,6 +15,9 @@ class DetailAttendanceViewModel(private val repo: BaseRepository): ViewModel() {
     private val _message = MutableLiveData<String?>()
     val message: LiveData<String?> = _message
 
+    private val _validate = MutableLiveData<String?>()
+    val validate: LiveData<String?> = _validate
+
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
@@ -52,6 +55,20 @@ class DetailAttendanceViewModel(private val repo: BaseRepository): ViewModel() {
                 _loading.postValue(false)
             } catch (throwable: Throwable) {
                 _message.postValue(throwable.message)
+                _loading.postValue(false)
+            }
+        }
+    }
+
+    fun validate(token: String?, attendanceId: Int?, isAdmin: Int?) {
+        viewModelScope.launch {
+            try {
+                _loading.postValue(true)
+                val data = repo.validate("Bearer $token", attendanceId, isAdmin)
+                _validate.postValue(data.value?.message)
+                _loading.postValue(false)
+            } catch (throwable: Throwable) {
+                _validate.postValue(throwable.message)
                 _loading.postValue(false)
             }
         }
