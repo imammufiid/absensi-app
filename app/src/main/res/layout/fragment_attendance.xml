@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/colorPrimary"
+    android:orientation="vertical"
     tools:context=".ui.attendance.AttendanceFragment">
 
     <!-- Header -->
@@ -33,11 +33,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:gravity="center_horizontal"
+            android:text="@string/title_attendance"
             android:textColor="@color/colorGreyLight"
             android:textSize="20sp"
-            android:text="@string/title_attendance"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <!-- Content -->
@@ -55,48 +55,57 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="2dp"
             android:background="@drawable/bg_search_view"
-            android:visibility="gone"
-            android:layout_alignParentTop="true"
-            app:hintEnabled="false"
-            android:layout_marginTop="8dp">
+            android:visibility="visible"
+            app:hintEnabled="false">
 
             <AutoCompleteTextView
                 android:id="@+id/et_search_employee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:drawablePadding="20dp"
                 android:hint="@string/find_employe"
-                android:textColorHint="@color/colorTextSecondary"
                 android:inputType="text"
                 android:maxLines="1"
-                android:background="@android:color/transparent"/>
+                android:textColorHint="@color/colorTextSecondary" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- List Task Today -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_attendance"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
-            tools:listitem="@layout/item_attendance"
-            android:layout_below="@id/search_employee"/>
+            android:layout_below="@id/search_employee">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_attendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_below="@id/search_employee"
+                tools:listitem="@layout/item_attendance" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <!-- Message Data Empty -->
         <TextView
             android:id="@+id/tv_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/data_empty"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/colorTextSecondary"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:gravity="center_horizontal|center_vertical"
-            android:visibility="gone"/>
+            android:text="@string/data_empty"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <!-- Progress Bar -->
         <ProgressBar
@@ -107,6 +116,6 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="18dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

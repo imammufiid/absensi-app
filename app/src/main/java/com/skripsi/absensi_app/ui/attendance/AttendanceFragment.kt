@@ -55,6 +55,9 @@ class AttendanceFragment : Fragment() {
         setEmployeeFilter()
 
         _bind.btnBack.setOnClickListener { findNavController().navigateUp() }
+        _bind.swipeRefresh.setOnRefreshListener {
+            setViewModelAttendance()
+        }
     }
 
     private fun selectedAttendance(attendance: AttendanceEntity) {
@@ -67,7 +70,7 @@ class AttendanceFragment : Fragment() {
         val userPref = context?.let { context -> UserPref.getUserData(context) }
         if (userPref?.isAdmin == 1) {
             _bind.searchEmployee.visibility = View.VISIBLE
-            userPref?.token?.let { token -> viewModel.getEmployee(token) }
+            userPref.token?.let { token -> viewModel.getEmployee(token) }
         }
 
 
@@ -110,6 +113,7 @@ class AttendanceFragment : Fragment() {
         })
 
         viewModel.attendance.observe(viewLifecycleOwner, {
+            _bind.swipeRefresh.isRefreshing = false
             if (it.isNullOrEmpty()) {
                 _bind.tvEmpty.visibility = View.VISIBLE
                 _bind.tvEmpty.text = getString(R.string.data_empty, "absensi")
