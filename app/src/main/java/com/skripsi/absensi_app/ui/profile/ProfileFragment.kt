@@ -146,9 +146,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
             R.id.btn_logout -> {
                 context?.let { context ->
+                    val userPref = context?.let { context -> UserPref.getUserData(context) }
                     UserPref.getUserData(context)?.token?.let { token ->
                         viewModel.logout(
-                            token
+                            token, userPref?.id
                         )
                     }
                 }

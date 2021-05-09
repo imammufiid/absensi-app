@@ -22,11 +22,11 @@ class ProfileViewModel(private val repo: BaseRepository) : ViewModel() {
     private val _userData = MutableLiveData<UserEntity?>()
     val userData: LiveData<UserEntity?> = _userData
 
-    fun logout(token: String) {
+    fun logout(token: String, userId: Int?) {
         viewModelScope.launch {
             try {
                 _loading.postValue(true)
-                val data = repo.logoutUser("Bearer $token")
+                val data = repo.logoutUser("Bearer $token", userId)
                 when (data.value?.status) {
                     StatusResponse.SUCCESS -> _response.postValue(data.value?.body)
                     StatusResponse.EMPTY -> _message.postValue(data.value?.message)

@@ -83,11 +83,12 @@ class RemoteDataSource(private val api: ApiConfiguration) {
     }
 
     suspend fun logout(
-        token: String
+        token: String,
+        userId: Int?
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = api.create().logout(token)
+            val response = api.create().logout(token, userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)

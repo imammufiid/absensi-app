@@ -61,8 +61,8 @@ class BaseRepository private constructor(
         return remoteDataSource.getAttendanceToday(token, employeeId)
     }
 
-    override suspend fun logoutUser(token: String): LiveData<ApiResponse<UserEntity>> {
-        return remoteDataSource.logout(token)
+    override suspend fun logoutUser(token: String, userId: Int?): LiveData<ApiResponse<UserEntity>> {
+        return remoteDataSource.logout(token, userId)
     }
 
     override suspend fun getUser(token: String, userId: Int?): LiveData<ApiResponse<UserEntity>> {
