@@ -132,7 +132,7 @@
             android:id="@+id/latitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="-8,00000"
+            android:text="-"
             android:textSize="16sp"
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
@@ -153,7 +153,28 @@
             android:id="@+id/longitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="112,00000"
+            android:text="-"
+            android:textSize="16sp"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jarak (Meter)"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
             android:textSize="16sp"
             android:layout_alignParentEnd="true"/>
     </RelativeLayout>
