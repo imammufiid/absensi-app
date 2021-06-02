@@ -16,7 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AbsensiApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.detailattendance.DetailAttendanceActivity"></activity>
+        <receiver
+            android:name=".receiver.AttendanceReminder"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".ui.detailattendance.DetailAttendanceActivity" />
         <activity android:name=".ui.splashscreen.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
