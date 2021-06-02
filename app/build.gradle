@@ -18,7 +18,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASE_URL", "\"http://192.168.1.5:8000/api/\""
+        buildConfigField "String", "BASE_URL", "\"http://192.168.1.4:8000/api/\""
     }
 
     buildTypes {
@@ -69,6 +69,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.cardview:cardview:$cardViewVersion"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     // retrofit2
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
