@@ -24,6 +24,7 @@ import com.skripsi.absensi_app.databinding.FragmentHomeBinding
 import com.skripsi.absensi_app.ui.ijinattendance.BottomSheetIjinAttendance
 import com.skripsi.absensi_app.ui.sickAttendance.BottomSheetSickAttendance
 import com.skripsi.absensi_app.utils.helper.FusedLocation
+import com.skripsi.absensi_app.utils.pref.AttendancePref
 import com.skripsi.absensi_app.utils.pref.UserPref
 import com.skripsi.absensi_app.viewmodel.ViewModelFactory
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -311,6 +312,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     if (it.timeComes == "0") getString(R.string.time) else it.timeComes
                 _bind.detailAttendance.timeOut.text =
                     if (it.timeGohome == "0") getString(R.string.time) else it.timeGohome
+
+                // set status attendance
+                context?.let { it1 -> AttendancePref.setAttendanceStatus(it1, false) }
             }
         })
 

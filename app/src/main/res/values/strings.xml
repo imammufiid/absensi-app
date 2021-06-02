@@ -66,4 +66,7 @@
     <string name="is_validation">validasi</string>
     <string name="validation">Sudah Divalidasi</string>
     <string name="not_validation">Belum Divalidasi</string>
+    <string name="reminder_time_attendance">Waktunya Absen</string>
+    <string name="reminder_active">Pengingat Absen Aktif</string>
+    <string name="reminder_late_attendance_active">Pengingat Telat Absen Aktif</string>
 </resources>
