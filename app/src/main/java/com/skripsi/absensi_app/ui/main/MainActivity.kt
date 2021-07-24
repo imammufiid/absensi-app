@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.receiver.AttendanceReminder
+import com.skripsi.absensi_app.utils.pref.ReminderPref
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,13 +37,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun setReminder() {
         // reminder time to attendance
-        AttendanceReminder().apply {
-            setReminderAttendanceAlarm(
-                this@MainActivity,
-                AttendanceReminder.ATTENDANCE,
-                TIME,
-                "Waktunya Absen"
-            )
+
+        if (!ReminderPref.isActiveReminder(this)) {
+            ReminderPref.setReminder(this, true)
+            AttendanceReminder().apply {
+                setReminderAttendanceAlarm(
+                    this@MainActivity,
+                    AttendanceReminder.ATTENDANCE,
+                    TIME,
+                    "Waktunya Absen"
+                )
+            }
+        }
+
 //            setReminderLateAttendance(
 //                this@MainActivity,
 //                AttendanceReminder.LATE,
@@ -56,7 +63,7 @@ class MainActivity : AppCompatActivity() {
 //                "Status Absen di RESET"
 //            )
 
-        }
+//        }
     }
 
     private fun permissionChecker() {
