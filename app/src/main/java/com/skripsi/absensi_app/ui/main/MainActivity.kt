@@ -43,18 +43,18 @@ class MainActivity : AppCompatActivity() {
                 TIME,
                 "Waktunya Absen"
             )
-            setReminderLateAttendance(
-                this@MainActivity,
-                AttendanceReminder.LATE,
-                TIME_LATE,
-                "Anda Telat Absen"
-            )
-            resetReminderAttendanceAlarm(
-                this@MainActivity,
-                AttendanceReminder.RESET,
-                TIME_RESET,
-                "Status Absen di RESET"
-            )
+//            setReminderLateAttendance(
+//                this@MainActivity,
+//                AttendanceReminder.LATE,
+//                TIME_LATE,
+//                "Anda Telat Absen"
+//            )
+//            resetReminderAttendanceAlarm(
+//                this@MainActivity,
+//                AttendanceReminder.RESET,
+//                TIME_RESET,
+//                "Status Absen di RESET"
+//            )
 
         }
     }
