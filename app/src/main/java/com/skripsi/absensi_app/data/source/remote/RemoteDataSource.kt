@@ -202,15 +202,8 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
         try {
             val response =
-                api.create().attendanceScan(
-                    token,
-                    employeeId,
-                    qrCode,
-                    latitude,
-                    longitude,
-                    attendanceType,
-                    information,
-                    fileInformation
+                api.create().attendanceScan(token, employeeId, qrCode, latitude, longitude,
+                    attendanceType, information, fileInformation
                 )
             when (response.meta?.code) {
                 201 -> result.value = ApiResponse.success(response.data, response.meta.message)
