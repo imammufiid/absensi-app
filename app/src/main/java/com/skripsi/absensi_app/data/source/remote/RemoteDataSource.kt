@@ -88,7 +88,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = api.create().logout(token, userId)
+            val response = api.create().logout( userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -114,7 +114,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = api.create().getUser(token, userId)
+            val response = api.create().getUser( userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -141,7 +141,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<List<AttendanceEntity>>>()
 
         try {
-            val response = api.create().showAllAttendance(token, userId)
+            val response = api.create().showAllAttendance( userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -168,7 +168,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
     ): LiveData<ApiResponse<AttendanceEntity>> {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
         try {
-            val response = api.create().showAttendance(token, employeeId)
+            val response = api.create().showAttendance(employeeId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -202,7 +202,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
         try {
             val response =
-                api.create().attendanceScan(token, employeeId, qrCode, latitude, longitude,
+                api.create().attendanceScan( employeeId, qrCode, latitude, longitude,
                     attendanceType, information, fileInformation
                 )
             when (response.meta?.code) {
@@ -236,7 +236,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
 
         try {
-            val response = api.create().validate(token, attendanceId, isAdmin)
+            val response = api.create().validate( attendanceId, isAdmin)
             result.value = ApiResponse.success(response.data, response.meta?.message)
         } catch (throwable: Throwable) {
             Log.d("VALIDATE", throwable.toString())
@@ -260,7 +260,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<List<UserEntity>>>()
 
         try {
-            val response = api.create().getEmployee(token)
+            val response = api.create().getEmployee()
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -321,7 +321,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<LocationDetailEntity>>()
 
         try {
-            val data = api.create().getLocationAttendance(token, attendanceId)
+            val data = api.create().getLocationAttendance( attendanceId)
             when (data.meta?.code) {
                 200 -> result.value = ApiResponse.success(data.data)
                 404 -> result.value = ApiResponse.empty(data.meta.message)

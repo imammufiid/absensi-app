@@ -34,14 +34,14 @@ interface ApiService {
     @FormUrlEncoded
     @POST("auth/logout")
     suspend fun logout(
-        @Header("Authorization") token: String?,
+//        @Header("Authorization") token: String?,
         @Field("user_id") userId: Int? = null
     ): WrappedResponse<UserEntity>
 
     // GET USER
     @GET("user")
     suspend fun getUser(
-        @Header("Authorization") token: String?,
+//        @Header("Authorization") token: String?,
         @Query("id") userId: Int? = null
     ): WrappedResponse<UserEntity>
 
@@ -60,14 +60,14 @@ interface ApiService {
     // SHOW ATTENDANCE
     @GET("attendance/show")
     suspend fun showAttendance(
-        @Header("Authorization") token: String?,
+//        @Header("Authorization") token: String?,
         @Query("id_employee") idUser: Int?
     ): WrappedResponse<AttendanceEntity>
 
     @FormUrlEncoded
     @POST("attendance/validate")
     suspend fun validate(
-        @Header("Authorization") token: String?,
+//        @Header("Authorization") token: String?,
         @Field("attendance_id") attendance_id: Int?,
         @Field("is_admin") isAdmin: Int?
     ): WrappedResponse<AttendanceEntity>
@@ -77,7 +77,7 @@ interface ApiService {
     @Multipart
     @POST("attendance/scan")
     suspend fun attendanceScan(
-        @HeaderMap token: Map<String, String>?,
+//        @HeaderMap token: Map<String, String>?,
         @Part("id_employee") idUser: RequestBody?,
         @Part("qr_code") qrCode: RequestBody?,
         @Part("latitude") latitude: RequestBody?,
@@ -90,13 +90,13 @@ interface ApiService {
     // SHOW ALL ATTENDANCE
     @GET("attendance/")
     suspend fun showAllAttendance(
-        @Header("Authorization") token: String?,
+//        @Header("Authorization") token: String?,
         @Query("user_id") idUser: Int?
     ): WrappedListResponse<AttendanceEntity>
 
     @GET("attendance/location")
     suspend fun getLocationAttendance(
-        @Header("Authorization") token: String?,
+//        @Header("Authorization") token: String?,
         @Query("attendance_id") attendanceId: String?
     ): WrappedResponse<LocationDetailEntity>
 
@@ -104,6 +104,6 @@ interface ApiService {
     // SHOW ALL EMPLOYEE
     @GET("employee")
     suspend fun getEmployee(
-        @Header("Authorization") token: String?,
+//        @Header("Authorization") token: String?,
     ): WrappedListResponse<UserEntity>
 }
