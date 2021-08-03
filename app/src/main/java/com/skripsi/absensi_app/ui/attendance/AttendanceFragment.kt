@@ -71,6 +71,8 @@ class AttendanceFragment : Fragment() {
         if (userPref?.isAdmin == 1) {
             _bind.searchEmployee.visibility = View.VISIBLE
             userPref.token?.let { token -> viewModel.getEmployee(token) }
+        } else {
+            _bind.searchEmployee.visibility = View.GONE
         }
 
 
@@ -95,7 +97,11 @@ class AttendanceFragment : Fragment() {
 
     private fun setViewModelAttendance() {
         val userPref = context?.let { UserPref.getUserData(it) }
-        userPref?.token?.let { token -> viewModel.allAttendance(token, userPref.id) }
+        if (userPref?.isAdmin == 1) {
+            userPref?.token?.let { token -> viewModel.allAttendance(token, isAdmin = 1) }
+        } else {
+            userPref?.token?.let { token -> viewModel.allAttendance(token, userPref.id) }
+        }
     }
 
 

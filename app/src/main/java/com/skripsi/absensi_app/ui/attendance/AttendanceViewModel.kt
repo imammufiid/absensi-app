@@ -24,11 +24,11 @@ class AttendanceViewModel(private val repo: BaseRepository) : ViewModel() {
     private val _userData = MutableLiveData<List<UserEntity>?>()
     val userData: LiveData<List<UserEntity>?> = _userData
 
-    fun allAttendance(token: String, userId: Int?) {
+    fun allAttendance(token: String, userId: Int? = null, isAdmin: Int? = null) {
         viewModelScope.launch {
             try {
                 _loading.postValue(true)
-                val res = repo.getAllAttendance("Bearer $token", userId)
+                val res = repo.getAllAttendance("Bearer $token", userId, isAdmin)
                 when (res.value?.status) {
                     StatusResponse.SUCCESS -> _attendance.postValue(res.value?.body)
                     StatusResponse.EMPTY -> _message.postValue(res.value?.message)
