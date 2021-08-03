@@ -147,7 +147,7 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             _bind.detailAttendance.tvFile.visibility = View.GONE
             val circularProgressDrawable = CircularProgressDrawable(this).apply {
-                strokeWidth = 5f
+                strokeWidth = 15f
                 centerRadius = 30f
             }
             Glide.with(this)
