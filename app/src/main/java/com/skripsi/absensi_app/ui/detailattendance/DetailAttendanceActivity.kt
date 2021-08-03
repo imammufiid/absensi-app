@@ -2,14 +2,18 @@ package com.skripsi.absensi_app.ui.detailattendance
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.ceylonlabs.imageviewpopup.ImagePopup
 import com.google.android.material.snackbar.Snackbar
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
@@ -53,10 +57,10 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
         _bind.detailAttendance.btnViewMaps.setOnClickListener(this)
         _bind.detailAttendance.btnValidation.setOnClickListener(this)
         _bind.btnBack.setOnClickListener(this)
+        _bind.detailAttendance.imageFile.setOnClickListener(this)
 
         userPref?.token?.let { token ->
             viewModel.getUser(token, userPref.id)
-            viewModel.getLocationAttendance(token, dataAttendance?.id.toString())
         }
 
     }
@@ -123,13 +127,33 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun setDataParcelable() {
+        Log.d("ATTENDANCE_TYPE", dataAttendance.toString())
         with(_bind.detailAttendance) {
             timeIn.text = dataAttendance?.timeComes
             timeOut.text =
                 if (dataAttendance?.timeGohome == "0") "00:00:00" else dataAttendance?.timeGohome
 
             information.text = dataAttendance?.information
-            file.text = dataAttendance?.fileInformation ?: "-"
+
+        }
+
+        if (dataAttendance?.attendanceType == "1") {
+            viewModel.getLocationAttendance(UserPref.getUserData(this)?.token, dataAttendance?.id.toString())
+        }
+
+        if (dataAttendance?.fileInformation == null) {
+            _bind.detailAttendance.imageFile.visibility = View.GONE
+            _bind.detailAttendance.tvFile.text = "-"
+        } else {
+            _bind.detailAttendance.tvFile.visibility = View.GONE
+            val circularProgressDrawable = CircularProgressDrawable(this).apply {
+                strokeWidth = 5f
+                centerRadius = 30f
+            }
+            Glide.with(this)
+                .load(dataAttendance?.fileInformation)
+                .placeholder(circularProgressDrawable)
+                .into(_bind.detailAttendance.imageFile)
         }
     }
 
@@ -150,6 +174,14 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_validation -> {
                 val userPref = UserPref.getUserData(this)
                 viewModel.validate(userPref?.token, dataAttendance?.id, userPref?.isAdmin)
+            }
+            R.id.image_file -> {
+                ImagePopup(this).apply {
+                    backgroundColor = Color.BLACK
+                    isFullScreen = true
+                    isImageOnClickClose = true
+                    initiatePopupWithGlide(dataAttendance?.fileInformation)
+                }.viewPopup()
             }
         }
     }

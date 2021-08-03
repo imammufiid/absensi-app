@@ -210,19 +210,27 @@
             android:id="@+id/file_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Berkas"
+            android:text="File"
             android:layout_alignParentStart="true"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:textStyle="bold"/>
+
         <TextView
-            android:id="@+id/file"
+            android:id="@+id/tv_file"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="-"
             android:maxLines="3"
             android:textSize="16sp"
-            android:layout_below="@id/file_title"/>
+            android:layout_below="@id/file_title"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/image_file"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/tv_file"/>
     </RelativeLayout>
 
     <LinearLayout
