@@ -100,6 +100,7 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
                 _bind.detailAttendance.latitude.text = location.latitude
                 _bind.detailAttendance.longitude.text = location.longitude
                 _bind.detailAttendance.distance.text = location.lbs
+                _bind.detailAttendance.btnViewMaps.visibility = View.VISIBLE
             }
         })
 
@@ -137,13 +138,13 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
 
         }
 
-        if (dataAttendance?.attendanceType == "1") {
+        if (dataAttendance?.attendanceType == 1) {
             viewModel.getLocationAttendance(UserPref.getUserData(this)?.token, dataAttendance?.id.toString())
         }
 
         if (dataAttendance?.fileInformation == null) {
             _bind.detailAttendance.imageFile.visibility = View.GONE
-            _bind.detailAttendance.tvFile.text = "-"
+            _bind.detailAttendance.tvFile.visibility = View.VISIBLE
         } else {
             _bind.detailAttendance.tvFile.visibility = View.GONE
             val circularProgressDrawable = CircularProgressDrawable(this).apply {
