@@ -19,7 +19,8 @@
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <!-- Card View Attendance Detail -->
     <androidx.cardview.widget.CardView
@@ -219,7 +220,7 @@
         <TextView
             android:id="@+id/tv_file"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             tools:text="-"
             android:maxLines="3"
             android:textSize="16sp"
@@ -252,6 +253,7 @@
             android:paddingVertical="20dp"
             android:text="Lihat Maps"
             android:textAllCaps="false"
+            android:visibility="invisible"
             android:textColor="@color/colorPrimary" />
 
         <Button
