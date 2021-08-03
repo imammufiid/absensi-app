@@ -286,7 +286,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         homeViewModel.msgAttendanceToday.observe(viewLifecycleOwner, {
             if (it != null) {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                it.getContentIfNotHandled()?.let { message ->
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
+
             }
         })
 

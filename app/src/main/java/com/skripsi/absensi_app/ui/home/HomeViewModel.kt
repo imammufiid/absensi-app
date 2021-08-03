@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.skripsi.absensi_app.data.source.BaseRepository
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
 import com.skripsi.absensi_app.data.source.remote.response.StatusResponse
+import com.skripsi.absensi_app.utils.helper.Event
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -16,8 +17,8 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
     private val _text = MutableLiveData<String>()
     val greeting: LiveData<String> = _text
 
-    private val _msgAttendanceToday = MutableLiveData<String?>()
-    val msgAttendanceToday: LiveData<String?> = _msgAttendanceToday
+    private val _msgAttendanceToday = MutableLiveData<Event<String?>>()
+    val msgAttendanceToday: LiveData<Event<String?>> = _msgAttendanceToday
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
@@ -42,12 +43,12 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
                     StatusResponse.SUCCESS -> {
                         _attendanceToday.postValue(response.value?.body)
                     }
-                    else -> _msgAttendanceToday.postValue(response.value?.message)
+                    else -> _msgAttendanceToday.postValue(Event(response.value?.message))
                 }
                 _loading.postValue(false)
             } catch (throwable: Throwable) {
                 _loading.postValue(false)
-                _msgAttendanceToday.postValue(throwable.message)
+                _msgAttendanceToday.postValue(Event(throwable.message))
             }
         }
     }
@@ -69,14 +70,14 @@ class HomeViewModel(private val repo: BaseRepository) : ViewModel() {
                 when(data.value?.status) {
                     StatusResponse.SUCCESS -> {
                         _attendanceToday.postValue(data.value?.body)
-                        _msgAttendanceToday.postValue(data.value?.message)
+                        _msgAttendanceToday.postValue(Event(data.value?.message))
                     }
-                    StatusResponse.EMPTY -> _msgAttendanceToday.postValue(data.value?.message)
-                    else -> _msgAttendanceToday.postValue(data.value?.message)
+                    StatusResponse.EMPTY -> _msgAttendanceToday.postValue(Event(data.value?.message))
+                    else -> _msgAttendanceToday.postValue(Event(data.value?.message))
                 }
                 _loading.postValue(false)
             } catch (throwable: Throwable) {
-                _msgAttendanceToday.postValue(throwable.message)
+                _msgAttendanceToday.postValue(Event(throwable.message))
                 _loading.postValue(false)
             }
         }
