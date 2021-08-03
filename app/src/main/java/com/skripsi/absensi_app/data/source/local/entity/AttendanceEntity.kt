@@ -23,7 +23,7 @@ data class AttendanceEntity(
 	val timeGohome: String? = null,
 
 	@field:SerializedName("attendance_type")
-	val attendanceType: String? = null,
+	val attendanceType: Int? = null,
 
 	@field:SerializedName("information")
 	val information: String? = null,
