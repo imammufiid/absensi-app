@@ -88,7 +88,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = api.create().logout( userId)
+            val response = api.create().logout(userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -114,7 +114,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
     ): LiveData<ApiResponse<UserEntity>> {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
-            val response = api.create().getUser( userId)
+            val response = api.create().getUser(userId)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -136,12 +136,13 @@ class RemoteDataSource(private val api: ApiConfiguration) {
 
     suspend fun getAllAttendance(
         userId: Int?,
-        token: String
+        token: String,
+        isAdmin: Int?
     ): LiveData<ApiResponse<List<AttendanceEntity>>> {
         val result = MutableLiveData<ApiResponse<List<AttendanceEntity>>>()
 
         try {
-            val response = api.create().showAllAttendance( userId)
+            val response = api.create().showAllAttendance(userId, isAdmin)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
@@ -200,30 +201,31 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         fileInformation: MultipartBody.Part?,
     ): LiveData<ApiResponse<AttendanceEntity>> {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
-        try {
-            val response =
-                api.create().attendanceScan( employeeId, qrCode, latitude, longitude,
-                    attendanceType, information, fileInformation
-                )
-            when (response.meta?.code) {
-                201 -> result.value = ApiResponse.success(response.data, response.meta.message)
-                404 -> result.value = ApiResponse.empty(response.meta.message)
-                else -> result.value = ApiResponse.failed(response.meta?.message)
-            }
-        } catch (throwable: Throwable) {
-            when (throwable) {
-                is IOException -> result.value = ApiResponse.error("Network Error")
-                is HttpException -> {
-                    val code = throwable.statusCode
-                    val errorResponse = throwable.message
-                    result.value = ApiResponse.error("Error $errorResponse")
-                }
-                else -> {
-                    result.value = ApiResponse.error("Unknown error")
-                    throwable.message?.let { Log.d("UNKNOWN_ERROR", it) }
-                }
-            }
+//        try {
+        val response =
+            api.create().attendanceScan(
+                employeeId, qrCode, latitude, longitude,
+                attendanceType, information, fileInformation
+            )
+        when (response.meta?.code) {
+            201 -> result.value = ApiResponse.success(response.data, response.meta.message)
+            404 -> result.value = ApiResponse.empty(response.meta.message)
+            else -> result.value = ApiResponse.failed(response.meta?.message)
         }
+//        } catch (throwable: Throwable) {
+//            when (throwable) {
+//                is IOException -> result.value = ApiResponse.error("Network Error")
+//                is HttpException -> {
+//                    val code = throwable.statusCode
+//                    val errorResponse = throwable.message
+//                    result.value = ApiResponse.error("Error $errorResponse")
+//                }
+//                else -> {
+//                    result.value = ApiResponse.error("Unknown error")
+//                    throwable.message?.let { Log.d("UNKNOWN_ERROR", it) }
+//                }
+//            }
+//        }
 
         return result
     }
@@ -236,7 +238,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<AttendanceEntity>>()
 
         try {
-            val response = api.create().validate( attendanceId, isAdmin)
+            val response = api.create().validate(attendanceId, isAdmin)
             result.value = ApiResponse.success(response.data, response.meta?.message)
         } catch (throwable: Throwable) {
             Log.d("VALIDATE", throwable.toString())
@@ -321,7 +323,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<LocationDetailEntity>>()
 
         try {
-            val data = api.create().getLocationAttendance( attendanceId)
+            val data = api.create().getLocationAttendance(attendanceId)
             when (data.meta?.code) {
                 200 -> result.value = ApiResponse.success(data.data)
                 404 -> result.value = ApiResponse.empty(data.meta.message)

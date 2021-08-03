@@ -89,9 +89,10 @@ class BaseRepository private constructor(
 
     override suspend fun getAllAttendance(
         token: String,
-        userId: Int?
+        userId: Int?,
+        isAdmin: Int?
     ): LiveData<ApiResponse<List<AttendanceEntity>>> {
-        return remoteDataSource.getAllAttendance(userId, token)
+        return remoteDataSource.getAllAttendance(userId, token, isAdmin)
     }
 
     override suspend fun getLocationAttendance(

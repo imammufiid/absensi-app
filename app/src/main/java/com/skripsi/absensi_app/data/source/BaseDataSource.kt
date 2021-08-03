@@ -34,6 +34,7 @@ interface BaseDataSource {
     suspend fun getAllAttendance(
         token: String,
         userId: Int?,
+        isAdmin: Int?
     ): LiveData<ApiResponse<List<AttendanceEntity>>>
     suspend fun getAttendanceToday(
         token: String,

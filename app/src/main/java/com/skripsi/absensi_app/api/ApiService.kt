@@ -91,7 +91,8 @@ interface ApiService {
     @GET("attendance/")
     suspend fun showAllAttendance(
 //        @Header("Authorization") token: String?,
-        @Query("user_id") idUser: Int?
+        @Query("user_id") idUser: Int?,
+        @Query("is_admin") isAdmin: Int? = null
     ): WrappedListResponse<AttendanceEntity>
 
     @GET("attendance/location")
