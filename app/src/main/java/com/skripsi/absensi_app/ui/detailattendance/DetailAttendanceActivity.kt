@@ -60,7 +60,7 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
         _bind.detailAttendance.imageFile.setOnClickListener(this)
 
         userPref?.token?.let { token ->
-            viewModel.getUser(token, userPref.id)
+            viewModel.getUser(token, dataAttendance?.userId)
         }
 
     }
