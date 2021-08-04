@@ -298,7 +298,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 _bind.detailAttendance.information.text = when (it.attendanceType?.toInt()) {
                     BottomSheetIjinAttendance.ATTENDANCE_TYPE -> getString(R.string.information, "Ijin")
                     BottomSheetSickAttendance.ATTENDANCE_TYPE -> getString(R.string.information, "Sakit")
-                    else -> getString(R.string.information, "Masuk")
+                    else -> getString(R.string.information, it.information)
                 }
                 when (it.isValidate?.toInt()) {
                     1 -> {
