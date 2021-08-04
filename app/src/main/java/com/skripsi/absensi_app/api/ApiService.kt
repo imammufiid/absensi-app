@@ -49,7 +49,7 @@ interface ApiService {
     @Multipart
     @POST("user/save")
     suspend fun editProfile(
-        @HeaderMap token: Map<String, String>?,
+//        @HeaderMap token: Map<String, String>?,
         @Part imageProfile: MultipartBody.Part?,
         @Part("id") userId: RequestBody?,
         @Part("name") name: RequestBody?,

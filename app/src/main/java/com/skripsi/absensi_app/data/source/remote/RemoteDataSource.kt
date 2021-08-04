@@ -292,7 +292,7 @@ class RemoteDataSource(private val api: ApiConfiguration) {
         val result = MutableLiveData<ApiResponse<UserEntity>>()
         try {
             val response =
-                api.create().editProfile(header, imageProfile, userId, name, password)
+                api.create().editProfile(imageProfile, userId, name, password)
             when (response.meta?.code) {
                 200 -> result.value = ApiResponse.success(response.data, response.meta.message)
                 404 -> result.value = ApiResponse.empty(response.meta.message)
