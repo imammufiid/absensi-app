@@ -138,6 +138,8 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
 
         }
 
+        _bind.detailAttendance.dateToday.text = dataAttendance?.date
+
         if (dataAttendance?.attendanceType == 1) {
             viewModel.getLocationAttendance(UserPref.getUserData(this)?.token, dataAttendance?.id.toString())
         }
@@ -150,6 +152,7 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
             val circularProgressDrawable = CircularProgressDrawable(this).apply {
                 strokeWidth = 15f
                 centerRadius = 30f
+                start()
             }
             Glide.with(this)
                 .load(dataAttendance?.fileInformation)
