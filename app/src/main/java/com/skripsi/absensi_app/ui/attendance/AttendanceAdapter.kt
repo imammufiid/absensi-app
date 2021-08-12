@@ -57,6 +57,9 @@ class AttendanceAdapter(
                         isValidation.setBackgroundResource(R.drawable.bg_text_not_validation)
                     }
                 }
+
+                // attendance user
+                userName.text = attendance.userData?.name
             }
         }
     }
