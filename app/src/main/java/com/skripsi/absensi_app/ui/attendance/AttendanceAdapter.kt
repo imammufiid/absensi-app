@@ -41,11 +41,8 @@ class AttendanceAdapter(
                 datetime.text = attendance.date
 
                 // attendance type
-                attendanceType.text = when (attendance.attendanceType?.toInt()) {
-                    0 -> "Tidak Absen"
-                    1 -> attendance.information
-                    2 -> "Ijin"
-                    3 -> "Sakit"
+                attendanceType.text = when (attendance.attendanceType) {
+                    in 0..3 -> attendance.information
                     else -> "-"
                 }
 
