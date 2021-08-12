@@ -1,12 +1,19 @@
 package com.skripsi.absensi_app.ui.attendance
 
+import android.annotation.SuppressLint
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.skripsi.absensi_app.R
 import com.skripsi.absensi_app.data.source.local.entity.AttendanceEntity
 import com.skripsi.absensi_app.databinding.ItemAttendanceBinding
+import com.skripsi.absensi_app.utils.helper.DayIndonesian
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class AttendanceAdapter(
     private val onClick: (AttendanceEntity) -> Unit
 ) : RecyclerView.Adapter<AttendanceAdapter.ViewHolder>() {
@@ -29,6 +36,7 @@ class AttendanceAdapter(
 
     inner class ViewHolder(private val binding: ItemAttendanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(attendance: AttendanceEntity) {
             with(binding) {
                 itemView.setOnClickListener {
@@ -38,7 +46,7 @@ class AttendanceAdapter(
                 timeIn.text = if (attendance.timeComes == "0") "00:00:00" else attendance.timeComes
                 timeOut.text =
                     if (attendance.timeGohome == "0") "00:00:00" else attendance.timeGohome
-                datetime.text = attendance.date
+                datetime.text = "${simpleDateFormat(attendance.date)}, ${attendance.date}"
 
                 // attendance type
                 attendanceType.text = when (attendance.attendanceType) {
@@ -72,5 +80,18 @@ class AttendanceAdapter(
             }
         }
         notifyDataSetChanged()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun simpleDateFormat(date: String?): String? {
+        val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val dateConfig = formatter.parse(date)
+        val resultDay =  DateFormat.format("EEEE", dateConfig).toString()
+
+        return if (DayIndonesian.dayOfWeek.containsKey(resultDay)) {
+            DayIndonesian.dayOfWeek[resultDay]
+        } else {
+            resultDay
+        }
     }
 }
