@@ -140,7 +140,7 @@ class DetailAttendanceActivity : AppCompatActivity(), View.OnClickListener {
 
         _bind.detailAttendance.dateToday.text = dataAttendance?.date
 
-        if (dataAttendance?.attendanceType == 1) {
+        if (dataAttendance?.attendanceType == 1 || dataAttendance?.attendanceType == 2) {
             viewModel.getLocationAttendance(UserPref.getUserData(this)?.token, dataAttendance?.id.toString())
         }
 
