@@ -50,7 +50,9 @@ class AttendanceAdapter(
 
                 // attendance type
                 attendanceType.text = when (attendance.attendanceType) {
-                    in 0..3 -> attendance.information
+                    in 0..1 -> attendance.information
+                    2 -> "Ijin"
+                    3 -> "Sakit"
                     else -> "-"
                 }
 
