@@ -34,6 +34,9 @@ data class AttendanceEntity(
 	@field:SerializedName("is_validate")
 	val isValidate: String? = null,
 
+	@field:SerializedName("user_data")
+	val userData: UserEntity? = null,
+
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,
 
